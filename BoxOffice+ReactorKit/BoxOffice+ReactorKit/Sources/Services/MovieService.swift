@@ -8,11 +8,16 @@
 import Foundation
 import RxSwift
 
-struct MovieRequest {
+protocol MovieServiceType {
+    static func getMovieList(orderType: Int) -> Observable<MovieList>
+    static func getMovie(id: String) -> Observable<Movie>
+}
+
+struct MovieService: MovieServiceType {
     
-    static func getMovieListRx(orderType: Int) -> Observable<MovieList> {
+    static func getMovieList(orderType: Int) -> Observable<MovieList> {
         return Observable.create { observer in
-            MovieRequest.sendGetMovieListRequest(orderType: orderType) { result in
+            MovieService.sendGetMovieListRequest(orderType: orderType) { result in
                 switch result {
                 case .success(let movies):
                     observer.onNext(movies)
@@ -24,9 +29,9 @@ struct MovieRequest {
         }
     }
     
-    static func getMovieRx(id: String) -> Observable<Movie> {
+    static func getMovie(id: String) -> Observable<Movie> {
         return Observable.create { observer in
-            MovieRequest.sendGetMovieRequest(id: id) { result in
+            MovieService.sendGetMovieRequest(id: id) { result in
                 switch result {
                 case .success(let movie):
                     observer.onNext(movie)
