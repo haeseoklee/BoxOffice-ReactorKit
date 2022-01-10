@@ -8,14 +8,49 @@
 import Foundation
 import RxSwift
 
-protocol MovieServiceType {
-    static func getMovieList(orderType: Int) -> Observable<MovieList>
-    static func getMovie(id: String) -> Observable<Movie>
+enum MovieEvent {
+    case raiseError(NSError)
 }
 
-struct MovieService: MovieServiceType {
+protocol MovieServiceType {
     
-    static func getMovieList(orderType: Int) -> Observable<MovieList> {
+    var event: PublishSubject<MovieEvent> { get }
+    var movies: PublishSubject<[Movie]> { get }
+    var orderType: BehaviorSubject<MovieOrderType> { get }
+    
+    func update(orderType: MovieOrderType) -> Observable<String>
+    func fetchMovies() -> Observable<[Movie]>
+    func getMovieList(orderType: Int) -> Observable<MovieList>
+    func getMovie(id: String) -> Observable<Movie>
+}
+
+final class MovieService: MovieServiceType {
+
+    let event: PublishSubject<MovieEvent> = PublishSubject<MovieEvent>()
+    let movies: PublishSubject<[Movie]> = PublishSubject<[Movie]>()
+    let orderType: BehaviorSubject<MovieOrderType> = BehaviorSubject<MovieOrderType>(value: .reservationRate)
+    
+    func fetchMovies() -> Observable<[Movie]> {
+        return orderType
+            .flatMap { [weak self] orderType in
+                self?.getMovieList(orderType: orderType.rawValue) ?? .empty()
+            }
+            .do(onNext: {[weak self] movieList in
+                self?.movies.onNext(movieList.movies)
+            }, onError: {[weak self] error in
+                self?.event.onNext(.raiseError(error as NSError))
+            })
+            .map { movieList in
+                return movieList.movies
+            }
+    }
+    
+    func update(orderType: MovieOrderType) -> Observable<String> {
+        self.orderType.onNext(orderType)
+        return self.orderType.map { $0.toKorean() }.asObservable()
+    }
+    
+    func getMovieList(orderType: Int) -> Observable<MovieList> {
         return Observable.create { observer in
             MovieService.sendGetMovieListRequest(orderType: orderType) { result in
                 switch result {
@@ -29,7 +64,7 @@ struct MovieService: MovieServiceType {
         }
     }
     
-    static func getMovie(id: String) -> Observable<Movie> {
+    func getMovie(id: String) -> Observable<Movie> {
         return Observable.create { observer in
             MovieService.sendGetMovieRequest(id: id) { result in
                 switch result {
