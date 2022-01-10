@@ -8,14 +8,19 @@
 import UIKit
 import RxSwift
 
-class ImageCacheManager {
-    static let shared: NSCache<NSString, UIImage>  = NSCache<NSString, UIImage>()
+protocol ImageLoaderType {
+    func load() -> Observable<UIImage>
 }
 
-struct ImageLoader {
+class ImageCacheManager {
+    static let shared: NSCache<NSString, UIImage> = NSCache<NSString, UIImage>()
+}
+
+struct ImageLoaderService: ImageLoaderType {
+    
     let url: String
     
-    func loadRx() -> Observable<UIImage> {
+    func load() -> Observable<UIImage> {
         return Observable.create { observer in
             load { result in
                 switch result {

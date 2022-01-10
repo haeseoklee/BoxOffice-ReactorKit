@@ -16,9 +16,9 @@
 		1CC91878278C3CD000178636 /* Movie.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC91873278C3CD000178636 /* Movie.swift */; };
 		1CC91879278C3CD000178636 /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC91874278C3CD000178636 /* Comment.swift */; };
 		1CC9187A278C3CD000178636 /* MovieList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC91875278C3CD000178636 /* MovieList.swift */; };
-		1CC9187E278C3CDC00178636 /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC9187B278C3CDC00178636 /* ImageLoader.swift */; };
-		1CC9187F278C3CDC00178636 /* MovieRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC9187C278C3CDC00178636 /* MovieRequest.swift */; };
-		1CC91880278C3CDC00178636 /* CommentRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC9187D278C3CDC00178636 /* CommentRequest.swift */; };
+		1CC9187E278C3CDC00178636 /* ImageLoaderService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC9187B278C3CDC00178636 /* ImageLoaderService.swift */; };
+		1CC9187F278C3CDC00178636 /* MovieService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC9187C278C3CDC00178636 /* MovieService.swift */; };
+		1CC91880278C3CDC00178636 /* CommentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC9187D278C3CDC00178636 /* CommentService.swift */; };
 		1CC9188F278C3CF100178636 /* BoxOfficeDetailHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC91881278C3CF100178636 /* BoxOfficeDetailHeaderView.swift */; };
 		1CC91890278C3CF100178636 /* StarRatingBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC91882278C3CF100178636 /* StarRatingBarView.swift */; };
 		1CC91891278C3CF100178636 /* MovieImageDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC91883278C3CF100178636 /* MovieImageDetailViewController.swift */; };
@@ -57,9 +57,9 @@
 		1CC91873278C3CD000178636 /* Movie.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Movie.swift; sourceTree = "<group>"; };
 		1CC91874278C3CD000178636 /* Comment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
 		1CC91875278C3CD000178636 /* MovieList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MovieList.swift; sourceTree = "<group>"; };
-		1CC9187B278C3CDC00178636 /* ImageLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
-		1CC9187C278C3CDC00178636 /* MovieRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MovieRequest.swift; sourceTree = "<group>"; };
-		1CC9187D278C3CDC00178636 /* CommentRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentRequest.swift; sourceTree = "<group>"; };
+		1CC9187B278C3CDC00178636 /* ImageLoaderService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageLoaderService.swift; sourceTree = "<group>"; };
+		1CC9187C278C3CDC00178636 /* MovieService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MovieService.swift; sourceTree = "<group>"; };
+		1CC9187D278C3CDC00178636 /* CommentService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentService.swift; sourceTree = "<group>"; };
 		1CC91881278C3CF100178636 /* BoxOfficeDetailHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoxOfficeDetailHeaderView.swift; sourceTree = "<group>"; };
 		1CC91882278C3CF100178636 /* StarRatingBarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StarRatingBarView.swift; sourceTree = "<group>"; };
 		1CC91883278C3CF100178636 /* MovieImageDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MovieImageDetailViewController.swift; sourceTree = "<group>"; };
@@ -218,9 +218,9 @@
 		1CC9186C278C3BA600178636 /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				1CC9187C278C3CDC00178636 /* MovieRequest.swift */,
-				1CC9187D278C3CDC00178636 /* CommentRequest.swift */,
-				1CC9187B278C3CDC00178636 /* ImageLoader.swift */,
+				1CC9187C278C3CDC00178636 /* MovieService.swift */,
+				1CC9187D278C3CDC00178636 /* CommentService.swift */,
+				1CC9187B278C3CDC00178636 /* ImageLoaderService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -361,9 +361,9 @@
 				1CC91895278C3CF100178636 /* BoxOfficeTabBarController.swift in Sources */,
 				1CC91896278C3CF100178636 /* BoxOfficeCollectionViewCell.swift in Sources */,
 				1CC918A1278C3D0300178636 /* CommentViewModel.swift in Sources */,
-				1CC91880278C3CDC00178636 /* CommentRequest.swift in Sources */,
+				1CC91880278C3CDC00178636 /* CommentService.swift in Sources */,
 				1CC91879278C3CD000178636 /* Comment.swift in Sources */,
-				1CC9187F278C3CDC00178636 /* MovieRequest.swift in Sources */,
+				1CC9187F278C3CDC00178636 /* MovieService.swift in Sources */,
 				1CC918AC278C3D2900178636 /* Constants.swift in Sources */,
 				1CC91893278C3CF100178636 /* BoxOfficeDetailInfoHeaderView.swift in Sources */,
 				1CC9186F278C3CB800178636 /* SceneDelegate.swift in Sources */,
@@ -382,7 +382,7 @@
 				1CC918A4278C3D0300178636 /* MovieViewModel.swift in Sources */,
 				1CC918A7278C3D1500178636 /* Int+Extension.swift in Sources */,
 				1CC91898278C3CF100178636 /* BoxOfficeDetailSummaryHeaderView.swift in Sources */,
-				1CC9187E278C3CDC00178636 /* ImageLoader.swift in Sources */,
+				1CC9187E278C3CDC00178636 /* ImageLoaderService.swift in Sources */,
 				1CC9189B278C3CF100178636 /* BoxOfficeTableViewController.swift in Sources */,
 				1CC9189A278C3CF100178636 /* BoxOfficeDetailReviewHeaderView.swift in Sources */,
 				1CC91897278C3CF100178636 /* BoxOfficeCollectionViewController.swift in Sources */,
