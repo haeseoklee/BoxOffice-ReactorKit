@@ -18,18 +18,18 @@ protocol BoxOfficeType {
 class BoxOffice: BoxOfficeType {
     
     func getMovieList(orderType: Int) -> Observable<MovieList> {
-        return MovieRequest.getMovieListRx(orderType: orderType)
+        return MovieService().getMovieList(orderType: orderType)
     }
     
     func getMovie(id: String) -> Observable<Movie> {
-        return MovieRequest.getMovieRx(id: id)
+        return MovieService().getMovie(id: id)
     }
     
     func getCommentList(movieId: String) -> Observable<CommentList> {
-        return CommentRequest.getCommentListRx(movieId: movieId)
+        return CommentService.getCommentList(movieId: movieId)
     }
     
     func postComment(comment: Comment) -> Observable<Comment> {
-        return CommentRequest.postCommentRx(comment: comment)
+        return CommentService.postComment(comment: comment)
     }
 }

@@ -133,7 +133,7 @@ final class BoxOfficeCollectionViewCell: UICollectionViewCell {
         
         movieObservable
             .flatMap { movie in
-                ImageLoader(url: movie.thumb ?? "").loadRx()
+                ImageLoaderService(url: movie.thumb ?? "").load()
             }
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] image in
