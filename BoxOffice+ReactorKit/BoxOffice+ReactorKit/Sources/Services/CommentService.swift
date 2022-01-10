@@ -8,11 +8,16 @@
 import Foundation
 import RxSwift
 
-struct CommentRequest {
+protocol CommentServiceType {
+    static func getCommentList(movieId: String) -> Observable<CommentList>
+    static func postComment(comment: Comment) -> Observable<Comment>
+}
+
+struct CommentService: CommentServiceType {
     
-    static func getCommentListRx(movieId: String) -> Observable<CommentList> {
+    static func getCommentList(movieId: String) -> Observable<CommentList> {
         return Observable.create { observer in
-            CommentRequest.sendGetCommentListRequest(movieId: movieId) { result in
+            CommentService.sendGetCommentListRequest(movieId: movieId) { result in
                 switch result {
                 case .success(let comments):
                     observer.onNext(comments)
@@ -24,9 +29,9 @@ struct CommentRequest {
         }
     }
     
-    static func postCommentRx(comment: Comment) -> Observable<Comment> {
+    static func postComment(comment: Comment) -> Observable<Comment> {
         return Observable.create { observer in
-            CommentRequest.sendPostCommentRequest(comment: comment) { result in
+            CommentService.sendPostCommentRequest(comment: comment) { result in
                 switch result {
                 case .success(let comment):
                     observer.onNext(comment)
