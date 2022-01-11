@@ -43,6 +43,22 @@ final class BoxOfficeTableViewReactor: Reactor {
         self.initialState = State()
     }
     
+    func transform(state: Observable<State>) -> Observable<State> {
+        let orderTypeChanged = movieService.movieOrderType.flatMap {[weak self] orderType -> Observable<State> in
+            guard let self = self else { return .empty() }
+            return Observable.just(
+                State(isActivated: self.currentState.isActivated, orderTypeText: orderType.toKorean, errorMessage: self.currentState.errorMessage, movies: self.currentState.movies)
+            )
+        }
+        let moviesChanged = movieService.movies.flatMap {[weak self] movies -> Observable<State> in
+            guard let self = self else { return .empty() }
+            return Observable.just(
+                State(isActivated: self.currentState.isActivated, orderTypeText: self.currentState.orderTypeText, errorMessage: self.currentState.errorMessage, movies: movies)
+            )
+        }
+        return Observable.merge(state, orderTypeChanged, moviesChanged)
+    }
+    
     func transform(mutation: Observable<Mutation>) -> Observable<Mutation> {
         let movieEventMutation = movieService.event.flatMap { [weak self] movieEvent -> Observable<Mutation> in
             self?.mutate(movieEvent: movieEvent) ?? .empty()
@@ -66,9 +82,11 @@ final class BoxOfficeTableViewReactor: Reactor {
                 Observable.just(Mutation.setIsActivated(false))
             )
         case .changeOrderType(let movieOrderType):
-            return .concat(
+            return Observable.concat(
+                Observable.just(Mutation.setIsActivated(true)),
                 movieService.update(orderType: movieOrderType).map(Mutation.setOrderTypeText),
-                movieService.fetchMovies().map(Mutation.setMovies)
+                movieService.fetchMovies().map(Mutation.setMovies),
+                Observable.just(Mutation.setIsActivated(false))
             )
         }
     }
@@ -88,7 +106,8 @@ final class BoxOfficeTableViewReactor: Reactor {
         return newState
     }
 
-    func reactorForMovieDetail() {
-            
+    func reactorForMovieDetail(reactor: BoxOfficeTableViewCellReactor) -> BoxOfficeDetailViewReactor {
+        let movie = reactor.initialState
+        return BoxOfficeDetailViewReactor(movie: movie)
     }
 }
