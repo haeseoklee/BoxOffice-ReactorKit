@@ -28,7 +28,7 @@ final class BoxOfficeTableViewReactor: Reactor {
     // State
     struct State {
         var isActivated: Bool = false
-        var orderTypeText: String = MovieOrderType.reservationRate.toKorean()
+        var orderTypeText: String = MovieOrderType.reservationRate.toKorean
         var errorMessage: NSError?
         var movies: [Movie] = []
     }
