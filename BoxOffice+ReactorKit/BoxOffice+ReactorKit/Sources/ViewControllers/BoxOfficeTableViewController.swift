@@ -36,7 +36,7 @@ final class BoxOfficeTableViewController: UIViewController, View {
     var disposeBag: DisposeBag = DisposeBag()
     
     // MARK: - Life Cycles
-    init(reactor: BoxOfficeTableViewReactor) {
+    init(reactor: BoxOfficeTableAndCollectionViewReactor) {
         super.init(nibName: nil, bundle: nil)
         self.reactor = reactor
     }
@@ -68,7 +68,7 @@ final class BoxOfficeTableViewController: UIViewController, View {
         navigationItem.backButtonTitle = "영화목록"
     }
     
-    func bind(reactor: BoxOfficeTableViewReactor) {
+    func bind(reactor: BoxOfficeTableAndCollectionViewReactor) {
         
         // Action
         rx.viewDidLoad
@@ -116,6 +116,7 @@ final class BoxOfficeTableViewController: UIViewController, View {
         
         reactor.state.asObservable()
             .map { $0.orderTypeText }
+            .distinctUntilChanged()
             .asDriver(onErrorJustReturn: MovieOrderType.reservationRate.toKorean)
             .drive(navigationItem.rx.title)
             .disposed(by: disposeBag)
@@ -133,6 +134,7 @@ final class BoxOfficeTableViewController: UIViewController, View {
         
         reactor.state.asObservable()
             .map { $0.movies }
+            .distinctUntilChanged()
             .asDriver(onErrorJustReturn: [])
             .drive(movieTableView.rx.items(
                 cellIdentifier: Constants.Identifier.boxOfficeTableViewCell,
