@@ -133,8 +133,6 @@
 			isa = PBXGroup;
 			children = (
 				1CC918B5278CB2A100178636 /* Assets.xcassets */,
-				1CC918A9278C3D2900178636 /* APIConstants.swift */,
-				1CC918AA278C3D2900178636 /* Constants.swift */,
 				1CC9185C278C36D500178636 /* LaunchScreen.storyboard */,
 				1CC9185F278C36D500178636 /* Info.plist */,
 			);
@@ -150,6 +148,7 @@
 				1CC91868278C3AF900178636 /* ViewControllers */,
 				1CC91869278C3B0200178636 /* Views */,
 				1CC9186A278C3B1200178636 /* Utils */,
+				1CC918B9278D723900178636 /* Constants */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -226,6 +225,15 @@
 				1CC9187B278C3CDC00178636 /* ImageLoaderService.swift */,
 			);
 			path = Services;
+			sourceTree = "<group>";
+		};
+		1CC918B9278D723900178636 /* Constants */ = {
+			isa = PBXGroup;
+			children = (
+				1CC918A9278C3D2900178636 /* APIConstants.swift */,
+				1CC918AA278C3D2900178636 /* Constants.swift */,
+			);
+			path = Constants;
 			sourceTree = "<group>";
 		};
 		EA218CC3E09DE8AFEB085435 /* Pods */ = {

@@ -47,7 +47,7 @@ final class MovieService: MovieServiceType {
     
     func update(orderType: MovieOrderType) -> Observable<String> {
         self.orderType.onNext(orderType)
-        return self.orderType.map { $0.toKorean() }.asObservable()
+        return self.orderType.map { $0.toKorean }.asObservable()
     }
     
     func getMovieList(orderType: Int) -> Observable<MovieList> {
@@ -86,6 +86,7 @@ final class MovieService: MovieServiceType {
         
         if !((0...2) ~= orderType) {
             completion(.failure(.invalidArgument))
+            return
         }
         
         components?.queryItems = items
