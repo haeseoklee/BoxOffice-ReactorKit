@@ -6,9 +6,12 @@
 //
 
 import UIKit
+import ReactorKit
 import RxSwift
+import RxCocoa
+import RxViewController
 
-final class BoxOfficeCollectionViewController: UIViewController {
+final class BoxOfficeCollectionViewController: UIViewController, View {
     
     // MARK: - Views
     private lazy var movieCollectionView: UICollectionView = {
@@ -42,17 +45,15 @@ final class BoxOfficeCollectionViewController: UIViewController {
         return CGSize(width: width, height: width * 2)
     }
     
-    private let viewModel: MovieListViewModelType
-    private var disposeBag: DisposeBag = DisposeBag()
+    var disposeBag: DisposeBag = DisposeBag()
     
     // MARK: - Life Cycle
-    init() {
-        viewModel = MovieListViewModel.shared
+    init(reactor: BoxOfficeTableAndCollectionViewReactor) {
         super.init(nibName: nil, bundle: nil)
+        self.reactor = reactor
     }
     
     required init?(coder: NSCoder) {
-        viewModel = MovieListViewModel.shared
         super.init(coder: coder)
     }
     
@@ -60,7 +61,6 @@ final class BoxOfficeCollectionViewController: UIViewController {
         super.viewDidLoad()
         setupViews()
         setupNavigationBar()
-        setupBindings()
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -88,38 +88,19 @@ final class BoxOfficeCollectionViewController: UIViewController {
         navigationItem.backButtonTitle = "영화목록"
     }
     
-    private func setupBindings() {
+    func bind(reactor: BoxOfficeTableAndCollectionViewReactor) {
         
-        // viewWillAppear & tableView refreshed
-        let viewWillAppearOnce = rx.viewWillAppear.take(1).map { _ in () }
-        let refreshed = movieCollectionView.refreshControl?.rx.controlEvent(.valueChanged).map { _ in () } ?? Observable.just(())
-        Observable
-            .merge(viewWillAppearOnce, refreshed)
-            .bind(to: viewModel.fetchMoviesObserver)
+        // Action
+        rx.viewDidLoad
+            .map { Reactor.Action.refresh }
+            .bind(to: reactor.action)
             .disposed(by: disposeBag)
         
-        // tableViewCell tapped
-        movieCollectionView.rx.modelSelected(Movie.self)
-            .observe(on: MainScheduler.instance)
-            .bind(to: viewModel.touchMovieObserver)
+        movieCollectionView.refreshControl?.rx.controlEvent(.valueChanged)
+            .map { Reactor.Action.refresh }
+            .bind(to: reactor.action)
             .disposed(by: disposeBag)
         
-        // tableView refreshControl & NetworkActivityIndicator
-        viewModel.isActivatedObservable
-            .observe(on: MainScheduler.instance)
-            .bind {[weak self] isActivated in
-                if !isActivated {
-                    self?.movieCollectionView.refreshControl?.endRefreshing()
-                }
-                if #available(iOS 13.0, *) {
-                    
-                } else {
-                    UIApplication.shared.isNetworkActivityIndicatorVisible = isActivated
-                }
-            }
-            .disposed(by: disposeBag)
-        
-        // rightBarButton tapped
         rightBarButton.rx.tap
             .observe(on: MainScheduler.instance)
             .bind { [weak self] _ in
@@ -131,18 +112,36 @@ final class BoxOfficeCollectionViewController: UIViewController {
             }
             .disposed(by: disposeBag)
         
-        // navigation title
-        viewModel.changedOrderTypeTextObservable
-            .asDriver(onErrorJustReturn: "예매율순")
+        movieCollectionView.rx.modelSelected(Movie.self)
+            .observe(on: MainScheduler.instance)
+            .map { BoxOfficeTableViewCellReactor(movie: $0)}
+            .map(reactor.reactorForMovieDetail)
+            .bind { [weak self] reactor in
+                let boxOfficeDetailViewController = BoxOfficeDetailViewController(reactor: reactor)
+                self?.navigationController?.pushViewController(boxOfficeDetailViewController, animated: true)
+            }
+            .disposed(by: disposeBag)
+        
+        // State
+        reactor.state.asObservable()
+            .map { $0.isActivated }
+            .distinctUntilChanged()
+            .observe(on: MainScheduler.instance)
+            .bind {[weak self] isActivated in
+                if !isActivated {
+                    self?.movieCollectionView.refreshControl?.endRefreshing()
+                }
+            }
+            .disposed(by: disposeBag)
+        
+        reactor.state.asObservable()
+            .map { $0.orderTypeText }
+            .asDriver(onErrorJustReturn: MovieOrderType.reservationRate.toKorean)
             .drive(navigationItem.rx.title)
             .disposed(by: disposeBag)
-        
-        // collectionView
-        movieCollectionView.rx
-            .setDelegate(self)
-            .disposed(by: disposeBag)
-        
-        viewModel.moviesObservable
+                
+        reactor.state.asObservable()
+            .map { $0.movies }
             .asDriver(onErrorJustReturn: [])
             .drive(movieCollectionView.rx.items(
                 cellIdentifier: Constants.Identifier.boxOfficeCollectionViewCell,
@@ -152,47 +151,52 @@ final class BoxOfficeCollectionViewController: UIViewController {
                 cell.errorMessageObservable
                     .observe(on: MainScheduler.instance)
                     .bind {[weak self] error in
-                        self?.showAlert(title: "오류", message: "사진을 가져오지 못했습니다\n\(error.localizedDescription)")
+                        self?.showAlert(title: "Error", message: error.localizedDescription)
                     }
                     .disposed(by: cell.disposeBag)
             }
             .disposed(by: disposeBag)
         
-        // errorMessage
-        viewModel.errorMessageObservable
-            .map { $0.localizedDescription }
+        reactor.state.asObservable()
+            .map { $0.errorMessage }
+            .map { $0?.localizedDescription }
+            .flatMap { Observable.from(optional: $0) }
+            .filter { !$0.isEmpty }
             .observe(on: MainScheduler.instance)
-            .bind(onNext: {[weak self] error in
-                self?.showAlert(title: "오류", message: error)
+            .bind(onNext: {[weak self] message in
+                self?.showAlert(title: "Error", message: message)
             })
             .disposed(by: disposeBag)
         
-        // navigation
-        viewModel.showBoxOfficeDetailViewController
-            .bind(onNext: {[weak self] movie in
-                self?.pushToBoxOfficeDetailViewController(movie: movie)
-            })
+        // UI
+        movieCollectionView.rx
+            .setDelegate(self)
+            .disposed(by: disposeBag)
+        
+    }
+    
+    private func touchUpReservationRateAction(_ action: UIAlertAction) {
+        guard let reactor = reactor else { return }
+        // Action
+        Observable.just(Reactor.Action.changeOrderType(.reservationRate))
+            .bind(to: reactor.action)
             .disposed(by: disposeBag)
     }
     
-    private func pushToBoxOfficeDetailViewController(movie: Movie) {
-//        let boxOfficeDetailViewController = BoxOfficeDetailViewController()
-//        boxOfficeDetailViewController.commentListViewModel = CommentListViewModel(movie: movie)
-//        boxOfficeDetailViewController.movieViewModel = MovieViewModel(selectedMovie: movie)
-//        navigationController?.pushViewController(boxOfficeDetailViewController, animated: true)
-    }
-    
-    
-    private func touchUpReservationRateAction(_ action: UIAlertAction) {
-        viewModel.changeOrderTypeObserver.onNext(.reservationRate)
-    }
-    
     private func touchUpCurationAction(_ action: UIAlertAction) {
-        viewModel.changeOrderTypeObserver.onNext(.curation)
+        guard let reactor = reactor else { return }
+        // Action
+        Observable.just(Reactor.Action.changeOrderType(.curation))
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
     }
     
     private func touchUpOpeningDateAction(_ action: UIAlertAction) {
-        viewModel.changeOrderTypeObserver.onNext(.openingDate)
+        guard let reactor = reactor else { return }
+        // Action
+        Observable.just(Reactor.Action.changeOrderType(.openingDate))
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
     }
 }
 

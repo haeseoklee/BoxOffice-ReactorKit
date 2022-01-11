@@ -21,7 +21,7 @@ enum MovieOrderType: Int, CaseIterable {
     }
 }
 
-struct Movie: Codable {
+struct Movie: Codable, Hashable {
     let audience: Int?
     let actor: String?
     let duration: Int?
