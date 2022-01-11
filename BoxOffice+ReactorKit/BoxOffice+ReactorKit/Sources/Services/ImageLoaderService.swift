@@ -26,6 +26,7 @@ struct ImageLoaderService: ImageLoaderType {
                 switch result {
                 case .success(let image):
                     observer.onNext(image)
+                    observer.onCompleted()
                 case .failure(let error):
                     observer.onError(error)
                 }

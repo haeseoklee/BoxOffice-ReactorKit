@@ -21,6 +21,7 @@ struct CommentService: CommentServiceType {
                 switch result {
                 case .success(let comments):
                     observer.onNext(comments)
+                    observer.onCompleted()
                 case .failure(let error):
                     observer.onError(error)
                 }
@@ -35,6 +36,7 @@ struct CommentService: CommentServiceType {
                 switch result {
                 case .success(let comment):
                     observer.onNext(comment)
+                    observer.onCompleted()
                 case .failure(let error):
                     observer.onError(error)
                 }

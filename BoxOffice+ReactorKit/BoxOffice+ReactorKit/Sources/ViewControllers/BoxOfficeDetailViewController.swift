@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import ReactorKit
 import RxSwift
 import RxCocoa
 
@@ -13,7 +14,7 @@ enum MovieDetailTableViewSection: Int, CaseIterable {
     case header, summary, info, comment
 }
 
-final class BoxOfficeDetailViewController: UIViewController {
+final class BoxOfficeDetailViewController: UIViewController, View {
     
     // MARK: - Views
     private lazy var movieDetailTableView: UITableView = {
@@ -30,22 +31,19 @@ final class BoxOfficeDetailViewController: UIViewController {
     }()
     
     // MARK: - Variables
-    var movieViewModel: MovieViewModelType
-    var commentListViewModel: CommentListViewModelType
+    var movieViewModel: MovieViewModelType = MovieViewModel()
+    var commentListViewModel: CommentListViewModelType = CommentListViewModel()
     private var comments: [Comment] = []
-    private var disposeBag: DisposeBag = DisposeBag()
+    
+    var disposeBag: DisposeBag = DisposeBag()
     
     // MARK: - Life Cycles
-    init(movieViewModel: MovieViewModelType = MovieViewModel(),
-         commentListViewModel: CommentListViewModelType = CommentListViewModel()) {
-        self.movieViewModel = movieViewModel
-        self.commentListViewModel = commentListViewModel
+    init(reactor: BoxOfficeDetailViewReactor) {
         super.init(nibName: nil, bundle: nil)
+        self.reactor = reactor
     }
     
     required init?(coder: NSCoder) {
-        movieViewModel = MovieViewModel()
-        commentListViewModel = CommentListViewModel()
         super.init(coder: coder)
     }
     
@@ -77,6 +75,10 @@ final class BoxOfficeDetailViewController: UIViewController {
             .asDriver(onErrorJustReturn: "")
             .drive(navigationItem.rx.title)
             .disposed(by: disposeBag)
+    }
+    
+    func bind(reactor: BoxOfficeDetailViewReactor) {
+        
     }
     
     private func setupBindings() {

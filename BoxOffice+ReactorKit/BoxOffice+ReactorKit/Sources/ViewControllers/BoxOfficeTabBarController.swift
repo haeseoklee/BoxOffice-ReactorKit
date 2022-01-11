@@ -34,7 +34,10 @@ final class BoxOfficeTabBarController: UITabBarController {
     private func initViews() {
         delegate = self
         
-        let boxOfficeTableViewController = BoxOfficeTableViewController()
+        let movieService = MovieService()
+        let boxOfficeTableViewReactor = BoxOfficeTableViewReactor(movieService: movieService)
+        let boxOfficeTableViewController = BoxOfficeTableViewController(reactor: boxOfficeTableViewReactor)
+        
         let boxOfficeCollectionViewController = BoxOfficeCollectionViewController()
         
         boxOfficeTableViewController.tabBarItem = tableTabBarItem

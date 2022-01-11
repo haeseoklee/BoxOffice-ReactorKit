@@ -15,8 +15,8 @@ enum MovieEvent {
 protocol MovieServiceType {
     
     var event: PublishSubject<MovieEvent> { get }
-    var movies: PublishSubject<[Movie]> { get }
-    var orderType: BehaviorSubject<MovieOrderType> { get }
+    var movies: BehaviorSubject<[Movie]> { get }
+    var movieOrderType: BehaviorSubject<MovieOrderType> { get }
     
     func update(orderType: MovieOrderType) -> Observable<String>
     func fetchMovies() -> Observable<[Movie]>
@@ -27,13 +27,14 @@ protocol MovieServiceType {
 final class MovieService: MovieServiceType {
 
     let event: PublishSubject<MovieEvent> = PublishSubject<MovieEvent>()
-    let movies: PublishSubject<[Movie]> = PublishSubject<[Movie]>()
-    let orderType: BehaviorSubject<MovieOrderType> = BehaviorSubject<MovieOrderType>(value: .reservationRate)
+    var movies: BehaviorSubject<[Movie]> = BehaviorSubject<[Movie]>(value: [])
+    var movieOrderType: BehaviorSubject<MovieOrderType> = BehaviorSubject<MovieOrderType>(value: .reservationRate)
     
     func fetchMovies() -> Observable<[Movie]> {
-        return orderType
-            .flatMap { [weak self] orderType in
-                self?.getMovieList(orderType: orderType.rawValue) ?? .empty()
+        return Observable.just(())
+            .withLatestFrom(movieOrderType)
+            .flatMap { [weak self] orderType -> Observable<MovieList> in
+                return self?.getMovieList(orderType: orderType.rawValue) ?? .empty()
             }
             .do(onNext: {[weak self] movieList in
                 self?.movies.onNext(movieList.movies)
@@ -46,8 +47,10 @@ final class MovieService: MovieServiceType {
     }
     
     func update(orderType: MovieOrderType) -> Observable<String> {
-        self.orderType.onNext(orderType)
-        return self.orderType.map { $0.toKorean }.asObservable()
+        movieOrderType.onNext(orderType)
+        return Observable.just(())
+            .withLatestFrom(movieOrderType)
+            .map { $0.toKorean }
     }
     
     func getMovieList(orderType: Int) -> Observable<MovieList> {
@@ -56,6 +59,7 @@ final class MovieService: MovieServiceType {
                 switch result {
                 case .success(let movies):
                     observer.onNext(movies)
+                    observer.onCompleted()
                 case .failure(let error):
                     observer.onError(error)
                 }
@@ -70,6 +74,7 @@ final class MovieService: MovieServiceType {
                 switch result {
                 case .success(let movie):
                     observer.onNext(movie)
+                    observer.onCompleted()
                 case .failure(let error):
                     observer.onError(error)
                 }
