@@ -10,7 +10,7 @@ import ReactorKit
 import RxSwift
 import RxViewController
 
-final class BoxOfficeTableViewController: UIViewController {
+final class BoxOfficeTableViewController: UIViewController, View {
     
     // MARK: - Views
     private lazy var movieTableView: UITableView = {
@@ -33,25 +33,22 @@ final class BoxOfficeTableViewController: UIViewController {
     }()
     
     // MARK: - Variables
-    private let viewModel: MovieListViewModelType
-    private var disposeBag: DisposeBag = DisposeBag()
+    var disposeBag: DisposeBag = DisposeBag()
     
     // MARK: - Life Cycles
-    init() {
-        viewModel = MovieListViewModel.shared
+    init(reactor: BoxOfficeTableViewReactor) {
         super.init(nibName: nil, bundle: nil)
+        self.reactor = reactor
     }
     
     required init?(coder: NSCoder) {
-        viewModel = MovieListViewModel.shared
         super.init(coder: coder)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
-        setupNavigationsBar()
-        setupBindings()
+        setupNavigationBar()
     }
     
     // MARK: - Functions
@@ -66,43 +63,24 @@ final class BoxOfficeTableViewController: UIViewController {
         ])
     }
     
-    private func setupNavigationsBar() {
+    private func setupNavigationBar() {
         navigationItem.rightBarButtonItem = rightBarButton
         navigationItem.backButtonTitle = "영화목록"
     }
     
-    private func setupBindings() {
+    func bind(reactor: BoxOfficeTableViewReactor) {
         
-        // viewWillAppear & tableView refreshed
-        let viewWillAppearOnce = rx.viewWillAppear.take(1).map { _ in () }
-        let refreshed = movieTableView.refreshControl?.rx.controlEvent(.valueChanged).map { _ in () } ?? Observable.just(())
-        Observable
-            .merge(viewWillAppearOnce, refreshed)
-            .bind(to: viewModel.fetchMoviesObserver)
+        // Action
+        rx.viewDidLoad
+            .map { Reactor.Action.refresh }
+            .bind(to: reactor.action)
             .disposed(by: disposeBag)
         
-        // tableViewCell tap
-        movieTableView.rx.modelSelected(Movie.self)
-            .observe(on: MainScheduler.instance)
-            .bind(to: viewModel.touchMovieObserver)
+        movieTableView.refreshControl?.rx.controlEvent(.valueChanged)
+            .map { Reactor.Action.refresh }
+            .bind(to: reactor.action)
             .disposed(by: disposeBag)
         
-        // tableView refreshControl & NetworkActivityIndicator
-        viewModel.isActivatedObservable
-            .observe(on: MainScheduler.instance)
-            .bind {[weak self] isActivated in
-                if !isActivated {
-                    self?.movieTableView.refreshControl?.endRefreshing()
-                }
-                if #available(iOS 13.0, *) {
-                    
-                } else {
-                    UIApplication.shared.isNetworkActivityIndicatorVisible = isActivated
-                }
-            }
-            .disposed(by: disposeBag)
-        
-        // rightBarButton tapped
         rightBarButton.rx.tap
             .observe(on: MainScheduler.instance)
             .bind { [weak self] _ in
@@ -114,18 +92,47 @@ final class BoxOfficeTableViewController: UIViewController {
             }
             .disposed(by: disposeBag)
         
-        // navigation title
-        viewModel.changedOrderTypeTextObservable
-            .asDriver(onErrorJustReturn: "예매율순")
+        movieTableView.rx.modelSelected(Movie.self)
+            .observe(on: MainScheduler.instance)
+            .map { BoxOfficeTableViewCellReactor(movie: $0)}
+            .map(reactor.reactorForMovieDetail)
+            .bind { [weak self] reactor in
+                let boxOfficeDetailViewController = BoxOfficeDetailViewController(reactor: reactor)
+                self?.navigationController?.pushViewController(boxOfficeDetailViewController, animated: true)
+            }
+            .disposed(by: disposeBag)
+        
+        // State
+        reactor.state.asObservable()
+            .map { $0.isActivated }
+            .distinctUntilChanged()
+            .observe(on: MainScheduler.instance)
+            .bind {[weak self] isActivated in
+                if !isActivated {
+                    self?.movieTableView.refreshControl?.endRefreshing()
+                }
+            }
+            .disposed(by: disposeBag)
+        
+        reactor.state.asObservable()
+            .map { $0.orderTypeText }
+            .asDriver(onErrorJustReturn: MovieOrderType.reservationRate.toKorean)
             .drive(navigationItem.rx.title)
             .disposed(by: disposeBag)
         
-        // tableview
-        movieTableView.rx
-            .setDelegate(self)
+        reactor.state.asObservable()
+            .map { $0.errorMessage }
+            .map { $0?.localizedDescription }
+            .flatMap { Observable.from(optional: $0) }
+            .filter { !$0.isEmpty }
+            .observe(on: MainScheduler.instance)
+            .bind(onNext: {[weak self] message in
+                self?.showAlert(title: "Error", message: message)
+            })
             .disposed(by: disposeBag)
         
-        viewModel.moviesObservable
+        reactor.state.asObservable()
+            .map { $0.movies }
             .asDriver(onErrorJustReturn: [])
             .drive(movieTableView.rx.items(
                 cellIdentifier: Constants.Identifier.boxOfficeTableViewCell,
@@ -135,46 +142,40 @@ final class BoxOfficeTableViewController: UIViewController {
                 cell.errorMessageObservable
                     .observe(on: MainScheduler.instance)
                     .bind {[weak self] error in
-                        self?.showAlert(title: "오류", message: "사진을 가져오지 못했습니다\n\(error.localizedDescription)")
+                        self?.showAlert(title: "Error", message: error.localizedDescription)
                     }
                     .disposed(by: cell.disposeBag)
             }
             .disposed(by: disposeBag)
         
-        // errorMessage
-        viewModel.errorMessageObservable
-            .map { $0.localizedDescription }
-            .observe(on: MainScheduler.instance)
-            .bind(onNext: {[weak self] error in
-                self?.showAlert(title: "오류", message: error)
-            })
-            .disposed(by: disposeBag)
-        
-        // navigation
-        viewModel.showBoxOfficeDetailViewController
-            .bind(onNext: {[weak self] movie in
-                self?.pushToBoxOfficeDetailViewController(movie: movie)
-            })
+        // UI
+        movieTableView.rx
+            .setDelegate(self)
             .disposed(by: disposeBag)
     }
 
-    private func pushToBoxOfficeDetailViewController(movie: Movie) {
-        let boxOfficeDetailViewController = BoxOfficeDetailViewController()
-        boxOfficeDetailViewController.commentListViewModel = CommentListViewModel(movie: movie)
-        boxOfficeDetailViewController.movieViewModel = MovieViewModel(selectedMovie: movie)
-        navigationController?.pushViewController(boxOfficeDetailViewController, animated: true)
-    }
-    
     private func touchUpReservationRateAction(_ alertAction: UIAlertAction) {
-        viewModel.changeOrderTypeObserver.onNext(.reservationRate)
+        guard let reactor = reactor else { return }
+        // Action
+        Observable.just(Reactor.Action.changeOrderType(.reservationRate))
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
     }
     
     private func touchUpCurationAction(_ alertAction: UIAlertAction) {
-        viewModel.changeOrderTypeObserver.onNext(.curation)
+        guard let reactor = reactor else { return }
+        // Action
+        Observable.just(Reactor.Action.changeOrderType(.curation))
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
     }
     
     private func touchUpOpeningDateAction(_ alertAction: UIAlertAction) {
-        viewModel.changeOrderTypeObserver.onNext(.openingDate)
+        guard let reactor = reactor else { return }
+        // Action
+        Observable.just(Reactor.Action.changeOrderType(.openingDate))
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
     }
 }
 
