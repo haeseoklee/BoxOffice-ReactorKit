@@ -9,7 +9,7 @@ import Foundation
 import ReactorKit
 import RxSwift
 
-final class BoxOfficeTableViewReactor: Reactor {
+final class BoxOfficeTableAndCollectionViewReactor: Reactor {
     
     // Action
     enum Action {
@@ -41,22 +41,6 @@ final class BoxOfficeTableViewReactor: Reactor {
     init(movieService: MovieServiceType) {
         self.movieService = movieService
         self.initialState = State()
-    }
-    
-    func transform(state: Observable<State>) -> Observable<State> {
-        let orderTypeChanged = movieService.movieOrderType.flatMap {[weak self] orderType -> Observable<State> in
-            guard let self = self else { return .empty() }
-            return Observable.just(
-                State(isActivated: self.currentState.isActivated, orderTypeText: orderType.toKorean, errorMessage: self.currentState.errorMessage, movies: self.currentState.movies)
-            )
-        }
-        let moviesChanged = movieService.movies.flatMap {[weak self] movies -> Observable<State> in
-            guard let self = self else { return .empty() }
-            return Observable.just(
-                State(isActivated: self.currentState.isActivated, orderTypeText: self.currentState.orderTypeText, errorMessage: self.currentState.errorMessage, movies: movies)
-            )
-        }
-        return Observable.merge(state, orderTypeChanged, moviesChanged)
     }
     
     func transform(mutation: Observable<Mutation>) -> Observable<Mutation> {
