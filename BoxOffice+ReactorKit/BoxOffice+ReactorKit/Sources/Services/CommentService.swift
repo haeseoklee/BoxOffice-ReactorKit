@@ -9,13 +9,13 @@ import Foundation
 import RxSwift
 
 protocol CommentServiceType {
-    static func getCommentList(movieId: String) -> Observable<CommentList>
-    static func postComment(comment: Comment) -> Observable<Comment>
+    func getCommentList(movieId: String) -> Observable<CommentList>
+    func postComment(comment: Comment) -> Observable<Comment>
 }
 
 struct CommentService: CommentServiceType {
     
-    static func getCommentList(movieId: String) -> Observable<CommentList> {
+    func getCommentList(movieId: String) -> Observable<CommentList> {
         return Observable.create { observer in
             CommentService.sendGetCommentListRequest(movieId: movieId) { result in
                 switch result {
@@ -30,7 +30,7 @@ struct CommentService: CommentServiceType {
         }
     }
     
-    static func postComment(comment: Comment) -> Observable<Comment> {
+    func postComment(comment: Comment) -> Observable<Comment> {
         return Observable.create { observer in
             CommentService.sendPostCommentRequest(comment: comment) { result in
                 switch result {
