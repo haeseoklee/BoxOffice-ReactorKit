@@ -9,7 +9,7 @@ import Foundation
 import ReactorKit
 import RxSwift
 
-final class BoxOfficeTableAndCollectionViewReactor: Reactor {
+final class BoxOfficeTableCollectionViewReactor: Reactor {
     
     // Action
     enum Action {
@@ -90,8 +90,8 @@ final class BoxOfficeTableAndCollectionViewReactor: Reactor {
         return newState
     }
 
-    func reactorForMovieDetail(reactor: BoxOfficeTableViewCellReactor) -> BoxOfficeDetailViewReactor {
-        let movie = reactor.initialState
+    func reactorForMovieDetail(reactor: BoxOfficeTableCollectionViewCellReactor) -> BoxOfficeDetailViewReactor {
+        let movie = reactor.initialState.movie
         return BoxOfficeDetailViewReactor(movie: movie)
     }
 }
