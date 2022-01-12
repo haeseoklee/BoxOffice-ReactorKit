@@ -6,9 +6,10 @@
 //
 
 import UIKit
+import ReactorKit
 import RxSwift
 
-final class BoxOfficeDetailTableViewCell: UITableViewCell {
+final class BoxOfficeDetailTableViewCell: UITableViewCell, View {
     
     // MARK: - Views
     private let reviewerImageView: UIImageView = {
@@ -90,6 +91,7 @@ final class BoxOfficeDetailTableViewCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupViews()
         setupBindings()
+        self.reactor = BoxOfficeDetailTableViewCellReactor(comment: Comment.empty)
     }
     
     required init?(coder: NSCoder) {
@@ -139,6 +141,10 @@ final class BoxOfficeDetailTableViewCell: UITableViewCell {
             reviewerStarRatingBarView.widthAnchor.constraint(equalTo: reviewerStarRatingBarView.heightAnchor, multiplier: 5),
             reviewerStarRatingBarView.heightAnchor.constraint(equalToConstant: 15),
         ])
+    }
+    
+    func bind(reactor: BoxOfficeDetailTableViewCellReactor) {
+        
     }
     
     private func setupBindings() {

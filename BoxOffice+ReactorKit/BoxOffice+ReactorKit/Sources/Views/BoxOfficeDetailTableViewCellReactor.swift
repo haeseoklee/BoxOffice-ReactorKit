@@ -23,15 +23,12 @@ final class BoxOfficeDetailTableViewCellReactor: Reactor {
 //    }
     
     // State
-    struct State {
-        
-    }
     
     // Properties
-    let initialState: State
+    let initialState: Comment
     
     // Functions
     init(comment: Comment) {
-        self.initialState = State()
+        self.initialState = comment
     }
 }
