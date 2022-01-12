@@ -6,9 +6,10 @@
 //
 
 import UIKit
+import ReactorKit
 import RxSwift
 
-final class BoxOfficeCollectionViewCell: UICollectionViewCell {
+final class BoxOfficeCollectionViewCell: UICollectionViewCell, View {
     
     // MARK: - Views
     private let movieImageView: UIImageView = {
@@ -80,6 +81,7 @@ final class BoxOfficeCollectionViewCell: UICollectionViewCell {
         super.init(frame: frame)
         setupViews()
         setupBindings()
+        self.reactor = BoxOfficeTableCollectionViewCellReactor(movie: Movie.empty)
     }
     
     required init?(coder: NSCoder) {
@@ -133,7 +135,7 @@ final class BoxOfficeCollectionViewCell: UICollectionViewCell {
         
         movieObservable
             .flatMap { movie in
-                ImageLoaderService(url: movie.thumb ?? "").load()
+                ImageLoaderService.load(url: movie.thumb ?? "")
             }
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] image in
@@ -142,6 +144,10 @@ final class BoxOfficeCollectionViewCell: UICollectionViewCell {
                 self?.errorMessageObserver.onNext(error as NSError)
             })
             .disposed(by: cellDisposeBag)
+    }
+    
+    func bind(reactor: BoxOfficeTableCollectionViewCellReactor) {
+        
     }
 
 }

@@ -44,6 +44,7 @@
 		1CC918B6278CB2A100178636 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1CC918B5278CB2A100178636 /* Assets.xcassets */; };
 		1CC918BB278D805D00178636 /* BoxOfficeTableCollectionViewCellReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC918BA278D805D00178636 /* BoxOfficeTableCollectionViewCellReactor.swift */; };
 		1CC918BD278D811E00178636 /* BoxOfficeDetailViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC918BC278D811E00178636 /* BoxOfficeDetailViewReactor.swift */; };
+		1CC918C2278F16BB00178636 /* MovieListSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC918C1278F16BB00178636 /* MovieListSection.swift */; };
 		70CC6204A5398874D6D2514C /* Pods_BoxOffice_ReactorKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DCBB3DF5E5A081713ADD90B /* Pods_BoxOffice_ReactorKit.framework */; };
 /* End PBXBuildFile section */
 
@@ -87,6 +88,7 @@
 		1CC918B5278CB2A100178636 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1CC918BA278D805D00178636 /* BoxOfficeTableCollectionViewCellReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoxOfficeTableCollectionViewCellReactor.swift; sourceTree = "<group>"; };
 		1CC918BC278D811E00178636 /* BoxOfficeDetailViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoxOfficeDetailViewReactor.swift; sourceTree = "<group>"; };
+		1CC918C1278F16BB00178636 /* MovieListSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieListSection.swift; sourceTree = "<group>"; };
 		2DCBB3DF5E5A081713ADD90B /* Pods_BoxOffice_ReactorKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BoxOffice_ReactorKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		88A0035540739B6DC1921B43 /* Pods-BoxOffice+ReactorKit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BoxOffice+ReactorKit.debug.xcconfig"; path = "Target Support Files/Pods-BoxOffice+ReactorKit/Pods-BoxOffice+ReactorKit.debug.xcconfig"; sourceTree = "<group>"; };
 		9A77814B6C7A74FCB626DB86 /* Pods-BoxOffice+ReactorKit.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BoxOffice+ReactorKit.release.xcconfig"; path = "Target Support Files/Pods-BoxOffice+ReactorKit/Pods-BoxOffice+ReactorKit.release.xcconfig"; sourceTree = "<group>"; };
@@ -147,6 +149,7 @@
 				1CC91867278C3AE800178636 /* App */,
 				1CC9186B278C3B1C00178636 /* Models */,
 				1CC9186C278C3BA600178636 /* Services */,
+				1CC918C0278F169400178636 /* Sections */,
 				1CC91868278C3AF900178636 /* ViewControllers */,
 				1CC91869278C3B0200178636 /* Views */,
 				1CC9186A278C3B1200178636 /* Utils */,
@@ -237,6 +240,14 @@
 				1CC918AA278C3D2900178636 /* Constants.swift */,
 			);
 			path = Constants;
+			sourceTree = "<group>";
+		};
+		1CC918C0278F169400178636 /* Sections */ = {
+			isa = PBXGroup;
+			children = (
+				1CC918C1278F16BB00178636 /* MovieListSection.swift */,
+			);
+			path = Sections;
 			sourceTree = "<group>";
 		};
 		EA218CC3E09DE8AFEB085435 /* Pods */ = {
@@ -381,6 +392,7 @@
 				1CC918BB278D805D00178636 /* BoxOfficeTableCollectionViewCellReactor.swift in Sources */,
 				1CC9187F278C3CDC00178636 /* MovieService.swift in Sources */,
 				1CC918AC278C3D2900178636 /* Constants.swift in Sources */,
+				1CC918C2278F16BB00178636 /* MovieListSection.swift in Sources */,
 				1CC91893278C3CF100178636 /* BoxOfficeDetailInfoHeaderView.swift in Sources */,
 				1CC9186F278C3CB800178636 /* SceneDelegate.swift in Sources */,
 				1CC91877278C3CD000178636 /* UserData.swift in Sources */,
