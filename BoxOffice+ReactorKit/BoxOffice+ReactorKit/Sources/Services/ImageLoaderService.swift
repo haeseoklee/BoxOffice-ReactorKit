@@ -8,21 +8,19 @@
 import UIKit
 import RxSwift
 
-protocol ImageLoaderType {
-    func load() -> Observable<UIImage>
+protocol ImageLoaderServiceType {
+    static func load(url: String) -> Observable<UIImage>
 }
 
 class ImageCacheManager {
     static let shared: NSCache<NSString, UIImage> = NSCache<NSString, UIImage>()
 }
 
-struct ImageLoaderService: ImageLoaderType {
+struct ImageLoaderService: ImageLoaderServiceType {
     
-    let url: String
-    
-    func load() -> Observable<UIImage> {
+    static func load(url: String) -> Observable<UIImage> {
         return Observable.create { observer in
-            load { result in
+            load(url: url) { result in
                 switch result {
                 case .success(let image):
                     observer.onNext(image)
@@ -35,7 +33,7 @@ struct ImageLoaderService: ImageLoaderType {
         }
     }
     
-    private func load(completion: @escaping (Result<UIImage, ImageLoaderError>) -> Void) {
+    private static func load(url: String, completion: @escaping (Result<UIImage, ImageLoaderError>) -> Void) {
         
         let imageKey = url as NSString
         if let cachedImage = ImageCacheManager.shared.object(forKey: imageKey) {
@@ -43,7 +41,7 @@ struct ImageLoaderService: ImageLoaderType {
             return
         }
         
-        if let url = URL(string: self.url) {
+        if let url = URL(string: url) {
             let task = URLSession.shared.dataTask(with: url) { data, response, error in
                 guard let response = response as? HTTPURLResponse, response.statusCode == 200, error == nil, let data = data, let image = UIImage(data: data) else {
                     completion(.failure(.unknown))
