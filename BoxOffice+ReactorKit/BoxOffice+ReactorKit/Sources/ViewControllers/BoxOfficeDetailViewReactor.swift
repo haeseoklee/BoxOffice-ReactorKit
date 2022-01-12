@@ -28,7 +28,7 @@ final class BoxOfficeDetailViewReactor: Reactor {
     // State
     struct State {
         var movie: Movie = Movie.empty
-        var sections: [CommentListSection] = []
+        var sections: [CommentListSection] = [CommentListSection(items: [])]
         var errorMessage: NSError?
     }
     
@@ -37,7 +37,7 @@ final class BoxOfficeDetailViewReactor: Reactor {
     private let commentService: CommentServiceType
     
     init(movieService: MovieServiceType, commentService: CommentServiceType, movie: Movie) {
-        self.initialState = State()
+        self.initialState = State(movie: movie, sections: [CommentListSection(items: [])], errorMessage: nil)
         self.movieService = movieService
         self.commentService = commentService
     }
@@ -54,6 +54,9 @@ final class BoxOfficeDetailViewReactor: Reactor {
             return commentService.getCommentList(movieId: currentState.movie.id)
                 .map { $0.comments }
                 .map(Mutation.setComments)
+                .catch { error in
+                    Observable.just(Mutation.setErrorMessage(error as NSError))
+                }
         }
     }
     
