@@ -21,14 +21,12 @@ final class BoxOfficeTableCollectionViewCellReactor: Reactor {
     enum Mutation {
         case setMovie(Movie)
         case setMovieImage(UIImage)
-        case setErrorMessage(NSError)
     }
     
     // State
     struct State {
         var movie: Movie
         var movieImage: UIImage
-        var errorMessage: NSError?
     }
     
     // Properties
@@ -36,13 +34,15 @@ final class BoxOfficeTableCollectionViewCellReactor: Reactor {
     
     // Functions
     init(movie: Movie) {
-        self.initialState = State(movie: movie, movieImage: UIImage(), errorMessage: nil)
+        self.initialState = State(movie: movie, movieImage: UIImage())
     }
     
     func mutate(action: Action) -> Observable<Mutation> {
         switch action {
         case .fetchImage(let url):
-            return ImageLoaderService.load(url: url).map(Mutation.setMovieImage)
+            return ImageLoaderService.load(url: url)
+                .catch { _ in return Observable.just(UIImage(named: "img_placeholder") ?? UIImage()) }
+                .map(Mutation.setMovieImage)
         }
     }
     
@@ -53,8 +53,6 @@ final class BoxOfficeTableCollectionViewCellReactor: Reactor {
             newState.movie = movie
         case .setMovieImage(let movieImage):
             newState.movieImage = movieImage
-        case .setErrorMessage(let error):
-            newState.errorMessage = error
         }
         return newState
     }
