@@ -102,12 +102,12 @@ final class BoxOfficeCollectionViewController: UIViewController, View {
         
         // Action
         rx.viewDidLoad
-            .map { Reactor.Action.refresh }
+            .map { Reactor.Action.fetchMovies }
             .bind(to: reactor.action)
             .disposed(by: disposeBag)
         
         movieCollectionView.refreshControl?.rx.controlEvent(.valueChanged)
-            .map { Reactor.Action.refresh }
+            .map { Reactor.Action.fetchMovies }
             .bind(to: reactor.action)
             .disposed(by: disposeBag)
         
@@ -145,7 +145,7 @@ final class BoxOfficeCollectionViewController: UIViewController, View {
             .disposed(by: disposeBag)
         
         reactor.state.asObservable()
-            .map { $0.orderTypeText }
+            .map { $0.orderType.toKorean }
             .asDriver(onErrorJustReturn: MovieOrderType.reservationRate.toKorean)
             .drive(navigationItem.rx.title)
             .disposed(by: disposeBag)
