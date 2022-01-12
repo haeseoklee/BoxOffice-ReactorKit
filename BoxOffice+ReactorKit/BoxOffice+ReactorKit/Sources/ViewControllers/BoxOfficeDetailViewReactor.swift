@@ -12,11 +12,76 @@ import RxSwift
 
 final class BoxOfficeDetailViewReactor: Reactor {
     
-    typealias Action = NoAction
+    // Action
+    enum Action {
+        case fetchMovie
+        case fetchComments
+    }
     
-    let initialState: Movie
+    // Mutation
+    enum Mutation {
+        case setMovie(Movie)
+        case setComments([Comment])
+        case setErrorMessage(NSError)
+    }
     
-    init(movie: Movie) {
-        self.initialState = movie
+    // State
+    struct State {
+        var movie: Movie = Movie.empty
+        var sections: [CommentListSection] = []
+        var errorMessage: NSError?
+    }
+    
+    let initialState: State
+    private let movieService: MovieServiceType
+    private let commentService: CommentServiceType
+    
+    init(movieService: MovieServiceType, commentService: CommentServiceType, movie: Movie) {
+        self.initialState = State()
+        self.movieService = movieService
+        self.commentService = commentService
+    }
+    
+    func transform(mutation: Observable<Mutation>) -> Observable<Mutation> {
+        let movieEventMutation = movieService.event.flatMap { [weak self] movieEvent -> Observable<Mutation> in
+            self?.mutate(movieEvent: movieEvent) ?? .empty()
+        }
+        return Observable.merge(mutation, movieEventMutation)
+    }
+    
+    func mutate(movieEvent: MovieEvent) -> Observable<Mutation> {
+        switch movieEvent {
+        case .raiseError(let error):
+            return Observable.just(Mutation.setErrorMessage(error))
+        }
+    }
+    
+    func mutate(action: Action) -> Observable<Mutation> {
+        switch action {
+        case .fetchMovie:
+            return movieService.getMovie(id: currentState.movie.id)
+                .map(Mutation.setMovie)
+                .catch { error in
+                    Observable.just(Mutation.setErrorMessage(error as NSError))
+                }
+        case .fetchComments:
+            return commentService.getCommentList(movieId: currentState.movie.id)
+                .map { $0.comments }
+                .map(Mutation.setComments)
+        }
+    }
+    
+    func reduce(state: State, mutation: Mutation) -> State {
+        var newState = state
+        switch mutation {
+        case .setMovie(let movie):
+            newState.movie = movie
+        case .setComments(let comments):
+            newState.sections[0].items = comments.map { comment in
+                CommentListSectionItem(reactor: BoxOfficeDetailTableViewCellReactor(comment: comment))}
+        case .setErrorMessage(let error):
+            newState.errorMessage = error
+        }
+        return newState
     }
 }
