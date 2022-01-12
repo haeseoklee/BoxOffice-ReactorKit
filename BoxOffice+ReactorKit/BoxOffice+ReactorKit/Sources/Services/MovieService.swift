@@ -8,50 +8,12 @@
 import Foundation
 import RxSwift
 
-enum MovieEvent {
-    case raiseError(NSError)
-}
-
 protocol MovieServiceType {
-    
-    var event: PublishSubject<MovieEvent> { get }
-    var movies: BehaviorSubject<[Movie]> { get }
-    var movieOrderType: BehaviorSubject<MovieOrderType> { get }
-    
-    func update(orderType: MovieOrderType) -> Observable<String>
-    func fetchMovies() -> Observable<[Movie]>
     func getMovieList(orderType: Int) -> Observable<MovieList>
     func getMovie(id: String) -> Observable<Movie>
 }
 
 final class MovieService: MovieServiceType {
-
-    let event: PublishSubject<MovieEvent> = PublishSubject<MovieEvent>()
-    var movies: BehaviorSubject<[Movie]> = BehaviorSubject<[Movie]>(value: [])
-    var movieOrderType: BehaviorSubject<MovieOrderType> = BehaviorSubject<MovieOrderType>(value: .reservationRate)
-    
-    func fetchMovies() -> Observable<[Movie]> {
-        return Observable.just(())
-            .withLatestFrom(movieOrderType)
-            .flatMap { [weak self] orderType -> Observable<MovieList> in
-                return self?.getMovieList(orderType: orderType.rawValue) ?? .empty()
-            }
-            .do(onNext: {[weak self] movieList in
-                self?.movies.onNext(movieList.movies)
-            }, onError: {[weak self] error in
-                self?.event.onNext(.raiseError(error as NSError))
-            })
-            .map { movieList in
-                return movieList.movies
-            }
-    }
-    
-    func update(orderType: MovieOrderType) -> Observable<String> {
-        movieOrderType.onNext(orderType)
-        return Observable.just(())
-            .withLatestFrom(movieOrderType)
-            .map { $0.toKorean }
-    }
     
     func getMovieList(orderType: Int) -> Observable<MovieList> {
         return Observable.create { observer in
