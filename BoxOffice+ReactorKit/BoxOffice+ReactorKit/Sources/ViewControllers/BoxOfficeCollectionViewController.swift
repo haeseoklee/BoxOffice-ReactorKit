@@ -10,6 +10,7 @@ import ReactorKit
 import RxSwift
 import RxCocoa
 import RxViewController
+import RxDataSources
 
 final class BoxOfficeCollectionViewController: UIViewController, View {
     
@@ -46,6 +47,22 @@ final class BoxOfficeCollectionViewController: UIViewController, View {
     }
     
     var disposeBag: DisposeBag = DisposeBag()
+    
+    private lazy var dataSource = RxCollectionViewSectionedReloadDataSource<MovieListSection>(
+        configureCell: { dataSource, collectionView, indexPath, item in
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.Identifier.boxOfficeCollectionViewCell, for: indexPath) as? BoxOfficeCollectionViewCell else {
+                return UICollectionViewCell()
+            }
+            cell.reactor = item.reactor
+            cell.movieObserver.onNext(item.reactor.currentState.movie)
+            cell.errorMessageObservable
+                .observe(on: MainScheduler.instance)
+                .bind {[weak self] error in
+                    self?.showAlert(title: "Error", message: error.localizedDescription)
+                }
+                .disposed(by: cell.disposeBag)
+            return cell
+        })
     
     // MARK: - Life Cycle
     init(reactor: BoxOfficeTableCollectionViewReactor) {
@@ -112,9 +129,9 @@ final class BoxOfficeCollectionViewController: UIViewController, View {
             }
             .disposed(by: disposeBag)
         
-        movieCollectionView.rx.modelSelected(Movie.self)
+        movieCollectionView.rx.modelSelected(MovieListSectionItem.self)
             .observe(on: MainScheduler.instance)
-            .map { BoxOfficeTableCollectionViewCellReactor(movie: $0)}
+            .map { $0.reactor }
             .map(reactor.reactorForMovieDetail)
             .bind { [weak self] reactor in
                 let boxOfficeDetailViewController = BoxOfficeDetailViewController(reactor: reactor)
@@ -139,23 +156,6 @@ final class BoxOfficeCollectionViewController: UIViewController, View {
             .asDriver(onErrorJustReturn: MovieOrderType.reservationRate.toKorean)
             .drive(navigationItem.rx.title)
             .disposed(by: disposeBag)
-                
-        reactor.state.asObservable()
-            .map { $0.movies }
-            .asDriver(onErrorJustReturn: [])
-            .drive(movieCollectionView.rx.items(
-                cellIdentifier: Constants.Identifier.boxOfficeCollectionViewCell,
-                cellType: BoxOfficeCollectionViewCell.self)
-            ) { index, item, cell in
-                cell.movieObserver.onNext(item)
-                cell.errorMessageObservable
-                    .observe(on: MainScheduler.instance)
-                    .bind {[weak self] error in
-                        self?.showAlert(title: "Error", message: error.localizedDescription)
-                    }
-                    .disposed(by: cell.disposeBag)
-            }
-            .disposed(by: disposeBag)
         
         reactor.state.asObservable()
             .map { $0.errorMessage }
@@ -166,6 +166,11 @@ final class BoxOfficeCollectionViewController: UIViewController, View {
             .bind(onNext: {[weak self] message in
                 self?.showAlert(title: "Error", message: message)
             })
+            .disposed(by: disposeBag)
+        
+        reactor.state.asObservable()
+            .map { $0.sections }
+            .bind(to: movieCollectionView.rx.items(dataSource: dataSource))
             .disposed(by: disposeBag)
         
         // UI
