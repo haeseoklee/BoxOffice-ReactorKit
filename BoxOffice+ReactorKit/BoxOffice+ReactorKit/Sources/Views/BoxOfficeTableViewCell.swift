@@ -75,24 +75,12 @@ final class BoxOfficeTableViewCell: UITableViewCell, View {
     
     // MARK: - Variables
     static let height: CGFloat = 130
-    
-    private let movie: PublishSubject<Movie> = PublishSubject<Movie>()
-    private let errorMessage: PublishSubject<NSError> = PublishSubject<NSError>()
-    
-    var movieObserver: AnyObserver<Movie> { movie.asObserver() }
-    private var errorMessageObserver: AnyObserver<NSError> { errorMessage.asObserver() }
-    
-    private var movieObservable: Observable<Movie> { movie.asObservable() }
-    var errorMessageObservable: Observable<NSError> { errorMessage.asObservable() }
-    
     var disposeBag: DisposeBag = DisposeBag()
-    private let cellDisposeBag: DisposeBag = DisposeBag()
     
     // MARK: - Life Cycle
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupViews()
-        setupBindings()
         self.reactor = BoxOfficeTableCollectionViewCellReactor(movie: Movie.empty)
     }
     
@@ -139,10 +127,16 @@ final class BoxOfficeTableViewCell: UITableViewCell, View {
     
     func bind(reactor: BoxOfficeTableCollectionViewCellReactor) {
         
-    }
-    
-    private func setupBindings() {
-        movieObservable
+        // Action
+        Observable.just(reactor.currentState.movie)
+            .map { $0.thumb ?? ""}
+            .map { Reactor.Action.fetchImage($0)}
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        // State
+        reactor.state.asObservable()
+            .map { $0.movie }
             .observe(on: MainScheduler.instance)
             .bind { [weak self] movie in
                 self?.movieTitleLabel.text = movie.title
@@ -150,18 +144,12 @@ final class BoxOfficeTableViewCell: UITableViewCell, View {
                 self?.movieInfoLabel.text = "평점 : \(movie.userRating) 예매순위 : \(movie.reservationGrade) 예매율 : \(movie.reservationRate)"
                 self?.movieOpeningDateLabel.text = "개봉일 : \(movie.date)"
             }
-            .disposed(by: cellDisposeBag)
+            .disposed(by: disposeBag)
         
-        movieObservable
-            .flatMap { movie in
-                ImageLoaderService.load(url: movie.thumb ?? "")
-            }
+        reactor.state.asObservable()
+            .map { $0.movieImage }
             .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { [weak self] image in
-                self?.movieImageView.image = image
-            }, onError: { [weak self] error in
-                self?.errorMessageObserver.onNext(error as NSError)
-            })
-            .disposed(by: cellDisposeBag)
+            .bind(to: movieImageView.rx.image)
+            .disposed(by: disposeBag)
     }
 }
