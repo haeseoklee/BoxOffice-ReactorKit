@@ -48,7 +48,7 @@ final class BoxOfficeCollectionViewController: UIViewController, View {
     var disposeBag: DisposeBag = DisposeBag()
     
     // MARK: - Life Cycle
-    init(reactor: BoxOfficeTableAndCollectionViewReactor) {
+    init(reactor: BoxOfficeTableCollectionViewReactor) {
         super.init(nibName: nil, bundle: nil)
         self.reactor = reactor
     }
@@ -88,7 +88,7 @@ final class BoxOfficeCollectionViewController: UIViewController, View {
         navigationItem.backButtonTitle = "영화목록"
     }
     
-    func bind(reactor: BoxOfficeTableAndCollectionViewReactor) {
+    func bind(reactor: BoxOfficeTableCollectionViewReactor) {
         
         // Action
         rx.viewDidLoad
@@ -114,7 +114,7 @@ final class BoxOfficeCollectionViewController: UIViewController, View {
         
         movieCollectionView.rx.modelSelected(Movie.self)
             .observe(on: MainScheduler.instance)
-            .map { BoxOfficeTableViewCellReactor(movie: $0)}
+            .map { BoxOfficeTableCollectionViewCellReactor(movie: $0)}
             .map(reactor.reactorForMovieDetail)
             .bind { [weak self] reactor in
                 let boxOfficeDetailViewController = BoxOfficeDetailViewController(reactor: reactor)

@@ -35,7 +35,7 @@ final class BoxOfficeTabBarController: UITabBarController {
         delegate = self
         
         let movieService = MovieService()
-        let boxOfficeTableAndCollectionViewReactor = BoxOfficeTableAndCollectionViewReactor(movieService: movieService)
+        let boxOfficeTableAndCollectionViewReactor = BoxOfficeTableCollectionViewReactor(movieService: movieService)
         let boxOfficeTableViewController = BoxOfficeTableViewController(reactor: boxOfficeTableAndCollectionViewReactor)
         let boxOfficeCollectionViewController = BoxOfficeCollectionViewController(reactor: boxOfficeTableAndCollectionViewReactor)
         
