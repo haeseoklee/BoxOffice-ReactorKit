@@ -94,6 +94,7 @@ final class BoxOfficeTableCollectionViewReactor: Reactor {
 
     func reactorForMovieDetail(reactor: BoxOfficeTableCollectionViewCellReactor) -> BoxOfficeDetailViewReactor {
         let movie = reactor.initialState.movie
-        return BoxOfficeDetailViewReactor(movie: movie)
+        let commentService = CommentService()
+        return BoxOfficeDetailViewReactor(movieService: movieService, commentService: commentService, movie: movie)
     }
 }
