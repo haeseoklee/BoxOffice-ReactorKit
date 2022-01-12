@@ -54,13 +54,6 @@ final class BoxOfficeCollectionViewController: UIViewController, View {
                 return UICollectionViewCell()
             }
             cell.reactor = item.reactor
-            cell.movieObserver.onNext(item.reactor.currentState.movie)
-            cell.errorMessageObservable
-                .observe(on: MainScheduler.instance)
-                .bind {[weak self] error in
-                    self?.showAlert(title: "Error", message: error.localizedDescription)
-                }
-                .disposed(by: cell.disposeBag)
             return cell
         })
     
