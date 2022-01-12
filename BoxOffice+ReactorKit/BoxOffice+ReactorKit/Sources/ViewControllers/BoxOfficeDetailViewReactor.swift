@@ -42,20 +42,6 @@ final class BoxOfficeDetailViewReactor: Reactor {
         self.commentService = commentService
     }
     
-    func transform(mutation: Observable<Mutation>) -> Observable<Mutation> {
-        let movieEventMutation = movieService.event.flatMap { [weak self] movieEvent -> Observable<Mutation> in
-            self?.mutate(movieEvent: movieEvent) ?? .empty()
-        }
-        return Observable.merge(mutation, movieEventMutation)
-    }
-    
-    func mutate(movieEvent: MovieEvent) -> Observable<Mutation> {
-        switch movieEvent {
-        case .raiseError(let error):
-            return Observable.just(Mutation.setErrorMessage(error))
-        }
-    }
-    
     func mutate(action: Action) -> Observable<Mutation> {
         switch action {
         case .fetchMovie:
