@@ -26,10 +26,10 @@ class BoxOffice: BoxOfficeType {
     }
     
     func getCommentList(movieId: String) -> Observable<CommentList> {
-        return CommentService.getCommentList(movieId: movieId)
+        return CommentService().getCommentList(movieId: movieId)
     }
     
     func postComment(comment: Comment) -> Observable<Comment> {
-        return CommentService.postComment(comment: comment)
+        return CommentService().postComment(comment: comment)
     }
 }
