@@ -21,7 +21,7 @@ final class BoxOfficeTableCollectionViewReactor: Reactor {
     enum Mutation {
         case setIsActivated(Bool)
         case setOrderTypeText(String)
-        case setMovies([Movie])
+        case setSections([Movie])
         case setErrorMessage(NSError)
     }
     
@@ -30,7 +30,7 @@ final class BoxOfficeTableCollectionViewReactor: Reactor {
         var isActivated: Bool = false
         var orderTypeText: String = MovieOrderType.reservationRate.toKorean
         var errorMessage: NSError?
-        var movies: [Movie] = []
+        var sections: [MovieListSection] = [MovieListSection(items: [])]
     }
     
     // Properties
@@ -62,14 +62,14 @@ final class BoxOfficeTableCollectionViewReactor: Reactor {
         case .refresh:
             return Observable.concat(
                 Observable.just(Mutation.setIsActivated(true)),
-                movieService.fetchMovies().map(Mutation.setMovies),
+                movieService.fetchMovies().map(Mutation.setSections),
                 Observable.just(Mutation.setIsActivated(false))
             )
         case .changeOrderType(let movieOrderType):
             return Observable.concat(
                 Observable.just(Mutation.setIsActivated(true)),
                 movieService.update(orderType: movieOrderType).map(Mutation.setOrderTypeText),
-                movieService.fetchMovies().map(Mutation.setMovies),
+                movieService.fetchMovies().map(Mutation.setSections),
                 Observable.just(Mutation.setIsActivated(false))
             )
         }
@@ -82,8 +82,10 @@ final class BoxOfficeTableCollectionViewReactor: Reactor {
             newState.isActivated = isActivated
         case .setOrderTypeText(let orderTypeText):
             newState.orderTypeText = orderTypeText
-        case .setMovies(let movies):
-            newState.movies = movies
+        case .setSections(let movies):
+            newState.sections[0].items = movies.map { movie in
+                MovieListSectionItem(reactor: BoxOfficeTableCollectionViewCellReactor(movie: movie))
+            }
         case .setErrorMessage(let error):
             newState.errorMessage = error
         }

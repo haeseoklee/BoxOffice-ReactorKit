@@ -6,9 +6,10 @@
 //
 
 import UIKit
+import ReactorKit
 import RxSwift
 
-final class BoxOfficeTableViewCell: UITableViewCell {
+final class BoxOfficeTableViewCell: UITableViewCell, View {
     
     // MARK: - Views
     private let movieImageView: UIImageView = {
@@ -87,17 +88,16 @@ final class BoxOfficeTableViewCell: UITableViewCell {
     var disposeBag: DisposeBag = DisposeBag()
     private let cellDisposeBag: DisposeBag = DisposeBag()
     
-    // MARK: - LifeCycles
+    // MARK: - Life Cycle
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupViews()
         setupBindings()
+        self.reactor = BoxOfficeTableCollectionViewCellReactor(movie: Movie.empty)
     }
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
-        setupViews()
-        setupBindings()
     }
     
     override func prepareForReuse() {
@@ -137,6 +137,10 @@ final class BoxOfficeTableViewCell: UITableViewCell {
         ])
     }
     
+    func bind(reactor: BoxOfficeTableCollectionViewCellReactor) {
+        
+    }
+    
     private func setupBindings() {
         movieObservable
             .observe(on: MainScheduler.instance)
@@ -150,7 +154,7 @@ final class BoxOfficeTableViewCell: UITableViewCell {
         
         movieObservable
             .flatMap { movie in
-                ImageLoaderService(url: movie.thumb ?? "").load()
+                ImageLoaderService.load(url: movie.thumb ?? "")
             }
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] image in

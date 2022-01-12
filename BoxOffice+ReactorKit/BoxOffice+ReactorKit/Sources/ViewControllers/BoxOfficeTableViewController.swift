@@ -9,6 +9,7 @@ import UIKit
 import ReactorKit
 import RxSwift
 import RxViewController
+import RxDataSources
 
 final class BoxOfficeTableViewController: UIViewController, View {
     
@@ -34,6 +35,21 @@ final class BoxOfficeTableViewController: UIViewController, View {
     
     // MARK: - Variables
     var disposeBag: DisposeBag = DisposeBag()
+    private lazy var dataSource = RxTableViewSectionedReloadDataSource<MovieListSection>(
+        configureCell: { dataSource, tableView, indexPath, item in
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: Constants.Identifier.boxOfficeTableViewCell, for: indexPath) as? BoxOfficeTableViewCell else {
+                return UITableViewCell()
+            }
+            cell.reactor = item.reactor
+            cell.movieObserver.onNext(item.reactor.currentState.movie)
+            cell.errorMessageObservable
+                .observe(on: MainScheduler.instance)
+                .bind {[weak self] error in
+                    self?.showAlert(title: "Error", message: error.localizedDescription)
+                }
+                .disposed(by: cell.disposeBag)
+            return cell
+        })
     
     // MARK: - Life Cycles
     init(reactor: BoxOfficeTableCollectionViewReactor) {
@@ -92,9 +108,9 @@ final class BoxOfficeTableViewController: UIViewController, View {
             }
             .disposed(by: disposeBag)
         
-        movieTableView.rx.modelSelected(Movie.self)
+        movieTableView.rx.modelSelected(MovieListSectionItem.self)
             .observe(on: MainScheduler.instance)
-            .map { BoxOfficeTableCollectionViewCellReactor(movie: $0)}
+            .map { $0.reactor }
             .map(reactor.reactorForMovieDetail)
             .bind { [weak self] reactor in
                 let boxOfficeDetailViewController = BoxOfficeDetailViewController(reactor: reactor)
@@ -133,21 +149,8 @@ final class BoxOfficeTableViewController: UIViewController, View {
             .disposed(by: disposeBag)
         
         reactor.state.asObservable()
-            .map { $0.movies }
-            .distinctUntilChanged()
-            .asDriver(onErrorJustReturn: [])
-            .drive(movieTableView.rx.items(
-                cellIdentifier: Constants.Identifier.boxOfficeTableViewCell,
-                cellType: BoxOfficeTableViewCell.self)
-            ) { index, item, cell in
-                cell.movieObserver.onNext(item)
-                cell.errorMessageObservable
-                    .observe(on: MainScheduler.instance)
-                    .bind {[weak self] error in
-                        self?.showAlert(title: "Error", message: error.localizedDescription)
-                    }
-                    .disposed(by: cell.disposeBag)
-            }
+            .map { $0.sections }
+            .bind(to: movieTableView.rx.items(dataSource: dataSource))
             .disposed(by: disposeBag)
         
         // UI
@@ -155,7 +158,7 @@ final class BoxOfficeTableViewController: UIViewController, View {
             .setDelegate(self)
             .disposed(by: disposeBag)
     }
-
+    
     private func touchUpReservationRateAction(_ alertAction: UIAlertAction) {
         guard let reactor = reactor else { return }
         // Action
@@ -183,7 +186,7 @@ final class BoxOfficeTableViewController: UIViewController, View {
 
 // MARK: - UITableViewDelegate
 extension BoxOfficeTableViewController: UITableViewDelegate {
-
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return BoxOfficeTableViewCell.height
     }

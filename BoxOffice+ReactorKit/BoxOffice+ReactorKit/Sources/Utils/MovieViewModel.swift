@@ -89,7 +89,7 @@ class MovieViewModel: MovieViewModelType {
                 return Observable.from(optional: movie.image)
             }
             .flatMap {
-                ImageLoaderService(url: $0).load()
+                ImageLoaderService.load(url: $0)
             }
             .subscribe(onNext: { image in
                 isActivated.onNext(false)
