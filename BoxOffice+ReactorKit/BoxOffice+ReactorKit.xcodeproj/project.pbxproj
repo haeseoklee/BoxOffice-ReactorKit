@@ -49,6 +49,10 @@
 		1CC918C6278F336A00178636 /* BoxOfficeDetailTableViewCellReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC918C5278F336A00178636 /* BoxOfficeDetailTableViewCellReactor.swift */; };
 		1CC918C8278FDFAA00178636 /* BoxOfficeReviewWriteViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC918C7278FDFAA00178636 /* BoxOfficeReviewWriteViewReactor.swift */; };
 		1CC918CA278FF30800178636 /* MovieImageDetailViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC918C9278FF30800178636 /* MovieImageDetailViewReactor.swift */; };
+		1CC918CC2790032300178636 /* BoxOfficeDetailHeaderViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC918CB2790032300178636 /* BoxOfficeDetailHeaderViewReactor.swift */; };
+		1CC918CE279007FB00178636 /* BoxOfficeDetailInfoHeaderViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC918CD279007FB00178636 /* BoxOfficeDetailInfoHeaderViewReactor.swift */; };
+		1CC918D02790087500178636 /* BoxOfficeDetailSummaryHeaderViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC918CF2790087500178636 /* BoxOfficeDetailSummaryHeaderViewReactor.swift */; };
+		1CC918D2279008AF00178636 /* BoxOfficeDetailReviewHeaderViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC918D1279008AF00178636 /* BoxOfficeDetailReviewHeaderViewReactor.swift */; };
 		70CC6204A5398874D6D2514C /* Pods_BoxOffice_ReactorKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DCBB3DF5E5A081713ADD90B /* Pods_BoxOffice_ReactorKit.framework */; };
 /* End PBXBuildFile section */
 
@@ -97,6 +101,10 @@
 		1CC918C5278F336A00178636 /* BoxOfficeDetailTableViewCellReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoxOfficeDetailTableViewCellReactor.swift; sourceTree = "<group>"; };
 		1CC918C7278FDFAA00178636 /* BoxOfficeReviewWriteViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoxOfficeReviewWriteViewReactor.swift; sourceTree = "<group>"; };
 		1CC918C9278FF30800178636 /* MovieImageDetailViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieImageDetailViewReactor.swift; sourceTree = "<group>"; };
+		1CC918CB2790032300178636 /* BoxOfficeDetailHeaderViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoxOfficeDetailHeaderViewReactor.swift; sourceTree = "<group>"; };
+		1CC918CD279007FB00178636 /* BoxOfficeDetailInfoHeaderViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoxOfficeDetailInfoHeaderViewReactor.swift; sourceTree = "<group>"; };
+		1CC918CF2790087500178636 /* BoxOfficeDetailSummaryHeaderViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoxOfficeDetailSummaryHeaderViewReactor.swift; sourceTree = "<group>"; };
+		1CC918D1279008AF00178636 /* BoxOfficeDetailReviewHeaderViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoxOfficeDetailReviewHeaderViewReactor.swift; sourceTree = "<group>"; };
 		2DCBB3DF5E5A081713ADD90B /* Pods_BoxOffice_ReactorKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BoxOffice_ReactorKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		88A0035540739B6DC1921B43 /* Pods-BoxOffice+ReactorKit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BoxOffice+ReactorKit.debug.xcconfig"; path = "Target Support Files/Pods-BoxOffice+ReactorKit/Pods-BoxOffice+ReactorKit.debug.xcconfig"; sourceTree = "<group>"; };
 		9A77814B6C7A74FCB626DB86 /* Pods-BoxOffice+ReactorKit.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BoxOffice+ReactorKit.release.xcconfig"; path = "Target Support Files/Pods-BoxOffice+ReactorKit/Pods-BoxOffice+ReactorKit.release.xcconfig"; sourceTree = "<group>"; };
@@ -199,9 +207,13 @@
 				1CC91888278C3CF100178636 /* BoxOfficeCollectionViewCell.swift */,
 				1CC918BA278D805D00178636 /* BoxOfficeTableCollectionViewCellReactor.swift */,
 				1CC91881278C3CF100178636 /* BoxOfficeDetailHeaderView.swift */,
-				1CC91885278C3CF100178636 /* BoxOfficeDetailInfoHeaderView.swift */,
-				1CC9188C278C3CF100178636 /* BoxOfficeDetailReviewHeaderView.swift */,
+				1CC918CB2790032300178636 /* BoxOfficeDetailHeaderViewReactor.swift */,
 				1CC9188A278C3CF100178636 /* BoxOfficeDetailSummaryHeaderView.swift */,
+				1CC918CF2790087500178636 /* BoxOfficeDetailSummaryHeaderViewReactor.swift */,
+				1CC91885278C3CF100178636 /* BoxOfficeDetailInfoHeaderView.swift */,
+				1CC918CD279007FB00178636 /* BoxOfficeDetailInfoHeaderViewReactor.swift */,
+				1CC9188C278C3CF100178636 /* BoxOfficeDetailReviewHeaderView.swift */,
+				1CC918D1279008AF00178636 /* BoxOfficeDetailReviewHeaderViewReactor.swift */,
 				1CC91886278C3CF100178636 /* BoxOfficeDetailTableViewCell.swift */,
 				1CC918C5278F336A00178636 /* BoxOfficeDetailTableViewCellReactor.swift */,
 				1CC91882278C3CF100178636 /* StarRatingBarView.swift */,
@@ -403,6 +415,7 @@
 				1CC91880278C3CDC00178636 /* CommentService.swift in Sources */,
 				1CC91879278C3CD000178636 /* Comment.swift in Sources */,
 				1CC918BB278D805D00178636 /* BoxOfficeTableCollectionViewCellReactor.swift in Sources */,
+				1CC918CE279007FB00178636 /* BoxOfficeDetailInfoHeaderViewReactor.swift in Sources */,
 				1CC9187F278C3CDC00178636 /* MovieService.swift in Sources */,
 				1CC918AC278C3D2900178636 /* Constants.swift in Sources */,
 				1CC918C2278F16BB00178636 /* MovieListSection.swift in Sources */,
@@ -413,6 +426,8 @@
 				1CC91894278C3CF100178636 /* BoxOfficeDetailTableViewCell.swift in Sources */,
 				1CC91878278C3CD000178636 /* Movie.swift in Sources */,
 				1CC918C4278F333F00178636 /* CommentListSection.swift in Sources */,
+				1CC918CC2790032300178636 /* BoxOfficeDetailHeaderViewReactor.swift in Sources */,
+				1CC918D02790087500178636 /* BoxOfficeDetailSummaryHeaderViewReactor.swift in Sources */,
 				1CC9189C278C3CF100178636 /* BoxOfficeReviewWriteViewController.swift in Sources */,
 				1CC9188F278C3CF100178636 /* BoxOfficeDetailHeaderView.swift in Sources */,
 				1CC91891278C3CF100178636 /* MovieImageDetailViewController.swift in Sources */,
@@ -428,6 +443,7 @@
 				1CC91898278C3CF100178636 /* BoxOfficeDetailSummaryHeaderView.swift in Sources */,
 				1CC9187E278C3CDC00178636 /* ImageLoaderService.swift in Sources */,
 				1CC9189B278C3CF100178636 /* BoxOfficeTableViewController.swift in Sources */,
+				1CC918D2279008AF00178636 /* BoxOfficeDetailReviewHeaderViewReactor.swift in Sources */,
 				1CC9189A278C3CF100178636 /* BoxOfficeDetailReviewHeaderView.swift in Sources */,
 				1CC91897278C3CF100178636 /* BoxOfficeCollectionViewController.swift in Sources */,
 				1CC9187A278C3CD000178636 /* MovieList.swift in Sources */,
