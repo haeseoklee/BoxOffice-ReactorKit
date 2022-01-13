@@ -6,14 +6,15 @@
 //
 
 import UIKit
+import ReactorKit
 import RxSwift
 import RxCocoa
 import RxGesture
 
-final class BoxOfficeDetailHeaderView: UITableViewHeaderFooterView {
+final class BoxOfficeDetailHeaderView: UITableViewHeaderFooterView, View {
     
     // MARK: - Views
-    private lazy var movieImageView: UIImageView = {
+    lazy var movieImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "img_placeholder")
         imageView.isUserInteractionEnabled = true
@@ -229,29 +230,17 @@ final class BoxOfficeDetailHeaderView: UITableViewHeaderFooterView {
         return stackView
     }()
     
-    // MARK: - Variables
-    private let movie: PublishSubject<Movie> = PublishSubject<Movie>()
-    private let movieImage: PublishSubject<UIImage> = PublishSubject<UIImage>()
-    private let touchMovieImage: PublishSubject<Void> = PublishSubject<Void>()
-    
-    var movieObserver: AnyObserver<Movie> { movie.asObserver() }
-    var movieImageObserver: AnyObserver<UIImage> { movieImage.asObserver() }
-    var touchMovieObservable: Observable<Void> { touchMovieImage.asObservable() }
-    
+    // MARK: - Properties
     var disposeBag: DisposeBag = DisposeBag()
-    private let cellDisposeBag: DisposeBag = DisposeBag()
     
     // MARK: - Life Cycles
     override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
         setupViews()
-        setupBindings()
     }
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
-        setupViews()
-        setupBindings()
     }
     
     override func prepareForReuse() {
@@ -312,9 +301,18 @@ final class BoxOfficeDetailHeaderView: UITableViewHeaderFooterView {
         ])
     }
     
-    private func setupBindings() {
+    func bind(reactor: BoxOfficeDetailHeaderViewReactor) {
         
-        movie
+        // Action
+        Observable.just(())
+            .map { Reactor.Action.fetchMovieImage }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        // State
+        reactor.state.asObservable()
+            .map { $0.movie }
+            .distinctUntilChanged()
             .observe(on: MainScheduler.instance)
             .bind { [weak self] movie in
                 self?.movieTitleLabel.text = movie.title
@@ -326,18 +324,25 @@ final class BoxOfficeDetailHeaderView: UITableViewHeaderFooterView {
                 self?.movieAttendanceLabel.text = movie.audience?.intWithCommas
                 self?.movieStarRatingBarView.updateStarImageViews(userRating: movie.userRating)
             }
-            .disposed(by: cellDisposeBag)
+            .disposed(by: disposeBag)
+        
+        reactor.state.asObservable()
+            .map { $0.movieImage }
+            .distinctUntilChanged()
+            .observe(on: MainScheduler.instance)
+            .bind(to: movieImageView.rx.image)
+            .disposed(by: disposeBag)
+    }
+}
 
-        movieImage
-            .asDriver(onErrorJustReturn: UIImage())
-            .drive(movieImageView.rx.image)
-            .disposed(by: cellDisposeBag)
-
-        movieImageView.rx
-            .tapGesture()
+extension Reactive where Base: BoxOfficeDetailHeaderView {
+    var touchMovieImageView: ControlEvent<UIImage> {
+        guard let reactor = base.reactor else { return ControlEvent(events: Observable.just(UIImage()))}
+        let imageObservable = reactor.state.asObservable()
+            .map { $0.movieImage }
+        let source = base.movieImageView.rx.tapGesture()
             .when(.recognized)
-            .map { _ in ()}
-            .bind(to: touchMovieImage)
-            .disposed(by: cellDisposeBag)
+            .withLatestFrom(imageObservable)
+        return ControlEvent(events: source)
     }
 }

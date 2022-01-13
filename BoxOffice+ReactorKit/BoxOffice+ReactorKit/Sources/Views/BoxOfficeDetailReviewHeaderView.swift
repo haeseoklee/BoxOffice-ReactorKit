@@ -6,10 +6,11 @@
 //
 
 import UIKit
+import ReactorKit
 import RxSwift
 import RxCocoa
 
-final class BoxOfficeDetailReviewHeaderView: UITableViewHeaderFooterView {
+final class BoxOfficeDetailReviewHeaderView: UITableViewHeaderFooterView, View {
     
     // MARK: - Views
     private let reviewTitleLabel: UILabel = {
@@ -21,7 +22,7 @@ final class BoxOfficeDetailReviewHeaderView: UITableViewHeaderFooterView {
         return label
     }()
     
-    private lazy var reviewWriteButton: UIButton = {
+    lazy var reviewWriteButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(named: "btn_compose"), for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -39,23 +40,16 @@ final class BoxOfficeDetailReviewHeaderView: UITableViewHeaderFooterView {
     }()
     
     // MARK: - Variables
-    private let touchReviewWriteButton: PublishSubject<Void> = PublishSubject<Void>()
-    var touchReviewWriteButtonObservable: Observable<Void> { touchReviewWriteButton.asObservable() }
-
     var disposeBag: DisposeBag = DisposeBag()
-    private let cellDisposeBag: DisposeBag = DisposeBag()
     
     // MARK: - Life Cycles
     override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
         setupViews()
-        setupBindings()
     }
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
-        setupViews()
-        setupBindings()
     }
     
     override func prepareForReuse() {
@@ -80,9 +74,11 @@ final class BoxOfficeDetailReviewHeaderView: UITableViewHeaderFooterView {
         ])
     }
     
-    private func setupBindings() {
-        reviewWriteButton.rx.tap
-            .bind(to: touchReviewWriteButton)
-            .disposed(by: cellDisposeBag)
+    func bind(reactor: BoxOfficeDetailReviewHeaderViewReactor) {}
+}
+
+extension Reactive where Base: BoxOfficeDetailReviewHeaderView {
+    var touchReviewWriteButton: ControlEvent<Void> {
+        return base.reviewWriteButton.rx.tap
     }
 }

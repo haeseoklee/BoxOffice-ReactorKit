@@ -6,10 +6,11 @@
 //
 
 import UIKit
+import ReactorKit
 import RxSwift
 import RxCocoa
 
-final class BoxOfficeDetailInfoHeaderView: UITableViewHeaderFooterView {
+final class BoxOfficeDetailInfoHeaderView: UITableViewHeaderFooterView, View {
     
     // MARK: - Views
     private let infoTitleLabel: UILabel = {
@@ -90,23 +91,16 @@ final class BoxOfficeDetailInfoHeaderView: UITableViewHeaderFooterView {
     }()
     
     // MARK: - Variables
-    private let movie: PublishSubject<Movie> = PublishSubject<Movie>()
-    var movieObserver: AnyObserver<Movie> { movie.asObserver() }
-
     var disposeBag: DisposeBag = DisposeBag()
-    private let cellDisposeBag: DisposeBag = DisposeBag()
     
     // MARK: - Life Cycles
     override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
         setupViews()
-        setupBindings()
     }
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
-        setupViews()
-        setupBindings()
     }
     
     override func prepareForReuse() {
@@ -148,13 +142,16 @@ final class BoxOfficeDetailInfoHeaderView: UITableViewHeaderFooterView {
         ])
     }
     
-    private func setupBindings() {
-        movie
+    func bind(reactor: BoxOfficeDetailInfoHeaderViewReactor) {
+        
+        // State
+        reactor.state.asObservable()
             .observe(on: MainScheduler.instance)
+            .distinctUntilChanged()
             .bind { [weak self] movie in
                 self?.directorLabel.text = movie.director
                 self?.appearanceLabel.text = movie.actor
             }
-            .disposed(by: cellDisposeBag)
+            .disposed(by: disposeBag)
     }
 }
