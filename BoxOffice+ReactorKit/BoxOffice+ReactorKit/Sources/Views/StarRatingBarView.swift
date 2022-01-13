@@ -110,7 +110,7 @@ final class StarRatingBarView: UIView, View {
         starRatingSlider.rx
             .tapGesture()
             .when(.recognized)
-            .map { [weak self] sender in
+            .map { [weak self] sender -> Float in
                 let location = sender.location(in: self)
                 let minimumValue = self?.starRatingSlider.minimumValue ?? 0
                 let maximumValue = self?.starRatingSlider.maximumValue ?? 10
