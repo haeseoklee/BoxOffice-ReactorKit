@@ -81,7 +81,6 @@ final class BoxOfficeTableViewCell: UITableViewCell, View {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupViews()
-        self.reactor = BoxOfficeTableCollectionViewCellReactor(movie: Movie.empty)
     }
     
     required init?(coder: NSCoder) {
@@ -136,6 +135,7 @@ final class BoxOfficeTableViewCell: UITableViewCell, View {
         // State
         reactor.state.asObservable()
             .map { $0.movie }
+            .distinctUntilChanged()
             .observe(on: MainScheduler.instance)
             .bind { [weak self] movie in
                 self?.movieTitleLabel.text = movie.title
@@ -147,6 +147,7 @@ final class BoxOfficeTableViewCell: UITableViewCell, View {
         
         reactor.state.asObservable()
             .map { $0.movieImage }
+            .distinctUntilChanged()
             .observe(on: MainScheduler.instance)
             .bind(to: movieImageView.rx.image)
             .disposed(by: disposeBag)

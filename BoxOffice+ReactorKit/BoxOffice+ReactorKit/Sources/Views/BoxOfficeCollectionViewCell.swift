@@ -70,12 +70,10 @@ final class BoxOfficeCollectionViewCell: UICollectionViewCell, View {
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupViews()
-        self.reactor = BoxOfficeTableCollectionViewCellReactor(movie: Movie.empty)
     }
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
-        setupViews()
     }
     
     override func prepareForReuse() {
@@ -121,6 +119,7 @@ final class BoxOfficeCollectionViewCell: UICollectionViewCell, View {
         // State
         reactor.state.asObservable()
             .map { $0.movie }
+            .distinctUntilChanged()
             .observe(on: MainScheduler.instance)
             .bind { [weak self] movie in
                 self?.movieTitleLabel.text = movie.title
@@ -132,6 +131,7 @@ final class BoxOfficeCollectionViewCell: UICollectionViewCell, View {
         
         reactor.state.asObservable()
             .map { $0.movieImage }
+            .distinctUntilChanged()
             .observe(on: MainScheduler.instance)
             .bind(to: movieImageView.rx.image)
             .disposed(by: disposeBag)
