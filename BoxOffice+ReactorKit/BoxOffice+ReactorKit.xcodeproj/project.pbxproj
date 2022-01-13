@@ -32,15 +32,11 @@
 		1CC9189A278C3CF100178636 /* BoxOfficeDetailReviewHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC9188C278C3CF100178636 /* BoxOfficeDetailReviewHeaderView.swift */; };
 		1CC9189B278C3CF100178636 /* BoxOfficeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC9188D278C3CF100178636 /* BoxOfficeTableViewController.swift */; };
 		1CC9189C278C3CF100178636 /* BoxOfficeReviewWriteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC9188E278C3CF100178636 /* BoxOfficeReviewWriteViewController.swift */; };
-		1CC918A1278C3D0300178636 /* CommentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC9189D278C3D0300178636 /* CommentViewModel.swift */; };
-		1CC918A2278C3D0300178636 /* CommentListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC9189E278C3D0300178636 /* CommentListViewModel.swift */; };
-		1CC918A4278C3D0300178636 /* MovieViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC918A0278C3D0300178636 /* MovieViewModel.swift */; };
 		1CC918A7278C3D1500178636 /* Int+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC918A5278C3D1500178636 /* Int+Extension.swift */; };
 		1CC918A8278C3D1500178636 /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC918A6278C3D1500178636 /* UIViewController+Extension.swift */; };
 		1CC918AB278C3D2900178636 /* APIConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC918A9278C3D2900178636 /* APIConstants.swift */; };
 		1CC918AC278C3D2900178636 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC918AA278C3D2900178636 /* Constants.swift */; };
 		1CC918B2278C79C500178636 /* BoxOfficeTableCollectionViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC918B1278C79C500178636 /* BoxOfficeTableCollectionViewReactor.swift */; };
-		1CC918B4278CB1E700178636 /* BoxOffice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC918B3278CB1E700178636 /* BoxOffice.swift */; };
 		1CC918B6278CB2A100178636 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1CC918B5278CB2A100178636 /* Assets.xcassets */; };
 		1CC918BB278D805D00178636 /* BoxOfficeTableCollectionViewCellReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC918BA278D805D00178636 /* BoxOfficeTableCollectionViewCellReactor.swift */; };
 		1CC918BD278D811E00178636 /* BoxOfficeDetailViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC918BC278D811E00178636 /* BoxOfficeDetailViewReactor.swift */; };
@@ -85,15 +81,11 @@
 		1CC9188C278C3CF100178636 /* BoxOfficeDetailReviewHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoxOfficeDetailReviewHeaderView.swift; sourceTree = "<group>"; };
 		1CC9188D278C3CF100178636 /* BoxOfficeTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoxOfficeTableViewController.swift; sourceTree = "<group>"; };
 		1CC9188E278C3CF100178636 /* BoxOfficeReviewWriteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoxOfficeReviewWriteViewController.swift; sourceTree = "<group>"; };
-		1CC9189D278C3D0300178636 /* CommentViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentViewModel.swift; sourceTree = "<group>"; };
-		1CC9189E278C3D0300178636 /* CommentListViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentListViewModel.swift; sourceTree = "<group>"; };
-		1CC918A0278C3D0300178636 /* MovieViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MovieViewModel.swift; sourceTree = "<group>"; };
 		1CC918A5278C3D1500178636 /* Int+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Int+Extension.swift"; sourceTree = "<group>"; };
 		1CC918A6278C3D1500178636 /* UIViewController+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
 		1CC918A9278C3D2900178636 /* APIConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIConstants.swift; sourceTree = "<group>"; };
 		1CC918AA278C3D2900178636 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		1CC918B1278C79C500178636 /* BoxOfficeTableCollectionViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoxOfficeTableCollectionViewReactor.swift; sourceTree = "<group>"; };
-		1CC918B3278CB1E700178636 /* BoxOffice.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoxOffice.swift; sourceTree = "<group>"; };
 		1CC918B5278CB2A100178636 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1CC918BA278D805D00178636 /* BoxOfficeTableCollectionViewCellReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoxOfficeTableCollectionViewCellReactor.swift; sourceTree = "<group>"; };
 		1CC918BC278D811E00178636 /* BoxOfficeDetailViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoxOfficeDetailViewReactor.swift; sourceTree = "<group>"; };
@@ -227,12 +219,8 @@
 		1CC9186A278C3B1200178636 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				1CC918B3278CB1E700178636 /* BoxOffice.swift */,
 				1CC918A5278C3D1500178636 /* Int+Extension.swift */,
 				1CC918A6278C3D1500178636 /* UIViewController+Extension.swift */,
-				1CC9189E278C3D0300178636 /* CommentListViewModel.swift */,
-				1CC9189D278C3D0300178636 /* CommentViewModel.swift */,
-				1CC918A0278C3D0300178636 /* MovieViewModel.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -410,11 +398,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				1CC91870278C3CB800178636 /* AppDelegate.swift in Sources */,
-				1CC918B4278CB1E700178636 /* BoxOffice.swift in Sources */,
 				1CC91895278C3CF100178636 /* BoxOfficeTabBarController.swift in Sources */,
 				1CC918C6278F336A00178636 /* BoxOfficeDetailTableViewCellReactor.swift in Sources */,
 				1CC91896278C3CF100178636 /* BoxOfficeCollectionViewCell.swift in Sources */,
-				1CC918A1278C3D0300178636 /* CommentViewModel.swift in Sources */,
 				1CC918D427900CF300178636 /* StarRatingBarViewReactor.swift in Sources */,
 				1CC91880278C3CDC00178636 /* CommentService.swift in Sources */,
 				1CC91879278C3CD000178636 /* Comment.swift in Sources */,
@@ -442,7 +428,6 @@
 				1CC91890278C3CF100178636 /* StarRatingBarView.swift in Sources */,
 				1CC918BD278D811E00178636 /* BoxOfficeDetailViewReactor.swift in Sources */,
 				1CC918C8278FDFAA00178636 /* BoxOfficeReviewWriteViewReactor.swift in Sources */,
-				1CC918A4278C3D0300178636 /* MovieViewModel.swift in Sources */,
 				1CC918A7278C3D1500178636 /* Int+Extension.swift in Sources */,
 				1CC91898278C3CF100178636 /* BoxOfficeDetailSummaryHeaderView.swift in Sources */,
 				1CC9187E278C3CDC00178636 /* ImageLoaderService.swift in Sources */,
@@ -451,7 +436,6 @@
 				1CC9189A278C3CF100178636 /* BoxOfficeDetailReviewHeaderView.swift in Sources */,
 				1CC91897278C3CF100178636 /* BoxOfficeCollectionViewController.swift in Sources */,
 				1CC9187A278C3CD000178636 /* MovieList.swift in Sources */,
-				1CC918A2278C3D0300178636 /* CommentListViewModel.swift in Sources */,
 				1CC91892278C3CF100178636 /* BoxOfficeTableViewCell.swift in Sources */,
 				1CC918B2278C79C500178636 /* BoxOfficeTableCollectionViewReactor.swift in Sources */,
 			);
