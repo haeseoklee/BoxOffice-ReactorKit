@@ -6,10 +6,12 @@
 //
 
 import UIKit
+import ReactorKit
 import RxSwift
+import RxCocoa
 import RxGesture
 
-final class StarRatingBarView: UIView {
+final class StarRatingBarView: UIView, View {
 
     // MARK: - Views
     private let starImageViews: [UIImageView] = {
@@ -49,27 +51,16 @@ final class StarRatingBarView: UIView {
     }()
     
     // MARK: - Variables
-    private let isEnabled: BehaviorSubject<Bool>
-    private let userRating: BehaviorSubject<Double>
-    
-    var isEnabledObserver: AnyObserver<Bool> { isEnabled.asObserver() }
-    var userRatingObserver: AnyObserver<Double> { userRating.asObserver() }
-    var userRatingObservable: Observable<Double> { userRating.asObservable() }
-    
-    private let disposeBag: DisposeBag = DisposeBag()
+    var disposeBag: DisposeBag = DisposeBag()
     
     // MARK: - Life Cycles
-    init(isEnabled: Bool, userRating: Double) {
-        self.isEnabled = BehaviorSubject<Bool>(value: isEnabled)
-        self.userRating = BehaviorSubject<Double>(value: userRating)
+    init(reactor: StarRatingBarViewReactor) {
         super.init(frame: .zero)
         setupViews()
-        setupBindings()
+        self.reactor = reactor
     }
     
     required init?(coder: NSCoder) {
-        isEnabled = BehaviorSubject<Bool>(value: false)
-        userRating = BehaviorSubject<Double>(value: 10)
         super.init(coder: coder)
     }
     
@@ -99,49 +90,65 @@ final class StarRatingBarView: UIView {
         NSLayoutConstraint.activate(starImageViewsRatioConstraints)
     }
     
-    private func setupBindings() {
-        isEnabled
-            .asDriver(onErrorJustReturn: false)
-            .drive(starRatingSlider.rx.isEnabled)
-            .disposed(by: disposeBag)
-            
-        userRating
-            .observe(on: MainScheduler.instance)
+    func bind(reactor: StarRatingBarViewReactor) {
+        
+        // Action
+        Observable.just(())
+            .withLatestFrom(reactor.state.map { $0.rating })
             .bind { [weak self] rating in
                 self?.updateStarImageViews(userRating: rating)
             }
             .disposed(by: disposeBag)
         
-        let starRatingSliderValue = starRatingSlider.rx.value
+        starRatingSlider.rx.value
             .map { ceil($0) }
-            .share(replay: 1, scope: .whileConnected)
-        
-        starRatingSliderValue
-            .asDriver(onErrorJustReturn: 0)
-            .drive(starRatingSlider.rx.value)
-            .disposed(by: disposeBag)
-        
-        starRatingSliderValue
             .map { Double($0) }
-            .bind(to: userRating)
+            .map { Reactor.Action.changeRating($0) }
+            .bind(to: reactor.action)
             .disposed(by: disposeBag)
         
         starRatingSlider.rx
             .tapGesture()
             .when(.recognized)
-            .bind {[weak self] sender in
+            .map { [weak self] sender in
                 let location = sender.location(in: self)
                 let minimumValue = self?.starRatingSlider.minimumValue ?? 0
                 let maximumValue = self?.starRatingSlider.maximumValue ?? 10
                 let width = self?.starRatingSlider.bounds.width ?? 100
                 let percent = minimumValue + Float(location.x / width) * maximumValue
-                self?.starRatingSlider.setValue(percent, animated: true)
-                self?.starRatingSlider.sendActions(for: .valueChanged)
+                return percent
+            }
+            .map { Double($0) }
+            .map { Reactor.Action.changeRating($0) }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        // State
+        reactor.state.asObservable()
+            .map { $0.isEnabled }
+            .observe(on: MainScheduler.instance)
+            .bind(to: starRatingSlider.rx.isEnabled)
+            .disposed(by: disposeBag)
+        
+        let starRating = reactor.state.asObservable()
+            .map { $0.rating }
+            .share()
+        
+        starRating
+            .map { Float($0) }
+            .observe(on: MainScheduler.instance)
+            .bind(to: starRatingSlider.rx.value)
+            .disposed(by: disposeBag)
+        
+        starRating
+            .observe(on: MainScheduler.instance)
+            .bind { [weak self] rating in
+                self?.updateStarImageViews(userRating: rating)
             }
             .disposed(by: disposeBag)
     }
     
-    func updateStarImageViews(userRating: Double) {
+    private func updateStarImageViews(userRating: Double) {
         let emptyStarImage = UIImage(named: "ic_star_large")
         let fullStarImage = UIImage(named: "ic_star_large_full")
         let halfStarImage = UIImage(named: "ic_star_large_half")
