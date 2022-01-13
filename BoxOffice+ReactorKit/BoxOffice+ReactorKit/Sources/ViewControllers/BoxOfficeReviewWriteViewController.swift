@@ -47,9 +47,10 @@ final class BoxOfficeReviewWriteViewController: UIViewController, View {
     }()
     
     private lazy var reviewStarRatingBarView: StarRatingBarView = {
-        let starRatingBarView = StarRatingBarView(isEnabled: true, userRating: 10)
-        starRatingBarView.translatesAutoresizingMaskIntoConstraints = false
-        return starRatingBarView
+        let reactor = StarRatingBarViewReactor(isEnabled: true, rating: 10)
+        let view = StarRatingBarView(reactor: reactor)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
     }()
     
     private let reviewRatingLabel: UILabel = {
@@ -250,11 +251,6 @@ final class BoxOfficeReviewWriteViewController: UIViewController, View {
             .bind(to: reactor.action)
             .disposed(by: disposeBag)
         
-        reviewStarRatingBarView.userRatingObservable
-            .map { Reactor.Action.setRating($0)}
-            .bind(to: reactor.action)
-            .disposed(by: disposeBag)
-        
         reviewerTextField.rx.text.orEmpty
             .distinctUntilChanged()
             .debounce(.milliseconds(800), scheduler: MainScheduler.instance)
@@ -269,6 +265,12 @@ final class BoxOfficeReviewWriteViewController: UIViewController, View {
             .bind(to: reactor.action)
             .disposed(by: disposeBag)
         
+        reviewStarRatingBarView.reactor?.state.asObservable()
+            .map { $0.rating }
+            .map { Reactor.Action.setRating($0)}
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+
         // State
         reactor.state.asObservable()
             .map { $0.rating }

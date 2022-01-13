@@ -150,7 +150,8 @@ final class BoxOfficeDetailHeaderView: UITableViewHeaderFooterView, View {
     }()
     
     private let movieStarRatingBarView: StarRatingBarView = {
-        let view = StarRatingBarView(isEnabled: false, userRating: 0)
+        let reactor = StarRatingBarViewReactor(isEnabled: false, rating: 0)
+        let view = StarRatingBarView(reactor: reactor)
         view.accessibilityIdentifier = "movieStarRatingBarView"
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
@@ -322,7 +323,7 @@ final class BoxOfficeDetailHeaderView: UITableViewHeaderFooterView, View {
                 self?.movieReservationLabel.text = "\(movie.reservationGrade)위 \(movie.reservationRate)%"
                 self?.movieRateLabel.text = "\(movie.userRating)"
                 self?.movieAttendanceLabel.text = movie.audience?.intWithCommas
-                self?.movieStarRatingBarView.updateStarImageViews(userRating: movie.userRating)
+                self?.movieStarRatingBarView.reactor?.action.onNext(.changeRating(movie.userRating))
             }
             .disposed(by: disposeBag)
         
@@ -337,7 +338,9 @@ final class BoxOfficeDetailHeaderView: UITableViewHeaderFooterView, View {
 
 extension Reactive where Base: BoxOfficeDetailHeaderView {
     var touchMovieImageView: ControlEvent<UIImage> {
-        guard let reactor = base.reactor else { return ControlEvent(events: Observable.just(UIImage()))}
+        guard let reactor = base.reactor else {
+            return ControlEvent(events: Observable.just(UIImage()))
+        }
         let imageObservable = reactor.state.asObservable()
             .map { $0.movieImage }
         let source = base.movieImageView.rx.tapGesture()

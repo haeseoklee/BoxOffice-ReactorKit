@@ -30,7 +30,8 @@ final class BoxOfficeDetailTableViewCell: UITableViewCell, View {
     }()
     
     private let reviewerStarRatingBarView: StarRatingBarView = {
-        let starRatingBarView = StarRatingBarView(isEnabled: false, userRating: 0)
+        let reactor = StarRatingBarViewReactor(isEnabled: false, rating: 0)
+        let starRatingBarView = StarRatingBarView(reactor: reactor)
         starRatingBarView.translatesAutoresizingMaskIntoConstraints = false
         return starRatingBarView
     }()
@@ -145,7 +146,7 @@ final class BoxOfficeDetailTableViewCell: UITableViewCell, View {
                 self?.reviewerLabel.text = comment.writer
                 self?.reviewDateLabel.text = self?.timestampToDate(timestamp: comment.timestamp)
                 self?.reviewTextLabel.text = comment.contents
-                self?.reviewerStarRatingBarView.updateStarImageViews(userRating: comment.rating)
+                self?.reviewerStarRatingBarView.reactor?.action.onNext(.changeRating(comment.rating))
             }
             .disposed(by: disposeBag)
     }
