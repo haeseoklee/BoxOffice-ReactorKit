@@ -27,8 +27,13 @@ final class BoxOfficeDetailViewReactor: Reactor {
     
     // State
     struct State {
-        var movie: Movie = Movie.empty
-        var sections: [CommentListSection] = []
+        var movie: Movie
+        var sections: [CommentListSection] = [
+            CommentListSection(kind: .header, items: []),
+            CommentListSection(kind: .summary, items: []),
+            CommentListSection(kind: .info, items: []),
+            CommentListSection(kind: .comment, items: [])
+        ]
         var errorMessage: NSError?
     }
     
@@ -37,7 +42,16 @@ final class BoxOfficeDetailViewReactor: Reactor {
     private let commentService: CommentServiceType
     
     init(movieService: MovieServiceType, commentService: CommentServiceType, movie: Movie) {
-        self.initialState = State()
+        self.initialState = State(
+            movie: movie,
+            sections: [
+                CommentListSection(kind: .header, items: []),
+                CommentListSection(kind: .summary, items: []),
+                CommentListSection(kind: .info, items: []),
+                CommentListSection(kind: .comment, items: [])
+            ],
+            errorMessage: nil
+        )
         self.movieService = movieService
         self.commentService = commentService
     }
@@ -54,6 +68,9 @@ final class BoxOfficeDetailViewReactor: Reactor {
             return commentService.getCommentList(movieId: currentState.movie.id)
                 .map { $0.comments }
                 .map(Mutation.setComments)
+                .catch { error in
+                    Observable.just(Mutation.setErrorMessage(error as NSError))
+                }
         }
     }
     
@@ -63,11 +80,32 @@ final class BoxOfficeDetailViewReactor: Reactor {
         case .setMovie(let movie):
             newState.movie = movie
         case .setComments(let comments):
-            newState.sections[0].items = comments.map { comment in
+            newState.sections[newState.sections.count - 1].items = comments.map { comment in
                 CommentListSectionItem(reactor: BoxOfficeDetailTableViewCellReactor(comment: comment))}
         case .setErrorMessage(let error):
             newState.errorMessage = error
         }
         return newState
+    }
+    
+    func reactorForBoxOfficeDetailHeaderViewReactor(reactor: BoxOfficeDetailViewReactor) -> BoxOfficeDetailHeaderViewReactor {
+        let movie = reactor.currentState.movie
+        return BoxOfficeDetailHeaderViewReactor(movie: movie)
+    }
+    
+    func reactorForBoxOfficeDetailSummaryHeaderViewReactor(reactor: BoxOfficeDetailViewReactor) -> BoxOfficeDetailSummaryHeaderViewReactor {
+        let movie = reactor.currentState.movie
+        return BoxOfficeDetailSummaryHeaderViewReactor(movie: movie)
+    }
+    
+    func reactorForBoxOfficeDetailInfoHeaderViewReactor(reactor: BoxOfficeDetailViewReactor) -> BoxOfficeDetailInfoHeaderViewReactor {
+        let movie = reactor.currentState.movie
+        return BoxOfficeDetailInfoHeaderViewReactor(movie: movie)
+    }
+    
+    func reactorForBoxOfficeDetailReviewHeaderViewReactor(reactor: BoxOfficeDetailViewReactor) -> BoxOfficeDetailReviewHeaderViewReactor {
+        let commentService = reactor.commentService
+        let movie = reactor.currentState.movie
+        return BoxOfficeDetailReviewHeaderViewReactor(commentService: commentService, movie: movie)
     }
 }

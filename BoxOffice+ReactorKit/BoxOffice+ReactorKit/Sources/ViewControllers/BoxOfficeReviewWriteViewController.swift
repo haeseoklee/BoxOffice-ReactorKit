@@ -6,11 +6,12 @@
 //
 
 import UIKit
+import ReactorKit
 import RxSwift
 import RxCocoa
 import RxViewController
 
-final class BoxOfficeReviewWriteViewController: UIViewController {
+final class BoxOfficeReviewWriteViewController: UIViewController, View {
     
     // MARK: - Views
     private let reviewScrollView: UIScrollView = {
@@ -130,17 +131,15 @@ final class BoxOfficeReviewWriteViewController: UIViewController {
     }()
     
     // MARK: - Variables
-    private let viewModel: CommentViewModelType
-    private let disposeBag: DisposeBag = DisposeBag()
+    var disposeBag: DisposeBag = DisposeBag()
     
     // MARK: - Life Cycles
-    init(viewModel: CommentViewModelType = CommentViewModel()) {
-        self.viewModel = viewModel
+    init(reactor: BoxOfficeReviewWriteViewReactor) {
         super.init(nibName: nil, bundle: nil)
+        self.reactor = reactor
     }
     
     required init?(coder: NSCoder) {
-        viewModel = CommentViewModel()
         super.init(coder: coder)
     }
     
@@ -149,7 +148,6 @@ final class BoxOfficeReviewWriteViewController: UIViewController {
         initViews()
         setupViews()
         setupNavigationBar()
-        setupBindings()
     }
     
     // MARK: - Functions
@@ -239,46 +237,87 @@ final class BoxOfficeReviewWriteViewController: UIViewController {
         navigationItem.title = "한줄평 작성"
     }
     
-    private func setupBindings() {
+    func bind(reactor: BoxOfficeReviewWriteViewReactor) {
         
-        // leftBarButton
+        // Action
         leftBarButton.rx.tap
-            .bind(to: viewModel.touchCancelButtonObserver)
+            .map { Reactor.Action.cancel }
+            .bind(to: reactor.action)
             .disposed(by: disposeBag)
         
-        // rightBarButton
         rightBarButton.rx.tap
-            .bind(to: viewModel.touchCompleteButtonObserver)
+            .map { Reactor.Action.save }
+            .bind(to: reactor.action)
             .disposed(by: disposeBag)
         
-        // reviewRatingLabel
-        let userRating = reviewStarRatingBarView.userRatingObservable
-            .share(replay: 1, scope: .whileConnected)
-        
-        userRating
-            .bind(to: viewModel.userRatingObserver)
+        reviewStarRatingBarView.userRatingObservable
+            .map { Reactor.Action.setRating($0)}
+            .bind(to: reactor.action)
             .disposed(by: disposeBag)
         
-        userRating
-            .map{"\(Int($0))"}
-            .asDriver(onErrorJustReturn: "")
-            .drive(reviewRatingLabel.rx.text)
-            .disposed(by: disposeBag)
-        
-        // reviewerTextField
         reviewerTextField.rx.text.orEmpty
             .distinctUntilChanged()
             .debounce(.milliseconds(800), scheduler: MainScheduler.instance)
-            .bind(to: viewModel.userNickNameObserver)
+            .map { Reactor.Action.setWriter($0)}
+            .bind(to: reactor.action)
             .disposed(by: disposeBag)
         
-        // reviewTextView
         reviewTextView.rx.text.orEmpty
             .distinctUntilChanged()
             .debounce(.milliseconds(800), scheduler: MainScheduler.instance)
-            .bind(to: viewModel.userCommentObserver)
+            .map { Reactor.Action.setContents($0)}
+            .bind(to: reactor.action)
             .disposed(by: disposeBag)
         
+        // State
+        reactor.state.asObservable()
+            .map { $0.rating }
+            .map { "\(Int($0))" }
+            .distinctUntilChanged()
+            .observe(on: MainScheduler.instance)
+            .bind(to: reviewRatingLabel.rx.text)
+            .disposed(by: disposeBag)
+        
+        reactor.state.asObservable()
+            .map { $0.movie.title }
+            .distinctUntilChanged()
+            .observe(on: MainScheduler.instance)
+            .bind(to: movieTitleLabel.rx.text)
+            .disposed(by: disposeBag)
+        
+        reactor.state.asObservable()
+            .map { $0.movie.gradeImageName }
+            .distinctUntilChanged()
+            .map { UIImage(named: $0) }
+            .observe(on: MainScheduler.instance)
+            .bind(to: movieGradeImageView.rx.image)
+            .disposed(by: disposeBag)
+        
+        reactor.state.asObservable()
+            .map { $0.isDissmissed }
+            .filter { $0 }
+            .distinctUntilChanged()
+            .observe(on: MainScheduler.instance)
+            .bind { [weak self] _ in
+                self?.dismiss(animated: true, completion: {
+                    NotificationCenter.default.post(name: .init("PostCommentFinished"), object: nil)
+                })
+            }
+            .disposed(by: disposeBag)
+        
+        reactor.state.asObservable()
+            .filter { $0.isErrorOccured }
+            .map { $0.errorMessage }
+            .map { $0?.localizedDescription }
+            .flatMap { Observable.from(optional: $0) }
+            .filter { !$0.isEmpty }
+            .observe(on: MainScheduler.instance)
+            .bind(onNext: {[weak self] message in
+                self?.showAlert(title: "Error", message: message)
+            })
+            .disposed(by: disposeBag)
+        
+        // UI
         reviewTextView.rx.didBeginEditing
             .observe(on: MainScheduler.instance)
             .bind {[weak self] _ in
@@ -297,37 +336,6 @@ final class BoxOfficeReviewWriteViewController: UIViewController {
                     self?.reviewTextView.text = "한줄평을 작성해주세요"
                     self?.reviewTextView.textColor = .systemGray4
                 }
-            }
-            .disposed(by: disposeBag)
-        
-        // movieTitleLabel
-        viewModel.movieTitleTextObservable
-            .asDriver(onErrorJustReturn: "")
-            .drive(movieTitleLabel.rx.text)
-            .disposed(by: disposeBag)
-        
-        // movieGradeImageView
-        viewModel.movieGradeImageObservable
-            .asDriver(onErrorJustReturn: UIImage())
-            .drive(movieGradeImageView.rx.image)
-            .disposed(by: disposeBag)
-        
-        // errorMessage
-        viewModel.errorMessageObservable
-            .map { $0.localizedDescription }
-            .observe(on: MainScheduler.instance)
-            .bind { [weak self] message in
-                self?.showAlert(title: "오류", message: message)
-            }
-            .disposed(by: disposeBag)
-        
-        // Navigation
-        viewModel.showBoxOfficeDetailViewController
-            .observe(on: MainScheduler.instance)
-            .bind { [weak self] _ in
-                self?.dismiss(animated: true, completion: {
-                    NotificationCenter.default.post(name: .init("PostCommentFinished"), object: nil)
-                })
             }
             .disposed(by: disposeBag)
     }

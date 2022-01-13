@@ -8,7 +8,8 @@
 import Foundation
 import RxDataSources
 
-struct CommentListSection {
+struct CommentListSection: Hashable {
+    var kind: MovieDetailTableViewSection
     var items: [CommentListSectionItem]
 }
 
@@ -19,6 +20,15 @@ extension CommentListSection: SectionModelType {
     }
 }
 
-struct CommentListSectionItem {
+struct CommentListSectionItem: Hashable {
+    
     var reactor: BoxOfficeDetailTableViewCellReactor
+    
+    static func == (lhs: CommentListSectionItem, rhs: CommentListSectionItem) -> Bool {
+        return lhs.hashValue == rhs.hashValue
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(reactor.initialState)
+    }
 }

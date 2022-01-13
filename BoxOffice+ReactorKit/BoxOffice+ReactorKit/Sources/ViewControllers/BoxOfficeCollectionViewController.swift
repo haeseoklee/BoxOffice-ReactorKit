@@ -146,6 +146,7 @@ final class BoxOfficeCollectionViewController: UIViewController, View {
         
         reactor.state.asObservable()
             .map { $0.orderType.toKorean }
+            .distinctUntilChanged()
             .asDriver(onErrorJustReturn: MovieOrderType.reservationRate.toKorean)
             .drive(navigationItem.rx.title)
             .disposed(by: disposeBag)
@@ -163,6 +164,7 @@ final class BoxOfficeCollectionViewController: UIViewController, View {
         
         reactor.state.asObservable()
             .map { $0.sections }
+            .distinctUntilChanged()
             .bind(to: movieCollectionView.rx.items(dataSource: dataSource))
             .disposed(by: disposeBag)
         

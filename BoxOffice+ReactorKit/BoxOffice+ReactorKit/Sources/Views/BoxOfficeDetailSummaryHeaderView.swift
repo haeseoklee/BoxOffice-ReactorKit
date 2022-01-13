@@ -6,10 +6,11 @@
 //
 
 import UIKit
+import ReactorKit
 import RxSwift
 import RxCocoa
 
-final class BoxOfficeDetailSummaryHeaderView: UITableViewHeaderFooterView {
+final class BoxOfficeDetailSummaryHeaderView: UITableViewHeaderFooterView, View {
     
     // MARK: - Views
     private let summaryView: UIView = {
@@ -37,23 +38,16 @@ final class BoxOfficeDetailSummaryHeaderView: UITableViewHeaderFooterView {
     }()
     
     // MARK: - Variables
-    private let movie: PublishSubject<Movie> = PublishSubject<Movie>()
-    var movieObserver: AnyObserver<Movie> { movie.asObserver() }
-
     var disposeBag: DisposeBag = DisposeBag()
-    private let cellDisposeBag: DisposeBag = DisposeBag()
     
     // MARK: - Life Cycles
     override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
         setupViews()
-        setupBindings()
     }
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
-        setupViews()
-        setupBindings()
     }
     
     override func prepareForReuse() {
@@ -88,13 +82,14 @@ final class BoxOfficeDetailSummaryHeaderView: UITableViewHeaderFooterView {
         ])
     }
     
-    private func setupBindings() {
-        movie
+    func bind(reactor: BoxOfficeDetailSummaryHeaderViewReactor) {
+        
+        // State
+        reactor.state.asObservable()
             .map { $0.synopsis }
-            .flatMap { Observable.from(optional: $0) }
+            .distinctUntilChanged()
             .observe(on: MainScheduler.instance)
-            .asDriver(onErrorJustReturn: "")
-            .drive(summaryTextLabel.rx.text)
-            .disposed(by: cellDisposeBag)
+            .bind(to: summaryTextLabel.rx.text)
+            .disposed(by: disposeBag)
     }
 }

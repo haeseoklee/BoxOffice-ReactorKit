@@ -6,9 +6,10 @@
 //
 
 import UIKit
+import ReactorKit
 import RxSwift
 
-final class BoxOfficeDetailTableViewCell: UITableViewCell {
+final class BoxOfficeDetailTableViewCell: UITableViewCell, View {
     
     // MARK: - Views
     private let reviewerImageView: UIImageView = {
@@ -79,23 +80,16 @@ final class BoxOfficeDetailTableViewCell: UITableViewCell {
     }()
     
     // MARK: - Variables
-    private let comment: PublishSubject<Comment> = PublishSubject<Comment>()
-    var commentObserver: AnyObserver<Comment> { comment.asObserver() }
-    
     var disposeBag: DisposeBag = DisposeBag()
-    private let cellDisposeBag = DisposeBag()
     
     // MARK: - Life Cycles
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupViews()
-        setupBindings()
     }
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
-        setupViews()
-        setupBindings()
     }
     
     override func prepareForReuse() {
@@ -141,16 +135,19 @@ final class BoxOfficeDetailTableViewCell: UITableViewCell {
         ])
     }
     
-    private func setupBindings() {
-        comment
+    func bind(reactor: BoxOfficeDetailTableViewCellReactor) {
+        
+        // State
+        reactor.state.asObservable()
             .observe(on: MainScheduler.instance)
-            .bind { [weak self] fetchedComment in
-                self?.reviewerLabel.text = fetchedComment.writer
-                self?.reviewDateLabel.text = self?.timestampToDate(timestamp: fetchedComment.timestamp)
-                self?.reviewTextLabel.text = fetchedComment.contents
-                self?.reviewerStarRatingBarView.updateStarImageViews(userRating: fetchedComment.rating)
+            .distinctUntilChanged()
+            .bind { [weak self] comment in
+                self?.reviewerLabel.text = comment.writer
+                self?.reviewDateLabel.text = self?.timestampToDate(timestamp: comment.timestamp)
+                self?.reviewTextLabel.text = comment.contents
+                self?.reviewerStarRatingBarView.updateStarImageViews(userRating: comment.rating)
             }
-            .disposed(by: cellDisposeBag)
+            .disposed(by: disposeBag)
     }
     
     private func timestampToDate(timestamp: Double?) -> String? {
