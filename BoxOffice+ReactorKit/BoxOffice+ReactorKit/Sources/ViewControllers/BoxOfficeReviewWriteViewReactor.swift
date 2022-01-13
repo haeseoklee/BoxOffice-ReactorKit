@@ -36,6 +36,7 @@ final class BoxOfficeReviewWriteViewReactor: Reactor {
         var writer: String
         var contents: String
         var isDissmissed: Bool
+        var isErrorOccured: Bool
         var errorMessage: NSError?
     }
     
@@ -45,7 +46,7 @@ final class BoxOfficeReviewWriteViewReactor: Reactor {
     
     // Functions
     init(commentService: CommentServiceType, movie: Movie) {
-        self.initialState = State(movie: movie, rating: 10, writer: UserData.shared.nickname ?? "", contents: "", isDissmissed: false, errorMessage: nil)
+        self.initialState = State(movie: movie, rating: 10, writer: UserData.shared.nickname ?? "", contents: "", isDissmissed: false, isErrorOccured: false, errorMessage: nil)
         self.commentService = commentService
     }
     
@@ -69,7 +70,7 @@ final class BoxOfficeReviewWriteViewReactor: Reactor {
                     return self.commentService.postComment(comment: comment).map { _ in Mutation.dismiss }
                 }
                 .catch { error in
-                    Observable.just(Mutation.setErrorMessage(error as NSError))
+                    return Observable.just(Mutation.setErrorMessage(error as NSError))
                 }
         case .setRating(let rating):
             return Observable.just(Mutation.setRating(rating))
@@ -82,6 +83,7 @@ final class BoxOfficeReviewWriteViewReactor: Reactor {
     
     func reduce(state: State, mutation: Mutation) -> State {
         var newState = state
+        newState.isErrorOccured = false
         switch mutation {
         case .dismiss:
             newState.isDissmissed = true
@@ -92,6 +94,7 @@ final class BoxOfficeReviewWriteViewReactor: Reactor {
         case .setContents(let contents):
             newState.contents = contents
         case .setErrorMessage(let error):
+            newState.isErrorOccured = true
             newState.errorMessage = error
         }
         return newState
