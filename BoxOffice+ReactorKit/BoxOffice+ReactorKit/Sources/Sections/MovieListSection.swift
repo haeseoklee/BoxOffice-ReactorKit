@@ -8,7 +8,7 @@
 import Foundation
 import RxDataSources
 
-struct MovieListSection {
+struct MovieListSection: Hashable {
     var items: [MovieListSectionItem]
 }
 
@@ -19,6 +19,15 @@ extension MovieListSection: SectionModelType {
     }
 }
 
-struct MovieListSectionItem {
+struct MovieListSectionItem: Hashable {
+    
     var reactor: BoxOfficeTableCollectionViewCellReactor
+    
+    static func == (lhs: MovieListSectionItem, rhs: MovieListSectionItem) -> Bool {
+        return lhs.hashValue == rhs.hashValue
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(reactor.initialState.movie)
+    }
 }
