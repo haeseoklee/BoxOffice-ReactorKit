@@ -14,7 +14,7 @@ final class BoxOfficeTableCollectionViewCellReactor: Reactor {
     
     // Action
     enum Action {
-        case fetchImage(String)
+        case fetchMovieImage
     }
     
     // Mutation
@@ -38,10 +38,12 @@ final class BoxOfficeTableCollectionViewCellReactor: Reactor {
     
     func mutate(action: Action) -> Observable<Mutation> {
         switch action {
-        case .fetchImage(let url):
-            return ImageLoaderService.load(url: url)
-                .catch { _ in return Observable.just(UIImage(named: "img_placeholder") ?? UIImage()) }
-                .map(Mutation.setMovieImage)
+        case .fetchMovieImage:
+            return Observable.just(currentState.movie.thumb ?? "")
+                .flatMap {
+                    ImageLoaderService.load(url: $0).map(Mutation.setMovieImage)
+                }
+                .catchAndReturn(Mutation.setMovieImage(UIImage(named: "img_placeholder") ?? UIImage()))
         }
     }
     
