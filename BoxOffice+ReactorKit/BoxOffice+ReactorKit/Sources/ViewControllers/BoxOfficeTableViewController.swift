@@ -143,6 +143,7 @@ final class BoxOfficeTableViewController: UIViewController, View {
         
         reactor.state.asObservable()
             .map { $0.sections }
+            .distinctUntilChanged()
             .bind(to: movieTableView.rx.items(dataSource: dataSource))
             .disposed(by: disposeBag)
         

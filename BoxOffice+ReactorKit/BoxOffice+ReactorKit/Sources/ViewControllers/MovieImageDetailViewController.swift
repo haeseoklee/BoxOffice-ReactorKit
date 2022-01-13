@@ -6,9 +6,10 @@
 //
 
 import UIKit
+import ReactorKit
 import RxSwift
 
-final class MovieImageDetailViewController: UIViewController {
+final class MovieImageDetailViewController: UIViewController, View {
     
     // MARK: - Views
     private lazy var movieImageScrollView: UIScrollView = {
@@ -28,16 +29,19 @@ final class MovieImageDetailViewController: UIViewController {
         return imageView
     }()
     
-    // MARK: - Variables
-    var image: UIImage? {
-        didSet {
-            movieImageView.image = image
-        }
+    // MARK: - Properties
+    var disposeBag: DisposeBag = DisposeBag()
+
+    // MARK: - Life Cycle
+    init(reactor: MovieImageDetailViewReactor) {
+        super.init(nibName: nil, bundle: nil)
+        self.reactor = reactor
     }
     
-    private let disposeBag: DisposeBag = DisposeBag()
-
-    // MARK: - Life Cycles
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         initViews()
@@ -66,6 +70,16 @@ final class MovieImageDetailViewController: UIViewController {
             movieImageView.widthAnchor.constraint(equalTo: movieImageScrollView.frameLayoutGuide.widthAnchor),
             movieImageView.heightAnchor.constraint(equalTo: movieImageScrollView.frameLayoutGuide.heightAnchor)
         ])
+    }
+    
+    func bind(reactor: MovieImageDetailViewReactor) {
+        
+        // State
+        reactor.state.asObservable()
+            .map { $0.movieImage }
+            .distinctUntilChanged()
+            .bind(to: movieImageView.rx.image)
+            .disposed(by: disposeBag)
     }
 }
 

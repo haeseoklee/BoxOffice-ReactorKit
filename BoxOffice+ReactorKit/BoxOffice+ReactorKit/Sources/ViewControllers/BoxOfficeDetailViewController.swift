@@ -40,10 +40,9 @@ final class BoxOfficeDetailViewController: UIViewController, View {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: Constants.Identifier.boxOfficeDetailTableViewCell, for: indexPath) as? BoxOfficeDetailTableViewCell else {
                 return UITableViewCell()
             }
-            let sectionKind = MovieDetailTableViewSection(rawValue: indexPath.section)
-            if sectionKind == .comment {
+            let kind = MovieDetailTableViewSection(rawValue: indexPath.section)
+            if kind == .comment {
                 cell.reactor = item.reactor
-                cell.commentObserver.onNext(item.reactor.currentState)
             }
             return cell
         })
@@ -97,11 +96,13 @@ final class BoxOfficeDetailViewController: UIViewController, View {
         // State
         reactor.state.asObservable()
             .map { $0.sections }
+            .distinctUntilChanged()
             .bind(to: movieDetailTableView.rx.items(dataSource: dataSource))
             .disposed(by: disposeBag)
         
         reactor.state.asObservable()
             .map { $0.movie.title }
+            .distinctUntilChanged()
             .observe(on: MainScheduler.instance)
             .bind(to: navigationItem.rx.title)
             .disposed(by: disposeBag)
@@ -123,108 +124,83 @@ final class BoxOfficeDetailViewController: UIViewController, View {
             .disposed(by: disposeBag)
     }
     
-    private func setupBindings() {
-        
-        // Navigation
-//        movieViewModel.showMovieImageDetailViewController
-//            .observe(on: MainScheduler.instance)
-//            .subscribe(onNext: {[weak self] image in
-//                self?.presentMovieImageDetailViewController(image: image)
-//            })
-//            .disposed(by: disposeBag)
-//
-//        movieViewModel.showBoxOfficeReviewWriteViewController
-//            .observe(on: MainScheduler.instance)
-//            .subscribe(onNext: {[weak self] movie in
-//                self?.presentBoxOfficeReviewWriteViewController(movie: movie)
-//            })
-//            .disposed(by: disposeBag)
-    }
-    
     private func setupNotification() {
         NotificationCenter.default.addObserver(self, selector: #selector(updateCommentList), name: .init("PostCommentFinished"), object: nil)
     }
     
     @objc
     private func updateCommentList() {
-        // commentListViewModel.fetchCommentsObserver.onNext(())
-    }
-    
-    private func presentBoxOfficeReviewWriteViewController(movie: Movie) {
-        let boxOfficeReviewWriteViewController = BoxOfficeReviewWriteViewController(viewModel: CommentViewModel(selectedMovie: movie))
-        let reviewWriteNavigationController = UINavigationController(rootViewController: boxOfficeReviewWriteViewController)
-        present(reviewWriteNavigationController, animated: true, completion: nil)
-    }
-    
-    private func presentMovieImageDetailViewController(image: UIImage) {
-        let movieImageDetailViewController = MovieImageDetailViewController()
-        movieImageDetailViewController.image = image
-        present(movieImageDetailViewController, animated: true, completion: nil)
+        guard let reactor = reactor else { return }
+        // Action
+        Observable.just(())
+            .map { Reactor.Action.fetchComments }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
     }
 }
 
-// MARK: - UITableViewDelegate, UITableViewDataSource
+// MARK: - UITableViewDelegate
 extension BoxOfficeDetailViewController: UITableViewDelegate {
-
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return MovieDetailTableViewSection.allCases.count
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let sectionKind = MovieDetailTableViewSection(rawValue: section)
-        guard let reactor = reactor else { return 0 }
-        if sectionKind == .comment {
-            return reactor.currentState.sections[0].items.count
-        }
-        return 0
-    }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let defaultHeaderView = UITableViewHeaderFooterView()
+        guard let reactor = reactor else { return defaultHeaderView }
         let sectionKind = MovieDetailTableViewSection(rawValue: section)
         switch sectionKind {
         case .header:
-            guard let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: Constants.Identifier.boxOfficeDetailHeaderView) as? BoxOfficeDetailHeaderView else {
+            guard let headerView = tableView.dequeueReusableHeaderFooterView(
+                withIdentifier: Constants.Identifier.boxOfficeDetailHeaderView
+            ) as? BoxOfficeDetailHeaderView else {
                 return defaultHeaderView
             }
-//            movieViewModel.fetchMovieImageObserver.onNext(())
-//
-//            movieViewModel.movieObservable
-//                .bind(to: headerView.movieObserver)
-//                .disposed(by: headerView.disposeBag)
-//
-//            movieViewModel.movieImageObservable
-//                .bind(to: headerView.movieImageObserver)
-//                .disposed(by: headerView.disposeBag)
-//
-//            headerView.touchMovieObservable
-//                .bind(to: movieViewModel.touchMovieImageObserver)
-//                .disposed(by: headerView.disposeBag)
             
+            headerView.reactor = reactor.reactorForBoxOfficeDetailHeaderViewReactor(reactor: reactor)
+            headerView.rx.touchMovieImageView
+                .observe(on: MainScheduler.instance)
+                .bind {[weak self] image in
+                    guard let headerViewReactor = headerView.reactor else { return }
+                    let reactor = headerViewReactor.reactorForMovieImageDetailView(image: image)
+                    let movieImageDetailViewController = MovieImageDetailViewController(reactor: reactor)
+                    self?.present(movieImageDetailViewController, animated: true, completion: nil)
+                }
+                .disposed(by: headerView.disposeBag)
             return headerView
         case .summary:
-            guard let summaryView = tableView.dequeueReusableHeaderFooterView(withIdentifier: Constants.Identifier.boxOfficeDetailSummaryHeaderView) as? BoxOfficeDetailSummaryHeaderView else {
+            guard let summaryView = tableView.dequeueReusableHeaderFooterView(
+                withIdentifier: Constants.Identifier.boxOfficeDetailSummaryHeaderView
+            ) as? BoxOfficeDetailSummaryHeaderView else {
                 return defaultHeaderView
             }
-//            movieViewModel.movieObservable
-//                .bind(to: summaryView.movieObserver)
-//                .disposed(by: summaryView.disposeBag)
+            
+            summaryView.reactor = reactor.reactorForBoxOfficeDetailSummaryHeaderViewReactor(reactor: reactor)
             return summaryView
         case .info:
-            guard let infoView = tableView.dequeueReusableHeaderFooterView(withIdentifier: Constants.Identifier.boxOfficeDetailInfoHeaderView) as? BoxOfficeDetailInfoHeaderView else {
+            guard let infoView = tableView.dequeueReusableHeaderFooterView(
+                withIdentifier: Constants.Identifier.boxOfficeDetailInfoHeaderView
+            ) as? BoxOfficeDetailInfoHeaderView else {
                 return defaultHeaderView
             }
-//            movieViewModel.movieObservable
-//                .bind(to: infoView.movieObserver)
-//                .disposed(by: infoView.disposeBag)
+            
+            infoView.reactor = reactor.reactorForBoxOfficeDetailInfoHeaderViewReactor(reactor: reactor)
             return infoView
         case .comment:
-            guard let reviewView = tableView.dequeueReusableHeaderFooterView(withIdentifier: Constants.Identifier.boxOfficeDetailReviewHeaderView) as? BoxOfficeDetailReviewHeaderView else {
+            guard let reviewView = tableView.dequeueReusableHeaderFooterView(
+                withIdentifier: Constants.Identifier.boxOfficeDetailReviewHeaderView
+            ) as? BoxOfficeDetailReviewHeaderView else {
                 return defaultHeaderView
             }
-//            reviewView.touchReviewWriteButtonObservable
-//                .bind(to: movieViewModel.touchReviewWriteButtonObserver)
-//                .disposed(by: reviewView.disposeBag)
+            
+            reviewView.reactor = reactor.reactorForBoxOfficeDetailReviewHeaderViewReactor(reactor: reactor)
+            reviewView.rx.touchReviewWriteButton
+                .observe(on: MainScheduler.instance)
+                .bind { [weak self] in
+                    guard let reviewViewReactor = reviewView.reactor else { return }
+                    let reactor = reviewViewReactor.reactorForBoxOfficeReviewWriteView(reactor: reviewViewReactor)
+                    let boxOfficeReviewWriteViewController = BoxOfficeReviewWriteViewController(reactor: reactor)
+                    let reviewWriteNavigationController = UINavigationController(rootViewController: boxOfficeReviewWriteViewController)
+                    self?.present(reviewWriteNavigationController, animated: true, completion: nil)
+                }
+                .disposed(by: reviewView.disposeBag)
             return reviewView
         default:
             return defaultHeaderView
