@@ -12,17 +12,6 @@ final class BoxOfficeDetailTableViewCellReactor: Reactor {
     
     // Action
     typealias Action = NoAction
-//    enum Action {
-//        case fetchImage(String)
-//    }
-    
-    // Mutation
-//    enum Mutation {
-//        case setMovie(Movie)
-//        case setMovieImage(UIImage)
-//    }
-    
-    // State
     
     // Properties
     let initialState: Comment
