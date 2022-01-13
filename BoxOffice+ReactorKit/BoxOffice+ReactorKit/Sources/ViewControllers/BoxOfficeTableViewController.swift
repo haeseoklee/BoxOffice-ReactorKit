@@ -131,10 +131,9 @@ final class BoxOfficeTableViewController: UIViewController, View {
             .disposed(by: disposeBag)
         
         reactor.state.asObservable()
-            .map { $0.errorMessage }
-            .map { $0?.localizedDescription }
+            .filter { $0.isErrorOccured }
+            .map { $0.error?.localizedDescription }
             .flatMap { Observable.from(optional: $0) }
-            .filter { !$0.isEmpty }
             .observe(on: MainScheduler.instance)
             .bind(onNext: {[weak self] message in
                 self?.showAlert(title: "Error", message: message)
