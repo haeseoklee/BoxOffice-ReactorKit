@@ -38,7 +38,7 @@ final class BoxOfficeDetailHeaderViewReactor: Reactor {
     func mutate(action: Action) -> Observable<Mutation> {
         switch action {
         case .fetchMovieImage:
-            return Observable.just(currentState.movie.thumb ?? "")
+            return Observable.just(currentState.movie.image ?? "")
                 .flatMap {
                     ImageLoaderService.load(url: $0).map(Mutation.setMovieImage)
                 }
@@ -55,7 +55,7 @@ final class BoxOfficeDetailHeaderViewReactor: Reactor {
         return newState
     }
     
-    func reatorForMovieImageDetailVeiw() {
-        
+    func reactorForMovieImageDetailView(image: UIImage) -> MovieImageDetailViewReactor {
+        return MovieImageDetailViewReactor(image: image)
     }
 }
