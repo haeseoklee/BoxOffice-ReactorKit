@@ -13,14 +13,19 @@ final class BoxOfficeDetailReviewHeaderViewReactor: Reactor {
     // Action
     typealias Action = NoAction
     
-    // State
-    struct State {}
-    
     // Properties
-    let initialState: State = State()
+    let initialState: Movie
+    let commentService: CommentServiceType
     
     // Functions
-    func reactorForBoxOfficeReviewWriteView() {
-        
+    init(commentService: CommentServiceType, movie: Movie) {
+        self.initialState = movie
+        self.commentService = commentService
+    }
+    
+    func reactorForBoxOfficeReviewWriteView(reactor: BoxOfficeDetailReviewHeaderViewReactor) -> BoxOfficeReviewWriteViewReactor {
+        let movie = reactor.currentState
+        let commentService = reactor.commentService
+        return BoxOfficeReviewWriteViewReactor(commentService: commentService, movie: movie)
     }
 }
