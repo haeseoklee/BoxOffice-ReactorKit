@@ -19,7 +19,6 @@ final class BoxOfficeTableCollectionViewCellReactor: Reactor {
     
     // Mutation
     enum Mutation {
-        case setMovie(Movie)
         case setMovieImage(UIImage)
     }
     
@@ -49,8 +48,6 @@ final class BoxOfficeTableCollectionViewCellReactor: Reactor {
     func reduce(state: State, mutation: Mutation) -> State {
         var newState = state
         switch mutation {
-        case .setMovie(let movie):
-            newState.movie = movie
         case .setMovieImage(let movieImage):
             newState.movieImage = movieImage
         }
