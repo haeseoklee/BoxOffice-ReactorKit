@@ -113,9 +113,8 @@ final class BoxOfficeCollectionViewCell: UICollectionViewCell, View {
     func bind(reactor: BoxOfficeTableCollectionViewCellReactor) {
         
         // Action
-        Observable.just(reactor.currentState.movie)
-            .map { $0.thumb ?? ""}
-            .map { Reactor.Action.fetchImage($0)}
+        Observable.just(())
+            .map { Reactor.Action.fetchMovieImage }
             .bind(to: reactor.action)
             .disposed(by: disposeBag)
         

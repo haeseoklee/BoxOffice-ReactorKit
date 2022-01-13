@@ -1,16 +1,15 @@
 //
-//  BoxOfficeTableViewCellReactor.swift
+//  BoxOfficeDetailHeaderViewReactor.swift
 //  BoxOffice+ReactorKit
 //
-//  Created by Haeseok Lee on 2022/01/11.
+//  Created by Haeseok Lee on 2022/01/13.
 //
 
 import Foundation
 import ReactorKit
-import RxCocoa
 import RxSwift
 
-final class BoxOfficeTableCollectionViewCellReactor: Reactor {
+final class BoxOfficeDetailHeaderViewReactor: Reactor {
     
     // Action
     enum Action {
@@ -54,5 +53,9 @@ final class BoxOfficeTableCollectionViewCellReactor: Reactor {
             newState.movieImage = movieImage
         }
         return newState
+    }
+    
+    func reatorForMovieImageDetailVeiw() {
+        
     }
 }
