@@ -9,6 +9,7 @@ import Foundation
 import ReactorKit
 import RxCocoa
 import RxSwift
+import UIKit
 
 final class BoxOfficeTableCollectionViewCellReactor: Reactor {
     
@@ -25,7 +26,7 @@ final class BoxOfficeTableCollectionViewCellReactor: Reactor {
     // State
     struct State {
         var movie: Movie
-        var movieImage: UIImage
+        var movieImage: UIImage = UIImage(named: "img_placeholder") ?? UIImage()
     }
     
     // Properties
@@ -33,7 +34,7 @@ final class BoxOfficeTableCollectionViewCellReactor: Reactor {
     
     // Functions
     init(movie: Movie) {
-        self.initialState = State(movie: movie, movieImage: UIImage())
+        self.initialState = State(movie: movie)
     }
     
     func mutate(action: Action) -> Observable<Mutation> {
