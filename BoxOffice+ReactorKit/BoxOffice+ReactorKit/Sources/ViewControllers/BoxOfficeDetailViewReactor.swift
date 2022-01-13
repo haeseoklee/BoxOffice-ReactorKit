@@ -34,7 +34,8 @@ final class BoxOfficeDetailViewReactor: Reactor {
             CommentListSection(kind: .info, items: []),
             CommentListSection(kind: .comment, items: [])
         ]
-        var errorMessage: NSError?
+        var isErrorOccured: Bool = false
+        var error: NSError? = nil
     }
     
     let initialState: State
@@ -42,16 +43,7 @@ final class BoxOfficeDetailViewReactor: Reactor {
     private let commentService: CommentServiceType
     
     init(movieService: MovieServiceType, commentService: CommentServiceType, movie: Movie) {
-        self.initialState = State(
-            movie: movie,
-            sections: [
-                CommentListSection(kind: .header, items: []),
-                CommentListSection(kind: .summary, items: []),
-                CommentListSection(kind: .info, items: []),
-                CommentListSection(kind: .comment, items: [])
-            ],
-            errorMessage: nil
-        )
+        self.initialState = State(movie: movie)
         self.movieService = movieService
         self.commentService = commentService
     }
@@ -76,6 +68,7 @@ final class BoxOfficeDetailViewReactor: Reactor {
     
     func reduce(state: State, mutation: Mutation) -> State {
         var newState = state
+        newState.isErrorOccured = false
         switch mutation {
         case .setMovie(let movie):
             newState.movie = movie
@@ -83,7 +76,8 @@ final class BoxOfficeDetailViewReactor: Reactor {
             newState.sections[newState.sections.count - 1].items = comments.map { comment in
                 CommentListSectionItem(reactor: BoxOfficeDetailTableViewCellReactor(comment: comment))}
         case .setErrorMessage(let error):
-            newState.errorMessage = error
+            newState.isErrorOccured = true
+            newState.error = error
         }
         return newState
     }

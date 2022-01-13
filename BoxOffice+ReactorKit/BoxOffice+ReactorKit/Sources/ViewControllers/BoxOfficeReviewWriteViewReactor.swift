@@ -32,12 +32,12 @@ final class BoxOfficeReviewWriteViewReactor: Reactor {
     // State
     struct State {
         var movie: Movie
-        var rating: Double
-        var writer: String
-        var contents: String
-        var isDissmissed: Bool
-        var isErrorOccured: Bool
-        var errorMessage: NSError?
+        var rating: Double = 10
+        var writer: String = UserData.shared.nickname ?? ""
+        var contents: String = ""
+        var isDissmissed: Bool = false
+        var isErrorOccured: Bool = false
+        var error: NSError? = nil
     }
     
     // Properties
@@ -46,7 +46,7 @@ final class BoxOfficeReviewWriteViewReactor: Reactor {
     
     // Functions
     init(commentService: CommentServiceType, movie: Movie) {
-        self.initialState = State(movie: movie, rating: 10, writer: UserData.shared.nickname ?? "", contents: "", isDissmissed: false, isErrorOccured: false, errorMessage: nil)
+        self.initialState = State(movie: movie)
         self.commentService = commentService
     }
     
@@ -95,7 +95,7 @@ final class BoxOfficeReviewWriteViewReactor: Reactor {
             newState.contents = contents
         case .setErrorMessage(let error):
             newState.isErrorOccured = true
-            newState.errorMessage = error
+            newState.error = error
         }
         return newState
     }

@@ -24,7 +24,7 @@ final class BoxOfficeDetailHeaderViewReactor: Reactor {
     // State
     struct State {
         var movie: Movie
-        var movieImage: UIImage
+        var movieImage: UIImage = UIImage(named: "img_placeholder") ?? UIImage()
     }
     
     // Properties
@@ -32,7 +32,7 @@ final class BoxOfficeDetailHeaderViewReactor: Reactor {
     
     // Functions
     init(movie: Movie) {
-        self.initialState = State(movie: movie, movieImage: UIImage())
+        self.initialState = State(movie: movie)
     }
     
     func mutate(action: Action) -> Observable<Mutation> {
