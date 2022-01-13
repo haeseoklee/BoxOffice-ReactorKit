@@ -12,26 +12,12 @@ final class BoxOfficeDetailTableViewCellReactor: Reactor {
     
     // Action
     typealias Action = NoAction
-//    enum Action {
-//        case fetchImage(String)
-//    }
-    
-    // Mutation
-//    enum Mutation {
-//        case setMovie(Movie)
-//        case setMovieImage(UIImage)
-//    }
-    
-    // State
-    struct State {
-        
-    }
     
     // Properties
-    let initialState: State
+    let initialState: Comment
     
     // Functions
     init(comment: Comment) {
-        self.initialState = State()
+        self.initialState = comment
     }
 }
