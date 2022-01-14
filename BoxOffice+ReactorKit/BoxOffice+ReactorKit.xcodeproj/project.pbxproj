@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1C139BEE2791843200838461 /* UITableViewHeaderFooterView+Extention.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C139BED2791843200838461 /* UITableViewHeaderFooterView+Extention.swift */; };
 		1CC9185E278C36D500178636 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1CC9185C278C36D500178636 /* LaunchScreen.storyboard */; };
 		1CC9186F278C3CB800178636 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC9186D278C3CB800178636 /* SceneDelegate.swift */; };
 		1CC91870278C3CB800178636 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC9186E278C3CB800178636 /* AppDelegate.swift */; };
@@ -53,6 +54,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1C139BED2791843200838461 /* UITableViewHeaderFooterView+Extention.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableViewHeaderFooterView+Extention.swift"; sourceTree = "<group>"; };
 		1CC9184E278C36D500178636 /* BoxOffice+ReactorKit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "BoxOffice+ReactorKit.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1CC9185D278C36D500178636 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1CC9185F278C36D500178636 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -219,6 +221,7 @@
 			children = (
 				1CC918A5278C3D1500178636 /* Int+Extension.swift */,
 				1CC918A6278C3D1500178636 /* UIViewController+Extension.swift */,
+				1C139BED2791843200838461 /* UITableViewHeaderFooterView+Extention.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -424,6 +427,7 @@
 				1CC91890278C3CF100178636 /* StarRatingBarView.swift in Sources */,
 				1CC918BD278D811E00178636 /* DetailViewReactor.swift in Sources */,
 				1CC918C8278FDFAA00178636 /* ReviewWriteViewReactor.swift in Sources */,
+				1C139BEE2791843200838461 /* UITableViewHeaderFooterView+Extention.swift in Sources */,
 				1CC918A7278C3D1500178636 /* Int+Extension.swift in Sources */,
 				1CC91898278C3CF100178636 /* DetailSummaryHeaderView.swift in Sources */,
 				1CC9187E278C3CDC00178636 /* ImageLoaderService.swift in Sources */,

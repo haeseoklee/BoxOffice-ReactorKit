@@ -22,7 +22,7 @@ final class DetailViewReactor: Reactor {
     enum Mutation {
         case setMovie(Movie)
         case setComments([Comment])
-        case setErrorMessage(NSError)
+        case setError(NSError)
     }
     
     // State
@@ -34,6 +34,7 @@ final class DetailViewReactor: Reactor {
             CommentListSection(kind: .info, items: []),
             CommentListSection(kind: .comment, items: [])
         ]
+        var isMovieFetched: Bool = false
         var isErrorOccured: Bool = false
         var error: NSError? = nil
     }
@@ -54,14 +55,14 @@ final class DetailViewReactor: Reactor {
             return movieService.getMovie(id: currentState.movie.id)
                 .map(Mutation.setMovie)
                 .catch { error in
-                    Observable.just(Mutation.setErrorMessage(error as NSError))
+                    Observable.just(Mutation.setError(error as NSError))
                 }
         case .fetchComments:
             return commentService.getCommentList(movieId: currentState.movie.id)
                 .map { $0.comments }
                 .map(Mutation.setComments)
                 .catch { error in
-                    Observable.just(Mutation.setErrorMessage(error as NSError))
+                    Observable.just(Mutation.setError(error as NSError))
                 }
         }
     }
@@ -71,11 +72,12 @@ final class DetailViewReactor: Reactor {
         newState.isErrorOccured = false
         switch mutation {
         case .setMovie(let movie):
+            newState.isMovieFetched = true
             newState.movie = movie
         case .setComments(let comments):
             newState.sections[newState.sections.count - 1].items = comments.map { comment in
                 CommentListSectionItem(reactor: DetailTableViewCellReactor(comment: comment))}
-        case .setErrorMessage(let error):
+        case .setError(let error):
             newState.isErrorOccured = true
             newState.error = error
         }
