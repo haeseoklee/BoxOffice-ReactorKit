@@ -11,7 +11,7 @@ import RxSwift
 import RxCocoa
 import RxViewController
 
-final class BoxOfficeReviewWriteViewController: UIViewController, View {
+final class ReviewWriteViewController: UIViewController, View {
     
     // MARK: - Views
     private let reviewScrollView: UIScrollView = {
@@ -135,7 +135,7 @@ final class BoxOfficeReviewWriteViewController: UIViewController, View {
     var disposeBag: DisposeBag = DisposeBag()
     
     // MARK: - Life Cycles
-    init(reactor: BoxOfficeReviewWriteViewReactor) {
+    init(reactor: ReviewWriteViewReactor) {
         super.init(nibName: nil, bundle: nil)
         self.reactor = reactor
     }
@@ -238,7 +238,7 @@ final class BoxOfficeReviewWriteViewController: UIViewController, View {
         navigationItem.title = "한줄평 작성"
     }
     
-    func bind(reactor: BoxOfficeReviewWriteViewReactor) {
+    func bind(reactor: ReviewWriteViewReactor) {
         
         // Action
         leftBarButton.rx.tap

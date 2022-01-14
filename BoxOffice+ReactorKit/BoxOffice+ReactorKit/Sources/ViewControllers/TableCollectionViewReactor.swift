@@ -9,7 +9,7 @@ import Foundation
 import ReactorKit
 import RxSwift
 
-final class BoxOfficeTableCollectionViewReactor: Reactor {
+final class TableCollectionViewReactor: Reactor {
     
     // Action
     enum Action {
@@ -82,7 +82,7 @@ final class BoxOfficeTableCollectionViewReactor: Reactor {
             newState.orderType = orderType
         case .setSections(let movies):
             newState.sections[0].items = movies.map { movie in
-                MovieListSectionItem(reactor: BoxOfficeTableCollectionViewCellReactor(movie: movie))
+                MovieListSectionItem(reactor: TableCollectionViewCellReactor(movie: movie))
             }
         case .setErrorMessage(let error):
             newState.isErrorOccured = true
@@ -91,9 +91,9 @@ final class BoxOfficeTableCollectionViewReactor: Reactor {
         return newState
     }
 
-    func reactorForMovieDetail(reactor: BoxOfficeTableCollectionViewCellReactor) -> BoxOfficeDetailViewReactor {
+    func reactorForMovieDetail(reactor: TableCollectionViewCellReactor) -> DetailViewReactor {
         let movie = reactor.initialState.movie
         let commentService = CommentService()
-        return BoxOfficeDetailViewReactor(movieService: movieService, commentService: commentService, movie: movie)
+        return DetailViewReactor(movieService: movieService, commentService: commentService, movie: movie)
     }
 }

@@ -10,7 +10,7 @@ import ReactorKit
 import RxSwift
 import RxCocoa
 
-final class BoxOfficeDetailSummaryHeaderView: UITableViewHeaderFooterView, View {
+final class DetailSummaryHeaderView: UITableViewHeaderFooterView, View {
     
     // MARK: - Views
     private let summaryView: UIView = {
@@ -82,7 +82,7 @@ final class BoxOfficeDetailSummaryHeaderView: UITableViewHeaderFooterView, View 
         ])
     }
     
-    func bind(reactor: BoxOfficeDetailSummaryHeaderViewReactor) {
+    func bind(reactor: DetailSummaryHeaderViewReactor) {
         
         // State
         reactor.state.asObservable()

@@ -10,7 +10,7 @@ import ReactorKit
 import RxSwift
 import RxCocoa
 
-final class BoxOfficeDetailReviewHeaderView: UITableViewHeaderFooterView, View {
+final class DetailReviewHeaderView: UITableViewHeaderFooterView, View {
     
     // MARK: - Views
     private let reviewTitleLabel: UILabel = {
@@ -74,10 +74,10 @@ final class BoxOfficeDetailReviewHeaderView: UITableViewHeaderFooterView, View {
         ])
     }
     
-    func bind(reactor: BoxOfficeDetailReviewHeaderViewReactor) {}
+    func bind(reactor: DetailReviewHeaderViewReactor) {}
 }
 
-extension Reactive where Base: BoxOfficeDetailReviewHeaderView {
+extension Reactive where Base: DetailReviewHeaderView {
     var touchReviewWriteButton: ControlEvent<Void> {
         return base.reviewWriteButton.rx.tap
     }

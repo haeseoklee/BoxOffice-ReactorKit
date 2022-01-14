@@ -11,13 +11,13 @@ import RxSwift
 import RxViewController
 import RxDataSources
 
-final class BoxOfficeTableViewController: UIViewController, View {
+final class TableViewController: UIViewController, View {
     
     // MARK: - Views
     private lazy var movieTableView: UITableView = {
         let tableView = UITableView()
         tableView.refreshControl = refreshControl
-        tableView.register(BoxOfficeTableViewCell.self, forCellReuseIdentifier: Constants.Identifier.boxOfficeTableViewCell)
+        tableView.register(TableViewCell.self, forCellReuseIdentifier: Constants.Identifier.tableViewCell)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         return tableView
     }()
@@ -37,7 +37,7 @@ final class BoxOfficeTableViewController: UIViewController, View {
     var disposeBag: DisposeBag = DisposeBag()
     private lazy var dataSource = RxTableViewSectionedReloadDataSource<MovieListSection>(
         configureCell: { dataSource, tableView, indexPath, item in
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: Constants.Identifier.boxOfficeTableViewCell, for: indexPath) as? BoxOfficeTableViewCell else {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: Constants.Identifier.tableViewCell, for: indexPath) as? TableViewCell else {
                 return UITableViewCell()
             }
             cell.reactor = item.reactor
@@ -45,7 +45,7 @@ final class BoxOfficeTableViewController: UIViewController, View {
         })
     
     // MARK: - Life Cycles
-    init(reactor: BoxOfficeTableCollectionViewReactor) {
+    init(reactor: TableCollectionViewReactor) {
         super.init(nibName: nil, bundle: nil)
         self.reactor = reactor
     }
@@ -77,7 +77,7 @@ final class BoxOfficeTableViewController: UIViewController, View {
         navigationItem.backButtonTitle = "영화목록"
     }
     
-    func bind(reactor: BoxOfficeTableCollectionViewReactor) {
+    func bind(reactor: TableCollectionViewReactor) {
         
         // Action
         rx.viewDidLoad
@@ -106,7 +106,7 @@ final class BoxOfficeTableViewController: UIViewController, View {
             .map { $0.reactor }
             .map(reactor.reactorForMovieDetail)
             .bind { [weak self] reactor in
-                let boxOfficeDetailViewController = BoxOfficeDetailViewController(reactor: reactor)
+                let boxOfficeDetailViewController = DetailViewController(reactor: reactor)
                 self?.navigationController?.pushViewController(boxOfficeDetailViewController, animated: true)
             }
             .disposed(by: disposeBag)
@@ -178,9 +178,9 @@ final class BoxOfficeTableViewController: UIViewController, View {
 }
 
 // MARK: - UITableViewDelegate
-extension BoxOfficeTableViewController: UITableViewDelegate {
+extension TableViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return BoxOfficeTableViewCell.height
+        return TableViewCell.height
     }
 }

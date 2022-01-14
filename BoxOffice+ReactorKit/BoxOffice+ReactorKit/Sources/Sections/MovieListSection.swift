@@ -21,7 +21,7 @@ extension MovieListSection: SectionModelType {
 
 struct MovieListSectionItem: Hashable {
     
-    var reactor: BoxOfficeTableCollectionViewCellReactor
+    var reactor: TableCollectionViewCellReactor
     
     static func == (lhs: MovieListSectionItem, rhs: MovieListSectionItem) -> Bool {
         return lhs.hashValue == rhs.hashValue

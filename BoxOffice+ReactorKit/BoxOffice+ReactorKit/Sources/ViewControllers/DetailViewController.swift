@@ -16,16 +16,16 @@ enum MovieDetailTableViewSection: Int, CaseIterable {
     case header, summary, info, comment
 }
 
-final class BoxOfficeDetailViewController: UIViewController, View {
+final class DetailViewController: UIViewController, View {
     
     // MARK: - Views
     private lazy var movieDetailTableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: UITableView.Style.grouped)
-        tableView.register(BoxOfficeDetailHeaderView.self, forHeaderFooterViewReuseIdentifier: Constants.Identifier.boxOfficeDetailHeaderView)
-        tableView.register(BoxOfficeDetailSummaryHeaderView.self, forHeaderFooterViewReuseIdentifier: Constants.Identifier.boxOfficeDetailSummaryHeaderView)
-        tableView.register(BoxOfficeDetailInfoHeaderView.self, forHeaderFooterViewReuseIdentifier: Constants.Identifier.boxOfficeDetailInfoHeaderView)
-        tableView.register(BoxOfficeDetailReviewHeaderView.self, forHeaderFooterViewReuseIdentifier: Constants.Identifier.boxOfficeDetailReviewHeaderView)
-        tableView.register(BoxOfficeDetailTableViewCell.self, forCellReuseIdentifier: Constants.Identifier.boxOfficeDetailTableViewCell)
+        tableView.register(DetailHeaderView.self, forHeaderFooterViewReuseIdentifier: Constants.Identifier.detailHeaderView)
+        tableView.register(DetailSummaryHeaderView.self, forHeaderFooterViewReuseIdentifier: Constants.Identifier.detailSummaryHeaderView)
+        tableView.register(DetailInfoHeaderView.self, forHeaderFooterViewReuseIdentifier: Constants.Identifier.detailInfoHeaderView)
+        tableView.register(DetailReviewHeaderView.self, forHeaderFooterViewReuseIdentifier: Constants.Identifier.detailReviewHeaderView)
+        tableView.register(DetailTableViewCell.self, forCellReuseIdentifier: Constants.Identifier.detailTableViewCell)
         tableView.sectionHeaderHeight = UITableView.automaticDimension
         tableView.separatorStyle = .none
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -37,7 +37,7 @@ final class BoxOfficeDetailViewController: UIViewController, View {
     
     private lazy var dataSource = RxTableViewSectionedReloadDataSource<CommentListSection>(
         configureCell: { dataSource, tableView, indexPath, item in
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: Constants.Identifier.boxOfficeDetailTableViewCell, for: indexPath) as? BoxOfficeDetailTableViewCell else {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: Constants.Identifier.detailTableViewCell, for: indexPath) as? DetailTableViewCell else {
                 return UITableViewCell()
             }
             let kind = MovieDetailTableViewSection(rawValue: indexPath.section)
@@ -48,7 +48,7 @@ final class BoxOfficeDetailViewController: UIViewController, View {
         })
     
     // MARK: - Life Cycles
-    init(reactor: BoxOfficeDetailViewReactor) {
+    init(reactor: DetailViewReactor) {
         super.init(nibName: nil, bundle: nil)
         self.reactor = reactor
     }
@@ -80,7 +80,7 @@ final class BoxOfficeDetailViewController: UIViewController, View {
         navigationController?.navigationBar.tintColor = .white
     }
     
-    func bind(reactor: BoxOfficeDetailViewReactor) {
+    func bind(reactor: DetailViewReactor) {
         
         // Action
         rx.viewDidLoad
@@ -139,7 +139,7 @@ final class BoxOfficeDetailViewController: UIViewController, View {
 }
 
 // MARK: - UITableViewDelegate
-extension BoxOfficeDetailViewController: UITableViewDelegate {
+extension DetailViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let defaultHeaderView = UITableViewHeaderFooterView()
@@ -148,12 +148,12 @@ extension BoxOfficeDetailViewController: UITableViewDelegate {
         switch sectionKind {
         case .header:
             guard let headerView = tableView.dequeueReusableHeaderFooterView(
-                withIdentifier: Constants.Identifier.boxOfficeDetailHeaderView
-            ) as? BoxOfficeDetailHeaderView else {
+                withIdentifier: Constants.Identifier.detailHeaderView
+            ) as? DetailHeaderView else {
                 return defaultHeaderView
             }
             
-            headerView.reactor = reactor.reactorForBoxOfficeDetailHeaderViewReactor(reactor: reactor)
+            headerView.reactor = reactor.reactorForDetailHeaderViewReactor(reactor: reactor)
             headerView.rx.touchMovieImageView
                 .observe(on: MainScheduler.instance)
                 .bind {[weak self] image in
@@ -166,36 +166,36 @@ extension BoxOfficeDetailViewController: UITableViewDelegate {
             return headerView
         case .summary:
             guard let summaryView = tableView.dequeueReusableHeaderFooterView(
-                withIdentifier: Constants.Identifier.boxOfficeDetailSummaryHeaderView
-            ) as? BoxOfficeDetailSummaryHeaderView else {
+                withIdentifier: Constants.Identifier.detailSummaryHeaderView
+            ) as? DetailSummaryHeaderView else {
                 return defaultHeaderView
             }
             
-            summaryView.reactor = reactor.reactorForBoxOfficeDetailSummaryHeaderViewReactor(reactor: reactor)
+            summaryView.reactor = reactor.reactorForDetailSummaryHeaderViewReactor(reactor: reactor)
             return summaryView
         case .info:
             guard let infoView = tableView.dequeueReusableHeaderFooterView(
-                withIdentifier: Constants.Identifier.boxOfficeDetailInfoHeaderView
-            ) as? BoxOfficeDetailInfoHeaderView else {
+                withIdentifier: Constants.Identifier.detailInfoHeaderView
+            ) as? DetailInfoHeaderView else {
                 return defaultHeaderView
             }
             
-            infoView.reactor = reactor.reactorForBoxOfficeDetailInfoHeaderViewReactor(reactor: reactor)
+            infoView.reactor = reactor.reactorForDetailInfoHeaderViewReactor(reactor: reactor)
             return infoView
         case .comment:
             guard let reviewView = tableView.dequeueReusableHeaderFooterView(
-                withIdentifier: Constants.Identifier.boxOfficeDetailReviewHeaderView
-            ) as? BoxOfficeDetailReviewHeaderView else {
+                withIdentifier: Constants.Identifier.detailReviewHeaderView
+            ) as? DetailReviewHeaderView else {
                 return defaultHeaderView
             }
             
-            reviewView.reactor = reactor.reactorForBoxOfficeDetailReviewHeaderViewReactor(reactor: reactor)
+            reviewView.reactor = reactor.reactorForDetailReviewHeaderViewReactor(reactor: reactor)
             reviewView.rx.touchReviewWriteButton
                 .observe(on: MainScheduler.instance)
                 .bind { [weak self] in
                     guard let reviewViewReactor = reviewView.reactor else { return }
                     let reactor = reviewViewReactor.reactorForBoxOfficeReviewWriteView(reactor: reviewViewReactor)
-                    let boxOfficeReviewWriteViewController = BoxOfficeReviewWriteViewController(reactor: reactor)
+                    let boxOfficeReviewWriteViewController = ReviewWriteViewController(reactor: reactor)
                     let reviewWriteNavigationController = UINavigationController(rootViewController: boxOfficeReviewWriteViewController)
                     self?.present(reviewWriteNavigationController, animated: true, completion: nil)
                 }

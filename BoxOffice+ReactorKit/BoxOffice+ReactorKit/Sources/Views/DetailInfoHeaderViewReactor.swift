@@ -8,7 +8,7 @@
 import Foundation
 import ReactorKit
 
-final class BoxOfficeDetailInfoHeaderViewReactor: Reactor {
+final class DetailInfoHeaderViewReactor: Reactor {
     
     // Action
     typealias Action = NoAction

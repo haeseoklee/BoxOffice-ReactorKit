@@ -11,7 +11,7 @@ import RxCocoa
 import RxSwift
 import UIKit
 
-final class BoxOfficeTableCollectionViewCellReactor: Reactor {
+final class TableCollectionViewCellReactor: Reactor {
     
     // Action
     enum Action {
