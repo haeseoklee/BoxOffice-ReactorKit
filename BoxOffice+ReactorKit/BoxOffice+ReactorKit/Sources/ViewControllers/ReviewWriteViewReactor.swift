@@ -26,7 +26,7 @@ final class ReviewWriteViewReactor: Reactor {
         case setRating(Double)
         case setWriter(String)
         case setContents(String)
-        case setErrorMessage(NSError)
+        case setError(NSError)
     }
     
     // State
@@ -70,7 +70,7 @@ final class ReviewWriteViewReactor: Reactor {
                     return self.commentService.postComment(comment: comment).map { _ in Mutation.dismiss }
                 }
                 .catch { error in
-                    return Observable.just(Mutation.setErrorMessage(error as NSError))
+                    return Observable.just(Mutation.setError(error as NSError))
                 }
         case .setRating(let rating):
             return Observable.just(Mutation.setRating(rating))
@@ -93,7 +93,7 @@ final class ReviewWriteViewReactor: Reactor {
             newState.writer = writer
         case .setContents(let contents):
             newState.contents = contents
-        case .setErrorMessage(let error):
+        case .setError(let error):
             newState.isErrorOccured = true
             newState.error = error
         }

@@ -22,7 +22,7 @@ final class TableCollectionViewReactor: Reactor {
         case setIsActivated(Bool)
         case setOrderType(MovieOrderType)
         case setSections([Movie])
-        case setErrorMessage(NSError)
+        case setError(NSError)
     }
     
     // State
@@ -53,7 +53,7 @@ final class TableCollectionViewReactor: Reactor {
                     .map { $0.movies }
                     .map(Mutation.setSections)
                     .catch { error in
-                        Observable.just(Mutation.setErrorMessage(error as NSError))
+                        Observable.just(Mutation.setError(error as NSError))
                     },
                 Observable.just(Mutation.setIsActivated(false))
             )
@@ -65,7 +65,7 @@ final class TableCollectionViewReactor: Reactor {
                     .map { $0.movies }
                     .map(Mutation.setSections)
                     .catch { error in
-                        Observable.just(Mutation.setErrorMessage(error as NSError))
+                        Observable.just(Mutation.setError(error as NSError))
                     },
                 Observable.just(Mutation.setIsActivated(false))
             )
@@ -84,7 +84,7 @@ final class TableCollectionViewReactor: Reactor {
             newState.sections[0].items = movies.map { movie in
                 MovieListSectionItem(reactor: TableCollectionViewCellReactor(movie: movie))
             }
-        case .setErrorMessage(let error):
+        case .setError(let error):
             newState.isErrorOccured = true
             newState.error = error
         }
