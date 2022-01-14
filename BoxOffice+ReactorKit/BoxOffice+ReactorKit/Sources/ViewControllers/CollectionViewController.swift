@@ -36,12 +36,12 @@ final class CollectionViewController: UIViewController, View {
     }()
     
     // MARK: - Variables
-    private var boxOfficeCollectionViewCellSize: CGSize {
+    private var collectionViewCellSize: CGSize {
         let width = (view.safeAreaLayoutGuide.layoutFrame.size.width - 20) / 2
         return CGSize(width: width, height: width * 2)
     }
     
-    private var boxOfficeLandscapeCollectionViewCellSize: CGSize {
+    private var landscapeCollectionViewCellSize: CGSize {
         let width = (view.safeAreaLayoutGuide.layoutFrame.size.width - 30) / 3
         return CGSize(width: width, height: width * 2)
     }
@@ -208,9 +208,9 @@ extension CollectionViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if UIDevice.current.orientation.isLandscape {
-            return boxOfficeLandscapeCollectionViewCellSize
+            return landscapeCollectionViewCellSize
         }
-        return boxOfficeCollectionViewCellSize
+        return collectionViewCellSize
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
