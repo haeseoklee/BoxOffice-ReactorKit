@@ -26,7 +26,6 @@ final class DetailViewController: UIViewController, View {
         tableView.register(DetailInfoHeaderView.self, forHeaderFooterViewReuseIdentifier: Constants.Identifier.detailInfoHeaderView)
         tableView.register(DetailReviewHeaderView.self, forHeaderFooterViewReuseIdentifier: Constants.Identifier.detailReviewHeaderView)
         tableView.register(DetailTableViewCell.self, forCellReuseIdentifier: Constants.Identifier.detailTableViewCell)
-        tableView.sectionHeaderHeight = UITableView.automaticDimension
         tableView.separatorStyle = .none
         tableView.translatesAutoresizingMaskIntoConstraints = false
         return tableView
@@ -105,6 +104,16 @@ final class DetailViewController: UIViewController, View {
             .distinctUntilChanged()
             .observe(on: MainScheduler.instance)
             .bind(to: navigationItem.rx.title)
+            .disposed(by: disposeBag)
+        
+        reactor.state.asObservable()
+            .map { $0.isMovieFetched }
+            .filter { $0 }
+            .distinctUntilChanged()
+            .observe(on: MainScheduler.instance)
+            .bind {[weak self] _ in
+                self?.movieDetailTableView.reloadData()
+            }
             .disposed(by: disposeBag)
         
         reactor.state.asObservable()
@@ -206,15 +215,30 @@ extension DetailViewController: UITableViewDelegate {
         }
     }
     
-    func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         let sectionKind = MovieDetailTableViewSection(rawValue: section)
         switch sectionKind {
         case .header:
-            return 350
+            guard let headerView = tableView.dequeueReusableHeaderFooterView(
+                withIdentifier: Constants.Identifier.detailHeaderView
+            ) as? DetailHeaderView else {
+                return 0
+            }
+            return headerView.sizeFitted.height
         case .summary:
-            return 350
+            guard let summaryView = tableView.dequeueReusableHeaderFooterView(
+                withIdentifier: Constants.Identifier.detailSummaryHeaderView
+            ) as? DetailSummaryHeaderView else {
+                return 0
+            }
+            return summaryView.sizeFitted.height
         case .info:
-            return 150
+            guard let infoView = tableView.dequeueReusableHeaderFooterView(
+                withIdentifier: Constants.Identifier.detailInfoHeaderView
+            ) as? DetailInfoHeaderView else {
+                return 0
+            }
+            return infoView.sizeFitted.height
         case .comment:
             return 50
         default:
