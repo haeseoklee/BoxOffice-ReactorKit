@@ -12,16 +12,24 @@ struct MovieListSection: Hashable {
     var items: [MovieListSectionItem]
 }
 
-extension MovieListSection: SectionModelType {
+extension MovieListSection: AnimatableSectionModelType {
+    
+    var identity: String {
+        return "MovieList"
+    }
+    
     init(original: MovieListSection, items: [MovieListSectionItem]) {
         self = original
         self.items = items
     }
 }
 
-struct MovieListSectionItem: Hashable {
+struct MovieListSectionItem: Hashable, IdentifiableType {
     
     var reactor: TableCollectionViewCellReactor
+    var identity: Movie {
+        return reactor.initialState.movie
+    }
     
     static func == (lhs: MovieListSectionItem, rhs: MovieListSectionItem) -> Bool {
         return lhs.hashValue == rhs.hashValue
