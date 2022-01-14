@@ -48,7 +48,7 @@ final class CollectionViewController: UIViewController, View {
     
     var disposeBag: DisposeBag = DisposeBag()
     
-    private lazy var dataSource = RxCollectionViewSectionedReloadDataSource<MovieListSection>(
+    private lazy var dataSource = RxCollectionViewSectionedAnimatedDataSource<MovieListSection>(
         configureCell: { dataSource, collectionView, indexPath, item in
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.Identifier.collectionViewCell, for: indexPath) as? CollectionViewCell else {
                 return UICollectionViewCell()
