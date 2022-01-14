@@ -9,7 +9,7 @@ import UIKit
 
 extension UITableViewHeaderFooterView {
     var sizeFitted: CGSize {
-        let targetSize = CGSize(width: contentView.frame.width, height: contentView.frame.height)
+        let targetSize = CGSize(width: contentView.frame.width, height: UIView.layoutFittingCompressedSize.height)
         return contentView.systemLayoutSizeFitting(targetSize, withHorizontalFittingPriority: .fittingSizeLevel, verticalFittingPriority: .fittingSizeLevel)
     }
 }
