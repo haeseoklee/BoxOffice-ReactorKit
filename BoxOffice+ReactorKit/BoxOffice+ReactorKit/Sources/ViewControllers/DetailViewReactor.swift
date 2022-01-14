@@ -10,7 +10,7 @@ import ReactorKit
 import RxCocoa
 import RxSwift
 
-final class BoxOfficeDetailViewReactor: Reactor {
+final class DetailViewReactor: Reactor {
     
     // Action
     enum Action {
@@ -74,7 +74,7 @@ final class BoxOfficeDetailViewReactor: Reactor {
             newState.movie = movie
         case .setComments(let comments):
             newState.sections[newState.sections.count - 1].items = comments.map { comment in
-                CommentListSectionItem(reactor: BoxOfficeDetailTableViewCellReactor(comment: comment))}
+                CommentListSectionItem(reactor: DetailTableViewCellReactor(comment: comment))}
         case .setErrorMessage(let error):
             newState.isErrorOccured = true
             newState.error = error
@@ -82,24 +82,24 @@ final class BoxOfficeDetailViewReactor: Reactor {
         return newState
     }
     
-    func reactorForBoxOfficeDetailHeaderViewReactor(reactor: BoxOfficeDetailViewReactor) -> BoxOfficeDetailHeaderViewReactor {
+    func reactorForDetailHeaderViewReactor(reactor: DetailViewReactor) -> DetailHeaderViewReactor {
         let movie = reactor.currentState.movie
-        return BoxOfficeDetailHeaderViewReactor(movie: movie)
+        return DetailHeaderViewReactor(movie: movie)
     }
     
-    func reactorForBoxOfficeDetailSummaryHeaderViewReactor(reactor: BoxOfficeDetailViewReactor) -> BoxOfficeDetailSummaryHeaderViewReactor {
+    func reactorForDetailSummaryHeaderViewReactor(reactor: DetailViewReactor) -> DetailSummaryHeaderViewReactor {
         let movie = reactor.currentState.movie
-        return BoxOfficeDetailSummaryHeaderViewReactor(movie: movie)
+        return DetailSummaryHeaderViewReactor(movie: movie)
     }
     
-    func reactorForBoxOfficeDetailInfoHeaderViewReactor(reactor: BoxOfficeDetailViewReactor) -> BoxOfficeDetailInfoHeaderViewReactor {
+    func reactorForDetailInfoHeaderViewReactor(reactor: DetailViewReactor) -> DetailInfoHeaderViewReactor {
         let movie = reactor.currentState.movie
-        return BoxOfficeDetailInfoHeaderViewReactor(movie: movie)
+        return DetailInfoHeaderViewReactor(movie: movie)
     }
     
-    func reactorForBoxOfficeDetailReviewHeaderViewReactor(reactor: BoxOfficeDetailViewReactor) -> BoxOfficeDetailReviewHeaderViewReactor {
+    func reactorForDetailReviewHeaderViewReactor(reactor: DetailViewReactor) -> DetailReviewHeaderViewReactor {
         let commentService = reactor.commentService
         let movie = reactor.currentState.movie
-        return BoxOfficeDetailReviewHeaderViewReactor(commentService: commentService, movie: movie)
+        return DetailReviewHeaderViewReactor(commentService: commentService, movie: movie)
     }
 }

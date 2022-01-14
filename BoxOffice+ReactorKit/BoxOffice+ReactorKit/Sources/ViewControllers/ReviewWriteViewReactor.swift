@@ -9,7 +9,7 @@ import Foundation
 import ReactorKit
 import RxSwift
 
-final class BoxOfficeReviewWriteViewReactor: Reactor {
+final class ReviewWriteViewReactor: Reactor {
     
     // Action
     enum Action {
@@ -33,7 +33,7 @@ final class BoxOfficeReviewWriteViewReactor: Reactor {
     struct State {
         var movie: Movie
         var rating: Double = 10
-        var writer: String = UserData.shared.nickname ?? ""
+        var writer: String = ""
         var contents: String = ""
         var isDissmissed: Bool = false
         var isErrorOccured: Bool = false

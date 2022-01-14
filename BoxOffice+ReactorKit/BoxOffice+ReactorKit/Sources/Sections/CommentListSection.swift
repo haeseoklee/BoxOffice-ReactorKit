@@ -22,7 +22,7 @@ extension CommentListSection: SectionModelType {
 
 struct CommentListSectionItem: Hashable {
     
-    var reactor: BoxOfficeDetailTableViewCellReactor
+    var reactor: DetailTableViewCellReactor
     
     static func == (lhs: CommentListSectionItem, rhs: CommentListSectionItem) -> Bool {
         return lhs.hashValue == rhs.hashValue

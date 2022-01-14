@@ -8,7 +8,7 @@
 import Foundation
 import ReactorKit
 
-final class BoxOfficeDetailReviewHeaderViewReactor: Reactor {
+final class DetailReviewHeaderViewReactor: Reactor {
     
     // Action
     typealias Action = NoAction
@@ -23,9 +23,9 @@ final class BoxOfficeDetailReviewHeaderViewReactor: Reactor {
         self.commentService = commentService
     }
     
-    func reactorForBoxOfficeReviewWriteView(reactor: BoxOfficeDetailReviewHeaderViewReactor) -> BoxOfficeReviewWriteViewReactor {
+    func reactorForBoxOfficeReviewWriteView(reactor: DetailReviewHeaderViewReactor) -> ReviewWriteViewReactor {
         let movie = reactor.currentState
         let commentService = reactor.commentService
-        return BoxOfficeReviewWriteViewReactor(commentService: commentService, movie: movie)
+        return ReviewWriteViewReactor(commentService: commentService, movie: movie)
     }
 }

@@ -9,7 +9,7 @@ import UIKit
 import ReactorKit
 import RxSwift
 
-final class BoxOfficeDetailTableViewCell: UITableViewCell, View {
+final class DetailTableViewCell: UITableViewCell, View {
     
     // MARK: - Views
     private let reviewerImageView: UIImageView = {
@@ -136,7 +136,7 @@ final class BoxOfficeDetailTableViewCell: UITableViewCell, View {
         ])
     }
     
-    func bind(reactor: BoxOfficeDetailTableViewCellReactor) {
+    func bind(reactor: DetailTableViewCellReactor) {
         
         // State
         reactor.state.asObservable()

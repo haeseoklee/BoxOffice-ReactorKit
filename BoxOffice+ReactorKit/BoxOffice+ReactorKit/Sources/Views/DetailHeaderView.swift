@@ -11,7 +11,7 @@ import RxSwift
 import RxCocoa
 import RxGesture
 
-final class BoxOfficeDetailHeaderView: UITableViewHeaderFooterView, View {
+final class DetailHeaderView: UITableViewHeaderFooterView, View {
     
     // MARK: - Views
     lazy var movieImageView: UIImageView = {
@@ -302,7 +302,7 @@ final class BoxOfficeDetailHeaderView: UITableViewHeaderFooterView, View {
         ])
     }
     
-    func bind(reactor: BoxOfficeDetailHeaderViewReactor) {
+    func bind(reactor: DetailHeaderViewReactor) {
         
         // Action
         Observable.just(())
@@ -336,7 +336,7 @@ final class BoxOfficeDetailHeaderView: UITableViewHeaderFooterView, View {
     }
 }
 
-extension Reactive where Base: BoxOfficeDetailHeaderView {
+extension Reactive where Base: DetailHeaderView {
     var touchMovieImageView: ControlEvent<UIImage> {
         guard let reactor = base.reactor else {
             return ControlEvent(events: Observable.just(UIImage()))

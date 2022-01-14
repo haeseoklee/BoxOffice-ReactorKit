@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class BoxOfficeTabBarController: UITabBarController {
+final class TabBarController: UITabBarController {
     
     // MARK: - Views
     private let tableTabBarItem: UITabBarItem = {
@@ -35,22 +35,22 @@ final class BoxOfficeTabBarController: UITabBarController {
         delegate = self
         
         let movieService = MovieService()
-        let boxOfficeTableAndCollectionViewReactor = BoxOfficeTableCollectionViewReactor(movieService: movieService)
-        let boxOfficeTableViewController = BoxOfficeTableViewController(reactor: boxOfficeTableAndCollectionViewReactor)
-        let boxOfficeCollectionViewController = BoxOfficeCollectionViewController(reactor: boxOfficeTableAndCollectionViewReactor)
+        let tableCollectionViewReactor = TableCollectionViewReactor(movieService: movieService)
+        let tableViewController = TableViewController(reactor: tableCollectionViewReactor)
+        let collectionViewController = CollectionViewController(reactor: tableCollectionViewReactor)
         
-        boxOfficeTableViewController.tabBarItem = tableTabBarItem
-        boxOfficeCollectionViewController.tabBarItem = collectionTabBarItem
+        tableViewController.tabBarItem = tableTabBarItem
+        collectionViewController.tabBarItem = collectionTabBarItem
         
-        let tableNavigationController = UINavigationController(rootViewController: boxOfficeTableViewController)
-        let collectionNavigationController = UINavigationController(rootViewController: boxOfficeCollectionViewController)
+        let tableNavigationController = UINavigationController(rootViewController: tableViewController)
+        let collectionNavigationController = UINavigationController(rootViewController: collectionViewController)
         
         viewControllers = [tableNavigationController, collectionNavigationController]
     }
 }
 
 // MARK: - UITabBarControllerDelegate
-extension BoxOfficeTabBarController: UITabBarControllerDelegate {
+extension TabBarController: UITabBarControllerDelegate {
     override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
         if item.title == "Collection" {
             guard let navigationController = viewControllers?[1] as? UINavigationController else { return }

@@ -9,7 +9,7 @@ import Foundation
 import ReactorKit
 import RxSwift
 
-final class BoxOfficeDetailHeaderViewReactor: Reactor {
+final class DetailHeaderViewReactor: Reactor {
     
     // Action
     enum Action {

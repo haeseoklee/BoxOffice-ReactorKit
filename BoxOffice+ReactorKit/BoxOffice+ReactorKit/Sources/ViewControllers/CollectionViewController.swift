@@ -12,14 +12,14 @@ import RxCocoa
 import RxViewController
 import RxDataSources
 
-final class BoxOfficeCollectionViewController: UIViewController, View {
+final class CollectionViewController: UIViewController, View {
     
     // MARK: - Views
     private lazy var movieCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.refreshControl = refreshControl
-        collectionView.register(BoxOfficeCollectionViewCell.self, forCellWithReuseIdentifier: Constants.Identifier.boxOfficeCollectionViewCell)
+        collectionView.register(CollectionViewCell.self, forCellWithReuseIdentifier: Constants.Identifier.collectionViewCell)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         return collectionView
     }()
@@ -50,7 +50,7 @@ final class BoxOfficeCollectionViewController: UIViewController, View {
     
     private lazy var dataSource = RxCollectionViewSectionedReloadDataSource<MovieListSection>(
         configureCell: { dataSource, collectionView, indexPath, item in
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.Identifier.boxOfficeCollectionViewCell, for: indexPath) as? BoxOfficeCollectionViewCell else {
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.Identifier.collectionViewCell, for: indexPath) as? CollectionViewCell else {
                 return UICollectionViewCell()
             }
             cell.reactor = item.reactor
@@ -58,7 +58,7 @@ final class BoxOfficeCollectionViewController: UIViewController, View {
         })
     
     // MARK: - Life Cycle
-    init(reactor: BoxOfficeTableCollectionViewReactor) {
+    init(reactor: TableCollectionViewReactor) {
         super.init(nibName: nil, bundle: nil)
         self.reactor = reactor
     }
@@ -98,7 +98,7 @@ final class BoxOfficeCollectionViewController: UIViewController, View {
         navigationItem.backButtonTitle = "영화목록"
     }
     
-    func bind(reactor: BoxOfficeTableCollectionViewReactor) {
+    func bind(reactor: TableCollectionViewReactor) {
         
         // Action
         rx.viewDidLoad
@@ -127,7 +127,7 @@ final class BoxOfficeCollectionViewController: UIViewController, View {
             .map { $0.reactor }
             .map(reactor.reactorForMovieDetail)
             .bind { [weak self] reactor in
-                let boxOfficeDetailViewController = BoxOfficeDetailViewController(reactor: reactor)
+                let boxOfficeDetailViewController = DetailViewController(reactor: reactor)
                 self?.navigationController?.pushViewController(boxOfficeDetailViewController, animated: true)
             }
             .disposed(by: disposeBag)
@@ -200,7 +200,7 @@ final class BoxOfficeCollectionViewController: UIViewController, View {
 }
 
 // MARK: - UICollectionViewDelegateFlowLayout
-extension BoxOfficeCollectionViewController: UICollectionViewDelegateFlowLayout {
+extension CollectionViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         return UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
