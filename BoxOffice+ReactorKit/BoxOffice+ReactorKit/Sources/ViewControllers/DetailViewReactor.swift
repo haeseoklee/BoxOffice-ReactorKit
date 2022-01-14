@@ -34,6 +34,7 @@ final class DetailViewReactor: Reactor {
             CommentListSection(kind: .info, items: []),
             CommentListSection(kind: .comment, items: [])
         ]
+        var isMovieFetched: Bool = false
         var isErrorOccured: Bool = false
         var error: NSError? = nil
     }
@@ -71,6 +72,7 @@ final class DetailViewReactor: Reactor {
         newState.isErrorOccured = false
         switch mutation {
         case .setMovie(let movie):
+            newState.isMovieFetched = true
             newState.movie = movie
         case .setComments(let comments):
             newState.sections[newState.sections.count - 1].items = comments.map { comment in
