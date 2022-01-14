@@ -17,6 +17,7 @@ final class TableViewCell: UITableViewCell, View {
         imageView.image = UIImage(named: "img_placeholder")
         imageView.contentMode = .scaleAspectFit
         imageView.clipsToBounds = true
+        imageView.accessibilityIdentifier = "movieImageView"
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
@@ -25,6 +26,7 @@ final class TableViewCell: UITableViewCell, View {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 18)
         label.adjustsFontForContentSizeCategory = true
+        label.accessibilityIdentifier = "movieTitleLabel"
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -33,6 +35,7 @@ final class TableViewCell: UITableViewCell, View {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
         imageView.clipsToBounds = true
+        imageView.accessibilityIdentifier = "movieGradeImageView"
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
@@ -43,6 +46,7 @@ final class TableViewCell: UITableViewCell, View {
         stackView.alignment = .fill
         stackView.distribution = .fill
         stackView.spacing = UIStackView.spacingUseSystem
+        stackView.accessibilityIdentifier = "movieTitleStackView"
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
@@ -51,6 +55,7 @@ final class TableViewCell: UITableViewCell, View {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 16)
         label.adjustsFontForContentSizeCategory = true
+        label.accessibilityIdentifier = "movieInfoLabel"
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -59,6 +64,7 @@ final class TableViewCell: UITableViewCell, View {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 16)
         label.adjustsFontForContentSizeCategory = true
+        label.accessibilityIdentifier = "movieOpeningDateLabel"
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -68,7 +74,8 @@ final class TableViewCell: UITableViewCell, View {
         stackView.axis = .vertical
         stackView.alignment = .leading
         stackView.distribution = .fill
-        stackView.spacing = 10
+        stackView.spacing = 5
+        stackView.accessibilityIdentifier = "movieInfoStackView"
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
@@ -105,7 +112,7 @@ final class TableViewCell: UITableViewCell, View {
         contentView.addSubview(movieImageView)
         contentView.addSubview(movieInfoStackView)
         
-        movieTitleLabel.setContentHuggingPriority(.defaultLow, for: .vertical)
+        movieInfoLabel.setContentHuggingPriority(.defaultLow, for: .vertical)
         
         NSLayoutConstraint.activate([
             movieImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 5),

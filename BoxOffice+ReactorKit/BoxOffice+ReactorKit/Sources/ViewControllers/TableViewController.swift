@@ -35,7 +35,7 @@ final class TableViewController: UIViewController, View {
     
     // MARK: - Variables
     var disposeBag: DisposeBag = DisposeBag()
-    private lazy var dataSource = RxTableViewSectionedReloadDataSource<MovieListSection>(
+    private lazy var dataSource = RxTableViewSectionedAnimatedDataSource<MovieListSection>(
         configureCell: { dataSource, tableView, indexPath, item in
             guard let cell = tableView.dequeueReusableCell(withIdentifier: Constants.Identifier.tableViewCell, for: indexPath) as? TableViewCell else {
                 return UITableViewCell()
