@@ -1,0 +1,31 @@
+/* 
+  Localizable.strings
+  BoxOffice+ReactorKit
+
+  Created by Haeseok Lee on 2022/01/15.
+  
+*/
+
+"Reservation Rate" = "예매율";
+"Curation" = "큐레이션";
+"Release Date" = "개봉일";
+"Movie List" = "영화목록";
+"Please enter your nickname" = "닉네임을 입력해주세요";
+"Please write a review" = "한줄평을 작성해주세요";
+"Cancel" = "취소";
+"Submit" = "완료";
+"Invalid score" = "유효하지 않은 점수입니다";
+"Invalid nickname" = "유효하지 않은 닉네임입니다";
+"Invalid Comment" = "유효하지 않은 코멘트입니다";
+"User Rating" = "평점";
+"Audience" = "누적관객수";
+"Ranking" = "예매순위";
+"m" = "분";
+"Synopsis" = "줄거리";
+"Director/Cast" = "감독/출연";
+"Director" = "감독";
+"Cast" = "출연";
+"Review" = "한줄평";
+"Sort" = "정렬방식 선택";
+"In what order would you like the movies to be sorted?" = "영화를 어떤 순서로 정렬할까요?";
+"OK" = "확인";
