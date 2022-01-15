@@ -22,7 +22,7 @@ final class DetailHeaderViewReactor: Reactor {
     }
     
     // State
-    struct State {
+    struct State: Hashable {
         var movie: Movie
         var movieImage: UIImage = UIImage(named: "img_placeholder") ?? UIImage()
     }

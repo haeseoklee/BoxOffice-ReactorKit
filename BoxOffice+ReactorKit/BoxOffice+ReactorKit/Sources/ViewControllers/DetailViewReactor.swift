@@ -28,13 +28,7 @@ final class DetailViewReactor: Reactor {
     // State
     struct State {
         var movie: Movie
-        var sections: [CommentListSection] = [
-            CommentListSection(kind: .header, items: []),
-            CommentListSection(kind: .summary, items: []),
-            CommentListSection(kind: .info, items: []),
-            CommentListSection(kind: .comment, items: [])
-        ]
-        var isMovieFetched: Bool = false
+        var sections: [MovieSection]
         var isErrorOccured: Bool = false
         var error: NSError? = nil
     }
@@ -44,7 +38,12 @@ final class DetailViewReactor: Reactor {
     private let commentService: CommentServiceType
     
     init(movieService: MovieServiceType, commentService: CommentServiceType, movie: Movie) {
-        self.initialState = State(movie: movie)
+        self.initialState = State(movie: movie, sections: [
+            MovieSection(header: .header(DetailHeaderViewReactor(movie: movie)), items: []),
+            MovieSection(header: .summary(DetailSummaryHeaderViewReactor(movie: movie)), items: []),
+            MovieSection(header: .info(DetailInfoHeaderViewReactor(movie: movie)), items: []),
+            MovieSection(header: .comment(DetailReviewHeaderViewReactor(commentService: commentService, movie: movie)), items: [])
+        ])
         self.movieService = movieService
         self.commentService = commentService
     }
@@ -72,36 +71,22 @@ final class DetailViewReactor: Reactor {
         newState.isErrorOccured = false
         switch mutation {
         case .setMovie(let movie):
-            newState.isMovieFetched = true
             newState.movie = movie
+            newState.sections = [
+                MovieSection(header: .header(DetailHeaderViewReactor(movie: movie)), items: []),
+                MovieSection(header: .summary(DetailSummaryHeaderViewReactor(movie: movie)), items: []),
+                MovieSection(header: .info(DetailInfoHeaderViewReactor(movie: movie)), items: []),
+                MovieSection(header: .comment(DetailReviewHeaderViewReactor(commentService: commentService, movie: movie)), items:
+                                newState.sections[newState.sections.count - 1].items)
+            ]
         case .setComments(let comments):
             newState.sections[newState.sections.count - 1].items = comments.map { comment in
-                CommentListSectionItem(reactor: DetailTableViewCellReactor(comment: comment))}
+                MovieSectionItem(reactor: DetailTableViewCellReactor(comment: comment))
+            }
         case .setError(let error):
             newState.isErrorOccured = true
             newState.error = error
         }
         return newState
-    }
-    
-    func reactorForDetailHeaderViewReactor(reactor: DetailViewReactor) -> DetailHeaderViewReactor {
-        let movie = reactor.currentState.movie
-        return DetailHeaderViewReactor(movie: movie)
-    }
-    
-    func reactorForDetailSummaryHeaderViewReactor(reactor: DetailViewReactor) -> DetailSummaryHeaderViewReactor {
-        let movie = reactor.currentState.movie
-        return DetailSummaryHeaderViewReactor(movie: movie)
-    }
-    
-    func reactorForDetailInfoHeaderViewReactor(reactor: DetailViewReactor) -> DetailInfoHeaderViewReactor {
-        let movie = reactor.currentState.movie
-        return DetailInfoHeaderViewReactor(movie: movie)
-    }
-    
-    func reactorForDetailReviewHeaderViewReactor(reactor: DetailViewReactor) -> DetailReviewHeaderViewReactor {
-        let commentService = reactor.commentService
-        let movie = reactor.currentState.movie
-        return DetailReviewHeaderViewReactor(commentService: commentService, movie: movie)
     }
 }

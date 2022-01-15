@@ -192,7 +192,7 @@ final class DetailHeaderView: UITableViewHeaderFooterView, View {
         stackView.axis = .vertical
         stackView.alignment = .center
         stackView.distribution = .fill
-        stackView.spacing = 15
+        stackView.spacing = 10
         stackView.accessibilityIdentifier = "movieRateStackView"
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
@@ -299,6 +299,8 @@ final class DetailHeaderView: UITableViewHeaderFooterView, View {
             
             movieStarRatingBarView.widthAnchor.constraint(equalTo: movieStarRatingBarView.heightAnchor, multiplier: 5),
             movieStarRatingBarView.heightAnchor.constraint(equalToConstant: 18),
+            
+            movieBottomStackView.heightAnchor.constraint(greaterThanOrEqualToConstant: 70)
         ])
     }
     
