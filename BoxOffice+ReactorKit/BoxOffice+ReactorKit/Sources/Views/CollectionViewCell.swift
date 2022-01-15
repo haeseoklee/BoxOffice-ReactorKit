@@ -50,6 +50,7 @@ final class CollectionViewCell: UICollectionViewCell, View {
     private let movieInfoLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 16)
+        label.numberOfLines = 0
         label.adjustsFontForContentSizeCategory = true
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -124,7 +125,7 @@ final class CollectionViewCell: UICollectionViewCell, View {
             .bind { [weak self] movie in
                 self?.movieTitleLabel.text = movie.title
                 self?.movieGradeImageView.image = UIImage(named: movie.gradeImageName)
-                self?.movieInfoLabel.text = "\(movie.reservationGrade)위(\(movie.userRating)) / \(movie.reservationRate)%"
+                self?.movieInfoLabel.text = "\(movie.reservationGrade.ordinal ?? "")(\(movie.userRating)) / \(movie.reservationRate)%"
                 self?.movieOpeningDateLabel.text = movie.date
             }
             .disposed(by: disposeBag)

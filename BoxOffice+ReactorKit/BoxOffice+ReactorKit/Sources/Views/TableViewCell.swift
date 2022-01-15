@@ -54,6 +54,7 @@ final class TableViewCell: UITableViewCell, View {
     private let movieInfoLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 16)
+        label.numberOfLines = 0
         label.adjustsFontForContentSizeCategory = true
         label.accessibilityIdentifier = "movieInfoLabel"
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -147,8 +148,8 @@ final class TableViewCell: UITableViewCell, View {
             .bind { [weak self] movie in
                 self?.movieTitleLabel.text = movie.title
                 self?.movieGradeImageView.image = UIImage(named: movie.gradeImageName)
-                self?.movieInfoLabel.text = "평점 : \(movie.userRating) 예매순위 : \(movie.reservationGrade) 예매율 : \(movie.reservationRate)"
-                self?.movieOpeningDateLabel.text = "개봉일 : \(movie.date)"
+                self?.movieInfoLabel.text = "\("User Rating".localized) : \(movie.userRating) \("Ranking".localized) : \(movie.reservationGrade) \("Reservation Rate".localized) : \(movie.reservationRate)"
+                self?.movieOpeningDateLabel.text = "\("Release Date".localized) : \(movie.date)"
             }
             .disposed(by: disposeBag)
         

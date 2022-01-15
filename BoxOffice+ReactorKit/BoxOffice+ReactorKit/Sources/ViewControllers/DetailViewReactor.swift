@@ -29,7 +29,7 @@ final class DetailViewReactor: Reactor {
     struct State {
         var movie: Movie
         var sections: [MovieSection]
-        var isErrorOccured: Bool = false
+        var isErrorOccurred: Bool = false
         var error: NSError? = nil
     }
     
@@ -68,7 +68,7 @@ final class DetailViewReactor: Reactor {
     
     func reduce(state: State, mutation: Mutation) -> State {
         var newState = state
-        newState.isErrorOccured = false
+        newState.isErrorOccurred = false
         switch mutation {
         case .setMovie(let movie):
             newState.movie = movie
@@ -84,7 +84,7 @@ final class DetailViewReactor: Reactor {
                 MovieSectionItem(reactor: DetailTableViewCellReactor(comment: comment))
             }
         case .setError(let error):
-            newState.isErrorOccured = true
+            newState.isErrorOccurred = true
             newState.error = error
         }
         return newState

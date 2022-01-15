@@ -74,7 +74,7 @@ final class TableViewController: UIViewController, View {
     
     private func setupNavigationBar() {
         navigationItem.rightBarButtonItem = rightBarButton
-        navigationItem.backButtonTitle = "영화목록"
+        navigationItem.backButtonTitle = "Movie List".localized
     }
     
     func bind(reactor: TableCollectionViewReactor) {
@@ -94,9 +94,9 @@ final class TableViewController: UIViewController, View {
             .observe(on: MainScheduler.instance)
             .bind { [weak self] _ in
                 self?.showActionSheet(actionItems: [
-                    ActionItem(title: MovieOrderType.reservationRate.toKorean, handler: self?.touchUpReservationRateAction),
-                    ActionItem(title: MovieOrderType.curation.toKorean, handler: self?.touchUpCurationAction),
-                    ActionItem(title: MovieOrderType.openingDate.toKorean, handler: self?.touchUpOpeningDateAction)
+                    ActionItem(title: MovieOrderType.reservationRate.toString, handler: self?.touchUpReservationRateAction),
+                    ActionItem(title: MovieOrderType.curation.toString, handler: self?.touchUpCurationAction),
+                    ActionItem(title: MovieOrderType.openingDate.toString, handler: self?.touchUpOpeningDateAction)
                 ])
             }
             .disposed(by: disposeBag)
@@ -124,14 +124,14 @@ final class TableViewController: UIViewController, View {
             .disposed(by: disposeBag)
         
         reactor.state.asObservable()
-            .map { $0.orderType.toKorean }
+            .map { $0.orderType.toString }
             .distinctUntilChanged()
-            .asDriver(onErrorJustReturn: MovieOrderType.reservationRate.toKorean)
-            .drive(navigationItem.rx.title)
+            .observe(on: MainScheduler.instance)
+            .bind(to: navigationItem.rx.title)
             .disposed(by: disposeBag)
         
         reactor.state.asObservable()
-            .filter { $0.isErrorOccured }
+            .filter { $0.isErrorOccurred }
             .map { $0.error?.localizedDescription }
             .flatMap { Observable.from(optional: $0) }
             .observe(on: MainScheduler.instance)

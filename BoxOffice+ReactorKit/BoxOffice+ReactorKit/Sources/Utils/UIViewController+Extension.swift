@@ -12,21 +12,21 @@ extension UIViewController {
     
     func showAlert(title: String?, message: String?) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let cancelAction = UIAlertAction(title: "확인", style: .cancel, handler: nil)
+        let cancelAction = UIAlertAction(title: "OK".localized, style: .cancel, handler: nil)
         alert.addAction(cancelAction)
         present(alert, animated: true, completion: nil)
     }
     
     func showActionSheet(actionItems: [ActionItem]) {
         let alert = UIAlertController(
-            title: "정렬방식 선택",
-            message: "영화를 어떤 순서로 정렬할까요?",
+            title: "Sort".localized,
+            message: "In what order would you like the movies to be sorted?".localized,
             preferredStyle: UIAlertController.Style.actionSheet
         )
         actionItems.forEach { item in
             alert.addAction(UIAlertAction(title: item.title, style: .default, handler: item.handler))
         }
-        alert.addAction(UIAlertAction(title: "취소", style: .cancel, handler : nil))
+        alert.addAction(UIAlertAction(title: "Cancel".localized, style: .cancel, handler : nil))
         present(alert, animated: true, completion: nil)
     }
 }

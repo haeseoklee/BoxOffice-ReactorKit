@@ -72,7 +72,7 @@ final class ReviewWriteViewController: UIViewController, View {
         let textField = UITextField()
         textField.font = UIFont.systemFont(ofSize: 14)
         textField.borderStyle = .roundedRect
-        textField.placeholder = "닉네임을 입력해주세요"
+        textField.placeholder = "Please enter your nickname".localized
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
     }()
@@ -90,7 +90,7 @@ final class ReviewWriteViewController: UIViewController, View {
     private lazy var reviewTextView: UITextView = {
         let textView = UITextView()
         textView.font = UIFont.systemFont(ofSize: 14)
-        textView.text = "한줄평을 작성해주세요"
+        textView.text = "Please write a review".localized
         textView.textColor = .systemGray4
         textView.translatesAutoresizingMaskIntoConstraints = false
         return textView
@@ -120,13 +120,13 @@ final class ReviewWriteViewController: UIViewController, View {
     }()
 
     private lazy var leftBarButton: UIBarButtonItem = {
-        let leftBarButton = UIBarButtonItem(title: "취소", style: .plain, target: nil, action: nil)
+        let leftBarButton = UIBarButtonItem(title: "Cancel".localized, style: .plain, target: nil, action: nil)
         leftBarButton.tintColor = .white
         return leftBarButton
     }()
     
     private lazy var rightBarButton: UIBarButtonItem = {
-        let rightBarButton = UIBarButtonItem(title: "완료", style: .plain, target: nil, action: nil)
+        let rightBarButton = UIBarButtonItem(title: "Submit".localized, style: .plain, target: nil, action: nil)
         rightBarButton.tintColor = .white
         return rightBarButton
     }()
@@ -235,7 +235,7 @@ final class ReviewWriteViewController: UIViewController, View {
     private func setupNavigationBar() {
         navigationItem.leftBarButtonItem = leftBarButton
         navigationItem.rightBarButtonItem = rightBarButton
-        navigationItem.title = "한줄평 작성"
+        navigationItem.title = "Review".localized
     }
     
     func bind(reactor: ReviewWriteViewReactor) {
@@ -308,7 +308,7 @@ final class ReviewWriteViewController: UIViewController, View {
             .disposed(by: disposeBag)
         
         reactor.state.asObservable()
-            .filter { $0.isErrorOccured }
+            .filter { $0.isErrorOccurred }
             .map { $0.error?.localizedDescription }
             .flatMap { Observable.from(optional: $0) }
             .observe(on: MainScheduler.instance)
@@ -333,7 +333,7 @@ final class ReviewWriteViewController: UIViewController, View {
             .bind {[weak self] _ in
                 guard let text = self?.reviewTextView.text else { return }
                 if text.isEmpty {
-                    self?.reviewTextView.text = "한줄평을 작성해주세요"
+                    self?.reviewTextView.text = "Please write a review".localized
                     self?.reviewTextView.textColor = .systemGray4
                 }
             }

@@ -50,7 +50,8 @@ final class CollectionViewController: UIViewController, View {
     
     private lazy var dataSource = RxCollectionViewSectionedAnimatedDataSource<MovieListSection>(
         configureCell: { dataSource, collectionView, indexPath, item in
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.Identifier.collectionViewCell, for: indexPath) as? CollectionViewCell else {
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.Identifier.collectionViewCell, for: indexPath)
+                    as? CollectionViewCell else {
                 return UICollectionViewCell()
             }
             cell.reactor = item.reactor
@@ -95,7 +96,7 @@ final class CollectionViewController: UIViewController, View {
         navigationItem.rightBarButtonItem = rightBarButton
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
         navigationController?.navigationBar.tintColor = .white
-        navigationItem.backButtonTitle = "영화목록"
+        navigationItem.backButtonTitle = "Movie List".localized
     }
     
     func bind(reactor: TableCollectionViewReactor) {
@@ -115,9 +116,9 @@ final class CollectionViewController: UIViewController, View {
             .observe(on: MainScheduler.instance)
             .bind { [weak self] _ in
                 self?.showActionSheet(actionItems: [
-                    ActionItem(title: MovieOrderType.reservationRate.toKorean, handler: self?.touchUpReservationRateAction),
-                    ActionItem(title: MovieOrderType.curation.toKorean, handler: self?.touchUpCurationAction),
-                    ActionItem(title: MovieOrderType.openingDate.toKorean, handler: self?.touchUpOpeningDateAction)
+                    ActionItem(title: MovieOrderType.reservationRate.toString, handler: self?.touchUpReservationRateAction),
+                    ActionItem(title: MovieOrderType.curation.toString, handler: self?.touchUpCurationAction),
+                    ActionItem(title: MovieOrderType.openingDate.toString, handler: self?.touchUpOpeningDateAction)
                 ])
             }
             .disposed(by: disposeBag)
@@ -145,14 +146,14 @@ final class CollectionViewController: UIViewController, View {
             .disposed(by: disposeBag)
         
         reactor.state.asObservable()
-            .map { $0.orderType.toKorean }
+            .map { $0.orderType.toString }
             .distinctUntilChanged()
-            .asDriver(onErrorJustReturn: MovieOrderType.reservationRate.toKorean)
+            .asDriver(onErrorJustReturn: MovieOrderType.reservationRate.toString)
             .drive(navigationItem.rx.title)
             .disposed(by: disposeBag)
         
         reactor.state.asObservable()
-            .filter { $0.isErrorOccured }
+            .filter { $0.isErrorOccurred }
             .map { $0.error?.localizedDescription }
             .flatMap { Observable.from(optional: $0) }
             .observe(on: MainScheduler.instance)

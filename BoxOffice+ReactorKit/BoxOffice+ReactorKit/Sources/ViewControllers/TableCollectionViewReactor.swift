@@ -30,7 +30,7 @@ final class TableCollectionViewReactor: Reactor {
         var isActivated: Bool = false
         var orderType: MovieOrderType = MovieOrderType.reservationRate
         var sections: [MovieListSection] = [MovieListSection(items: [])]
-        var isErrorOccured: Bool = false
+        var isErrorOccurred: Bool = false
         var error: NSError?
     }
     
@@ -74,7 +74,7 @@ final class TableCollectionViewReactor: Reactor {
     
     func reduce(state: State, mutation: Mutation) -> State {
         var newState = state
-        newState.isErrorOccured = false
+        newState.isErrorOccurred = false
         switch mutation {
         case .setIsActivated(let isActivated):
             newState.isActivated = isActivated
@@ -85,7 +85,7 @@ final class TableCollectionViewReactor: Reactor {
                 MovieListSectionItem(reactor: TableCollectionViewCellReactor(movie: movie))
             }
         case .setError(let error):
-            newState.isErrorOccured = true
+            newState.isErrorOccurred = true
             newState.error = error
         }
         return newState

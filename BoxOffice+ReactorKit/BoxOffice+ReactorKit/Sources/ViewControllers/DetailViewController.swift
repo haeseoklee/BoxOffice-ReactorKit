@@ -107,7 +107,7 @@ final class DetailViewController: UIViewController, View {
             .disposed(by: disposeBag)
         
         reactor.state.asObservable()
-            .filter { $0.isErrorOccured }
+            .filter { $0.isErrorOccurred }
             .map { $0.error?.localizedDescription }
             .flatMap { Observable.from(optional: $0) }
             .observe(on: MainScheduler.instance)

@@ -15,7 +15,7 @@ final class DetailInfoHeaderView: UITableViewHeaderFooterView, View {
     // MARK: - Views
     private let infoTitleLabel: UILabel = {
         let label = UILabel()
-        label.text = "감독/출연"
+        label.text = "Director/Cast".localized
         label.font = UIFont.systemFont(ofSize: 18)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.restorationIdentifier = "infoTitleLabel"
@@ -25,7 +25,7 @@ final class DetailInfoHeaderView: UITableViewHeaderFooterView, View {
     
     private let directorTitleLabel: UILabel = {
         let label = UILabel()
-        label.text = "감독"
+        label.text = "Director".localized
         label.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -53,7 +53,7 @@ final class DetailInfoHeaderView: UITableViewHeaderFooterView, View {
     
     private let appearanceTitleLabel: UILabel = {
         let label = UILabel()
-        label.text = "출연"
+        label.text = "Cast".localized
         label.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label

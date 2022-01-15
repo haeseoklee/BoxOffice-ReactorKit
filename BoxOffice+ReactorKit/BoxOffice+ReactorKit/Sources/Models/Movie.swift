@@ -9,14 +9,14 @@ import Foundation
 
 enum MovieOrderType: Int, CaseIterable {
     case reservationRate = 0, curation = 1, openingDate = 2
-    var toKorean: String {
+    var toString: String {
         switch self {
         case .reservationRate:
-            return "예매율순"
+            return "Reservation Rate".localized
         case .curation:
-            return "큐레이션"
+            return "Curation".localized
         case .openingDate:
-            return "개봉일순"
+            return "Release Date".localized
         }
     }
 }
