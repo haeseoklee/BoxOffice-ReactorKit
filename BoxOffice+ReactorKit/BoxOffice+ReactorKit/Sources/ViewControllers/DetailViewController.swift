@@ -34,7 +34,7 @@ final class DetailViewController: UIViewController, View {
     // MARK: - Variables
     var disposeBag: DisposeBag = DisposeBag()
     
-    private lazy var dataSource = RxTableViewSectionedReloadDataSource<CommentListSection>(
+    private lazy var dataSource = RxTableViewSectionedReloadDataSource<MovieSection>(
         configureCell: { dataSource, tableView, indexPath, item in
             guard let cell = tableView.dequeueReusableCell(withIdentifier: Constants.Identifier.detailTableViewCell, for: indexPath) as? DetailTableViewCell else {
                 return UITableViewCell()
@@ -107,16 +107,6 @@ final class DetailViewController: UIViewController, View {
             .disposed(by: disposeBag)
         
         reactor.state.asObservable()
-            .map { $0.isMovieFetched }
-            .filter { $0 }
-            .distinctUntilChanged()
-            .observe(on: MainScheduler.instance)
-            .bind {[weak self] _ in
-                self?.movieDetailTableView.reloadData()
-            }
-            .disposed(by: disposeBag)
-        
-        reactor.state.asObservable()
             .filter { $0.isErrorOccured }
             .map { $0.error?.localizedDescription }
             .flatMap { Observable.from(optional: $0) }
@@ -152,17 +142,17 @@ extension DetailViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let defaultHeaderView = UITableViewHeaderFooterView()
-        guard let reactor = reactor else { return defaultHeaderView }
-        let sectionKind = MovieDetailTableViewSection(rawValue: section)
-        switch sectionKind {
-        case .header:
+        let header = dataSource.sectionModels[section].header
+        
+        switch header {
+        case .header(let headerViewReactor):
             guard let headerView = tableView.dequeueReusableHeaderFooterView(
                 withIdentifier: Constants.Identifier.detailHeaderView
             ) as? DetailHeaderView else {
                 return defaultHeaderView
             }
             
-            headerView.reactor = reactor.reactorForDetailHeaderViewReactor(reactor: reactor)
+            headerView.reactor = headerViewReactor
             headerView.rx.touchMovieImageView
                 .observe(on: MainScheduler.instance)
                 .bind {[weak self] image in
@@ -173,32 +163,32 @@ extension DetailViewController: UITableViewDelegate {
                 }
                 .disposed(by: headerView.disposeBag)
             return headerView
-        case .summary:
+        case .summary(let summaryViewReactor):
             guard let summaryView = tableView.dequeueReusableHeaderFooterView(
                 withIdentifier: Constants.Identifier.detailSummaryHeaderView
             ) as? DetailSummaryHeaderView else {
                 return defaultHeaderView
             }
             
-            summaryView.reactor = reactor.reactorForDetailSummaryHeaderViewReactor(reactor: reactor)
+            summaryView.reactor = summaryViewReactor
             return summaryView
-        case .info:
+        case .info(let infoViewReactor):
             guard let infoView = tableView.dequeueReusableHeaderFooterView(
                 withIdentifier: Constants.Identifier.detailInfoHeaderView
             ) as? DetailInfoHeaderView else {
                 return defaultHeaderView
             }
             
-            infoView.reactor = reactor.reactorForDetailInfoHeaderViewReactor(reactor: reactor)
+            infoView.reactor = infoViewReactor
             return infoView
-        case .comment:
+        case .comment(let reviewViewReactor):
             guard let reviewView = tableView.dequeueReusableHeaderFooterView(
                 withIdentifier: Constants.Identifier.detailReviewHeaderView
             ) as? DetailReviewHeaderView else {
                 return defaultHeaderView
             }
             
-            reviewView.reactor = reactor.reactorForDetailReviewHeaderViewReactor(reactor: reactor)
+            reviewView.reactor = reviewViewReactor
             reviewView.rx.touchReviewWriteButton
                 .observe(on: MainScheduler.instance)
                 .bind { [weak self] in
@@ -210,38 +200,21 @@ extension DetailViewController: UITableViewDelegate {
                 }
                 .disposed(by: reviewView.disposeBag)
             return reviewView
-        default:
-            return defaultHeaderView
         }
     }
-    
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        let sectionKind = MovieDetailTableViewSection(rawValue: section)
-        switch sectionKind {
+
+    func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
+        guard let kind = MovieDetailTableViewSection(rawValue: section) else {
+            return 0
+        }
+        switch kind {
         case .header:
-            guard let headerView = tableView.dequeueReusableHeaderFooterView(
-                withIdentifier: Constants.Identifier.detailHeaderView
-            ) as? DetailHeaderView else {
-                return 0
-            }
-            return headerView.sizeFitted.height
+            return 350
         case .summary:
-            guard let summaryView = tableView.dequeueReusableHeaderFooterView(
-                withIdentifier: Constants.Identifier.detailSummaryHeaderView
-            ) as? DetailSummaryHeaderView else {
-                return 0
-            }
-            return summaryView.sizeFitted.height
+            return 350
         case .info:
-            guard let infoView = tableView.dequeueReusableHeaderFooterView(
-                withIdentifier: Constants.Identifier.detailInfoHeaderView
-            ) as? DetailInfoHeaderView else {
-                return 0
-            }
-            return infoView.sizeFitted.height
+            return 100
         case .comment:
-            return 50
-        default:
             return 50
         }
     }
