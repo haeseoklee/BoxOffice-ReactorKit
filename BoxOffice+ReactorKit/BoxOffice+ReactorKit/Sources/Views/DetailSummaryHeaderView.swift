@@ -24,6 +24,7 @@ final class DetailSummaryHeaderView: UITableViewHeaderFooterView, View {
         label.text = "줄거리"
         label.font = UIFont.systemFont(ofSize: 18)
         label.adjustsFontForContentSizeCategory = true
+        label.accessibilityIdentifier = "summaryTitleLabel"
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -33,6 +34,7 @@ final class DetailSummaryHeaderView: UITableViewHeaderFooterView, View {
         label.font = UIFont.systemFont(ofSize: 14)
         label.numberOfLines = 0
         label.adjustsFontForContentSizeCategory = true
+        label.accessibilityIdentifier = "summaryTextLabel"
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -78,7 +80,7 @@ final class DetailSummaryHeaderView: UITableViewHeaderFooterView, View {
             summaryTextLabel.leadingAnchor.constraint(equalTo: summaryTitleLabel.leadingAnchor),
             summaryTextLabel.trailingAnchor.constraint(equalTo: summaryView.trailingAnchor, constant: -10),
             summaryTextLabel.topAnchor.constraint(equalTo: summaryTitleLabel.bottomAnchor, constant: 10),
-            summaryTextLabel.bottomAnchor.constraint(lessThanOrEqualTo: summaryView.bottomAnchor, constant: -10)
+            summaryTextLabel.bottomAnchor.constraint(lessThanOrEqualTo: summaryView.bottomAnchor, constant: -10),
         ])
     }
     
