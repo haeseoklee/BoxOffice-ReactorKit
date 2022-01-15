@@ -27,7 +27,8 @@ final class DetailHeaderView: UITableViewHeaderFooterView, View {
     
     private let movieTitleLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 18)
+        label.font = UIFont.systemFont(ofSize: 23, weight: .bold)
+        label.numberOfLines = 0
         label.adjustsFontForContentSizeCategory = true
         label.accessibilityIdentifier = "movieTitleLabel"
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -105,6 +106,7 @@ final class DetailHeaderView: UITableViewHeaderFooterView, View {
     private let movieGenreAndRunningTimeLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 16)
+        label.numberOfLines = 0
         label.adjustsFontForContentSizeCategory = true
         label.accessibilityIdentifier = "movieGenreAndRunningTimeLabel"
         label.translatesAutoresizingMaskIntoConstraints = true
@@ -113,7 +115,9 @@ final class DetailHeaderView: UITableViewHeaderFooterView, View {
     
     private let movieReservationTitleLabel: UILabel = {
         let label = UILabel()
-        label.text = "예매율"
+        label.text = "Reservation Rate".localized
+        label.textAlignment = .center
+        label.numberOfLines = 0
         label.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
         label.adjustsFontForContentSizeCategory = true
         label.accessibilityIdentifier = "movieReservationTitleLabel"
@@ -132,7 +136,8 @@ final class DetailHeaderView: UITableViewHeaderFooterView, View {
     
     private let movieRateTitleLabel: UILabel = {
         let label = UILabel()
-        label.text = "평점"
+        label.text = "User Rating".localized
+        label.textAlignment = .center
         label.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
         label.adjustsFontForContentSizeCategory = true
         label.accessibilityIdentifier = "movieRateTitleLabel"
@@ -159,7 +164,9 @@ final class DetailHeaderView: UITableViewHeaderFooterView, View {
     
     private let movieAttendanceTitleLabel: UILabel = {
         let label = UILabel()
-        label.text = "누적관객수"
+        label.text = "Audience".localized
+        label.textAlignment = .center
+        label.numberOfLines = 0
         label.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
         label.adjustsFontForContentSizeCategory = true
         label.accessibilityIdentifier = "movieAttendanceTitleLabel"
@@ -320,9 +327,9 @@ final class DetailHeaderView: UITableViewHeaderFooterView, View {
             .bind { [weak self] movie in
                 self?.movieTitleLabel.text = movie.title
                 self?.movieGradeImageView.image = UIImage(named: movie.gradeImageName)
-                self?.movieOpeningDateLabel.text = "\(movie.date) 개봉"
-                self?.movieGenreAndRunningTimeLabel.text = "\(movie.genre ?? "")/\(movie.duration ?? 0)분"
-                self?.movieReservationLabel.text = "\(movie.reservationGrade)위 \(movie.reservationRate)%"
+                self?.movieOpeningDateLabel.text = "\(movie.date)"
+                self?.movieGenreAndRunningTimeLabel.text = "\(movie.genre ?? "")/\(movie.duration ?? 0)\("m".localized)"
+                self?.movieReservationLabel.text = "\(movie.reservationGrade.ordinal ?? "") \(movie.reservationRate)%"
                 self?.movieRateLabel.text = "\(movie.userRating)"
                 self?.movieAttendanceLabel.text = movie.audience?.intWithCommas
                 self?.movieStarRatingBarView.reactor?.action.onNext(.changeRating(movie.userRating))

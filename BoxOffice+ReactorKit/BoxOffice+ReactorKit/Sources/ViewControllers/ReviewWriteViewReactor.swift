@@ -36,7 +36,7 @@ final class ReviewWriteViewReactor: Reactor {
         var writer: String = ""
         var contents: String = ""
         var isDissmissed: Bool = false
-        var isErrorOccured: Bool = false
+        var isErrorOccurred: Bool = false
         var error: NSError? = nil
     }
     
@@ -58,13 +58,13 @@ final class ReviewWriteViewReactor: Reactor {
             return Observable.just(Comment(id: nil, rating: currentState.rating, timestamp: nil, writer: currentState.writer, movieId: currentState.movie.id, contents: currentState.contents))
                 .filter {comment in
                     if comment.rating == 0 {
-                        throw NSError(domain: "Error", code: 700, userInfo: [NSLocalizedDescriptionKey: "유효하지 않은 점수입니다"])
+                        throw NSError(domain: "Error", code: 700, userInfo: [NSLocalizedDescriptionKey: "Invalid score".localized])
                     } else if comment.writer.isEmpty {
-                        throw NSError(domain: "Error", code: 701, userInfo: [NSLocalizedDescriptionKey: "유효하지 않은 닉네임입니다"])
-                    } else if comment.contents.isEmpty || comment.contents == "한줄평을 작성해주세요" {
-                        throw NSError(domain: "Error", code: 702, userInfo: [NSLocalizedDescriptionKey: "유효하지 않은 코멘트입니다"])
+                        throw NSError(domain: "Error", code: 701, userInfo: [NSLocalizedDescriptionKey: "Invalid nickname".localized])
+                    } else if comment.contents.isEmpty || comment.contents == "Please write a review".localized {
+                        throw NSError(domain: "Error", code: 702, userInfo: [NSLocalizedDescriptionKey: "Invalid Comment".localized])
                     }
-                    return comment.rating != 0 && !comment.writer.isEmpty && !comment.contents.isEmpty && comment.contents != "한줄평을 작성해주세요"
+                    return comment.rating != 0 && !comment.writer.isEmpty && !comment.contents.isEmpty && comment.contents != "Please write a review".localized
                 }
                 .flatMap { comment -> Observable<Mutation> in
                     return self.commentService.postComment(comment: comment).map { _ in Mutation.dismiss }
@@ -83,7 +83,7 @@ final class ReviewWriteViewReactor: Reactor {
     
     func reduce(state: State, mutation: Mutation) -> State {
         var newState = state
-        newState.isErrorOccured = false
+        newState.isErrorOccurred = false
         switch mutation {
         case .dismiss:
             newState.isDissmissed = true
@@ -94,7 +94,7 @@ final class ReviewWriteViewReactor: Reactor {
         case .setContents(let contents):
             newState.contents = contents
         case .setError(let error):
-            newState.isErrorOccured = true
+            newState.isErrorOccurred = true
             newState.error = error
         }
         return newState

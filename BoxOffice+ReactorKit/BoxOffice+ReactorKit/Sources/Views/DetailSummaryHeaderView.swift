@@ -21,7 +21,7 @@ final class DetailSummaryHeaderView: UITableViewHeaderFooterView, View {
     
     private let summaryTitleLabel: UILabel = {
         let label = UILabel()
-        label.text = "줄거리"
+        label.text = "Synopsis".localized
         label.font = UIFont.systemFont(ofSize: 18)
         label.adjustsFontForContentSizeCategory = true
         label.accessibilityIdentifier = "summaryTitleLabel"

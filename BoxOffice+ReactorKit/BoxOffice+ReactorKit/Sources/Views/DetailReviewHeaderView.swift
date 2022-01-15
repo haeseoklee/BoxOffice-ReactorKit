@@ -15,7 +15,7 @@ final class DetailReviewHeaderView: UITableViewHeaderFooterView, View {
     // MARK: - Views
     private let reviewTitleLabel: UILabel = {
         let label = UILabel()
-        label.text = "한줄평"
+        label.text = "Review".localized
         label.font = UIFont.systemFont(ofSize: 18)
         label.adjustsFontForContentSizeCategory = true
         label.translatesAutoresizingMaskIntoConstraints = false

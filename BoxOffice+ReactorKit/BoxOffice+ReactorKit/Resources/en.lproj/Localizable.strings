@@ -1,0 +1,31 @@
+/* 
+  Localizable.strings
+  BoxOffice+ReactorKit
+
+  Created by Haeseok Lee on 2022/01/15.
+  
+*/
+
+"Reservation Rate" = "Reservation Rate";
+"Curation" = "Curation";
+"Release Date" = "Release Date";
+"Movie List" = "Movie List";
+"Please enter your nickname" = "Please enter your nickname";
+"Please write a review" = "Please write a review";
+"Cancel" = "Cancel";
+"Submit" = "Submit";
+"Invalid score" = "Invalid score";
+"Invalid nickname" = "Invalid nickname";
+"Invalid Comment" = "Invalid Comment";
+"User Rating" = "User Rating";
+"Audience" = "Audience";
+"Ranking" = "Ranking";
+"m" = "m";
+"Synopsis" = "Synopsis";
+"Director/Cast" = "Director/Cast";
+"Director" = "Director";
+"Cast" = "Cast";
+"Review" = "Review";
+"Sort" = "Sort";
+"In what order would you like the movies to be sorted?" = "In what order would you like the movies to be sorted?";
+"OK" = "OK";
