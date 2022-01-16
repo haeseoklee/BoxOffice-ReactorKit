@@ -81,7 +81,7 @@ final class TableViewCell: UITableViewCell, View {
         return stackView
     }()
     
-    // MARK: - Variables
+    // MARK: - Properties
     static let height: CGFloat = 130
     var disposeBag: DisposeBag = DisposeBag()
     

@@ -241,7 +241,7 @@ final class DetailHeaderView: UITableViewHeaderFooterView, View {
     // MARK: - Properties
     var disposeBag: DisposeBag = DisposeBag()
     
-    // MARK: - Life Cycles
+    // MARK: - Life Cycle
     override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
         setupViews()
@@ -331,7 +331,7 @@ final class DetailHeaderView: UITableViewHeaderFooterView, View {
                 self?.movieGenreAndRunningTimeLabel.text = "\(movie.genre ?? "")/\(movie.duration ?? 0)\("m".localized)"
                 self?.movieReservationLabel.text = "\(movie.reservationGrade.ordinal ?? "") \(movie.reservationRate)%"
                 self?.movieRateLabel.text = "\(movie.userRating)"
-                self?.movieAttendanceLabel.text = movie.audience?.intWithCommas
+                self?.movieAttendanceLabel.text = movie.audience?.decimal
                 self?.movieStarRatingBarView.reactor?.action.onNext(.changeRating(movie.userRating))
             }
             .disposed(by: disposeBag)
@@ -345,6 +345,7 @@ final class DetailHeaderView: UITableViewHeaderFooterView, View {
     }
 }
 
+// MARK: - Reactive
 extension Reactive where Base: DetailHeaderView {
     var touchMovieImageView: ControlEvent<UIImage> {
         guard let reactor = base.reactor else {

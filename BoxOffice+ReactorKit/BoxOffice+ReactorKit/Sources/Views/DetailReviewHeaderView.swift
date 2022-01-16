@@ -77,6 +77,7 @@ final class DetailReviewHeaderView: UITableViewHeaderFooterView, View {
     func bind(reactor: DetailReviewHeaderViewReactor) {}
 }
 
+// MARK: - Reactive
 extension Reactive where Base: DetailReviewHeaderView {
     var touchReviewWriteButton: ControlEvent<Void> {
         return base.reviewWriteButton.rx.tap

@@ -50,10 +50,10 @@ final class StarRatingBarView: UIView, View {
         return slider
     }()
     
-    // MARK: - Variables
+    // MARK: - Properties
     var disposeBag: DisposeBag = DisposeBag()
     
-    // MARK: - Life Cycles
+    // MARK: - Life Cycle
     init(reactor: StarRatingBarViewReactor) {
         super.init(frame: .zero)
         setupViews()

@@ -31,7 +31,7 @@ final class DetailViewController: UIViewController, View {
         return tableView
     }()
     
-    // MARK: - Variables
+    // MARK: - Properties
     var disposeBag: DisposeBag = DisposeBag()
     
     private lazy var dataSource = RxTableViewSectionedReloadDataSource<MovieSection>(
@@ -46,7 +46,7 @@ final class DetailViewController: UIViewController, View {
             return cell
         })
     
-    // MARK: - Life Cycles
+    // MARK: - Life Cycle
     init(reactor: DetailViewReactor) {
         super.init(nibName: nil, bundle: nil)
         self.reactor = reactor
@@ -77,6 +77,7 @@ final class DetailViewController: UIViewController, View {
     
     private func setupNavigationBar() {
         navigationController?.navigationBar.tintColor = .white
+        navigationItem.backButtonTitle = "Movie List".localized
     }
     
     func bind(reactor: DetailViewReactor) {

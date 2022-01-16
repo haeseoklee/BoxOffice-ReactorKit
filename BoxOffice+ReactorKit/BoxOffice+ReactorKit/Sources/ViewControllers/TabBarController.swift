@@ -24,7 +24,7 @@ final class TabBarController: UITabBarController {
         return tabBarItem
     }()
 
-    // MARK: - Life Cycles
+    // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         initViews()

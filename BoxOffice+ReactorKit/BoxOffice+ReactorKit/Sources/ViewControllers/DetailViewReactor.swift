@@ -33,10 +33,12 @@ final class DetailViewReactor: Reactor {
         var error: NSError? = nil
     }
     
+    // Properties
     let initialState: State
     private let movieService: MovieServiceType
     private let commentService: CommentServiceType
     
+    // Functions
     init(movieService: MovieServiceType, commentService: CommentServiceType, movie: Movie) {
         self.initialState = State(movie: movie, sections: [
             MovieSection(header: .header(DetailHeaderViewReactor(movie: movie)), items: []),
@@ -76,8 +78,8 @@ final class DetailViewReactor: Reactor {
                 MovieSection(header: .header(DetailHeaderViewReactor(movie: movie)), items: []),
                 MovieSection(header: .summary(DetailSummaryHeaderViewReactor(movie: movie)), items: []),
                 MovieSection(header: .info(DetailInfoHeaderViewReactor(movie: movie)), items: []),
-                MovieSection(header: .comment(DetailReviewHeaderViewReactor(commentService: commentService, movie: movie)), items:
-                                newState.sections[newState.sections.count - 1].items)
+                MovieSection(header: .comment(DetailReviewHeaderViewReactor(commentService: commentService, movie: movie)),
+                             items: newState.sections[newState.sections.count - 1].items)
             ]
         case .setComments(let comments):
             newState.sections[newState.sections.count - 1].items = comments.map { comment in

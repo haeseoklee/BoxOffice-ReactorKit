@@ -35,7 +35,7 @@ final class CollectionViewController: UIViewController, View {
         return refreshControl
     }()
     
-    // MARK: - Variables
+    // MARK: - Properties
     private var collectionViewCellSize: CGSize {
         let width = (view.safeAreaLayoutGuide.layoutFrame.size.width - 20) / 2
         return CGSize(width: width, height: width * 2)
@@ -92,10 +92,7 @@ final class CollectionViewController: UIViewController, View {
     }
     
     private func setupNavigationBar() {
-        navigationController?.navigationBar.barTintColor = UIColor(named: "app_purple")
         navigationItem.rightBarButtonItem = rightBarButton
-        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
-        navigationController?.navigationBar.tintColor = .white
         navigationItem.backButtonTitle = "Movie List".localized
     }
     
