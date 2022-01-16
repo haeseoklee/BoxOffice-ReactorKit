@@ -4,9 +4,7 @@
   <img alt="swift" src="https://img.shields.io/badge/Swift-5.5%20-orange" />
   <img alt="swift" src="https://img.shields.io/badge/iOS-15.2-lightgrey" />
 </div>
-
-
-gif 세개 추가하기 (메인, 디테일, 리뷰작성)
+![Boxoffice ReactorKit ](https://user-images.githubusercontent.com/20268101/149651553-38554692-3350-4c9a-8696-e06324bb5f32.gif)
 
 
 
@@ -20,13 +18,9 @@ gif 세개 추가하기 (메인, 디테일, 리뷰작성)
 
 ## Introduction
 
-네이버 커넥트 재단에서 운영하는 BoostCourse의 [iOS 앱 프로그래밍 심화과정](https://www.boostcourse.org/mo326) 마지막 프로젝트를 <a href="#아키텍처_구성도">MVVM 아키텍처</a>로 재구현하였습니다. 
+The BoxOffice ReactorKit is a simple movie information application where you can see movie lists and movie information and write reviews of selected movies. 
 
-BoxOffice 애플리케이션은 서버의 API를 통해 영화 정보를 요청하고, 가져온 정보를 테이블 뷰와 컬렉션 뷰를 활용하여 화면에 표현해줍니다. 
-
-여러 조건 (예매율순, 큐레이션, 개봉일순)에 따라 영화 정보를 요청할 수 있고, 영화 목록 중 원하는 영화를 선택하여 상세 정보를 볼 수 있습니다. 
-
-또한 리뷰 작성 버튼을 클릭하여 한 줄 감상평을 남길 수 있습니다.
+And also this project is a implementation of [Boost Course iOS app programming](https://www.boostcourse.org/mo326)'s final project run by the NAVER Connect Foundation into a ReactorKit.
 
 ## Dependencies
 
@@ -37,31 +31,28 @@ BoxOffice 애플리케이션은 서버의 API를 통해 영화 정보를 요청�
 * [RxGesture](https://github.com/RxSwiftCommunity/RxGesture)
 * [RxDataSources](https://github.com/RxSwiftCommunity/RxDataSources)
 * iOS 15+
-* Swift 5.5
+* Swift 5
 * CocoaPods
 
 ## Features
 
 ### 1. Movie List Screen
 
-![BoxOffice+ReactorKit1 001](https://user-images.githubusercontent.com/20268101/149631046-036315db-7965-4d96-88db-7aa7a317477c.jpeg)
+![BoxOffice+ReactorKit1 001](https://user-images.githubusercontent.com/20268101/149650819-31f50fbe-506e-4b04-936f-c5868bf85ca5.jpeg)
 
-| ![120216339-dbd20800-c271-11eb-80ee-12759a44ca35](https://user-images.githubusercontent.com/20268101/148557072-4f995086-118f-4520-ae19-5bf8c4066bb2.png) | ![120216339-dbd20800-c271-11eb-80ee-12759a44ca35](https://user-images.githubusercontent.com/20268101/148557066-0b8225b2-87d7-4868-89ec-489cf12c179f.png) |
-| ------------------------------------------------------------ | ------------------------------------------------------------ |
+The Movie List page requests movie information through the server API and shows the imported data using table views and collection views. You can request movie information according to the conditions (by reservation rate, curation, release date), and select the desired movie from the movie list to view the details.
 
-### 2. Movie Information Screen
+### 2. Movie Screen
 
-![BoxOffice+ReactorKit2 001](https://user-images.githubusercontent.com/20268101/149632752-c033a01d-7cd0-442f-8208-6439245ea155.jpeg)
+![BoxOffice+ReactorKit2 001](https://user-images.githubusercontent.com/20268101/149649998-c6d94233-2ef7-4192-a3a6-d866429e16d2.jpeg)
 
-| ![120216339-dbd20800-c271-11eb-80ee-12759a44ca35](https://user-images.githubusercontent.com/20268101/148557058-97e59393-1f7d-4f8d-a47d-afbfa3cbeb29.png) | ![120216339-dbd20800-c271-11eb-80ee-12759a44ca35](https://user-images.githubusercontent.com/20268101/148557057-f8a50ca7-56f0-4bb3-9dfe-36b49efc11c7.png) |
-| ------------------------------------------------------------ | ------------------------------------------------------------ |
+On the Movie page, you can see movie details and movie comments. If you touch the review creation button, you will go to the page where you write the review.
 
-### 3. Review Writing Screen
+### 3. Review Screen
 
-![BoxOffice+ReactorKit3 001](https://user-images.githubusercontent.com/20268101/149631053-210bee63-f005-4321-8165-81cfa9def3bf.jpeg)
+![BoxOffice+ReactorKit3 001](https://user-images.githubusercontent.com/20268101/149649999-d3049c16-f02e-4711-8763-c9330dcf18ec.jpeg)
 
-| ![120216339-dbd20800-c271-11eb-80ee-12759a44ca35](https://user-images.githubusercontent.com/20268101/148557053-99ee7777-fab5-4824-8579-1e81ed3e67f4.png) | ![120216339-dbd20800-c271-11eb-80ee-12759a44ca35](https://user-images.githubusercontent.com/20268101/148558801-c8a2ccc6-970e-46ac-aee4-45774d1041d5.png) |
-| ------------------------------------------------------------ | ------------------------------------------------------------ |
+On the Review creation page, you can select star rating and create a review.
 
 ## Directory Structure
 
