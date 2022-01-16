@@ -39,10 +39,10 @@ final class DetailSummaryHeaderView: UITableViewHeaderFooterView, View {
         return label
     }()
     
-    // MARK: - Variables
+    // MARK: - Properties
     var disposeBag: DisposeBag = DisposeBag()
     
-    // MARK: - Life Cycles
+    // MARK: - Life Cycle
     override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
         setupViews()

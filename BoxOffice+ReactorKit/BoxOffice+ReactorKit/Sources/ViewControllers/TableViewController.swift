@@ -33,7 +33,7 @@ final class TableViewController: UIViewController, View {
         return rightBarButton
     }()
     
-    // MARK: - Variables
+    // MARK: - Properties
     var disposeBag: DisposeBag = DisposeBag()
     private lazy var dataSource = RxTableViewSectionedAnimatedDataSource<MovieListSection>(
         configureCell: { dataSource, tableView, indexPath, item in
@@ -44,7 +44,7 @@ final class TableViewController: UIViewController, View {
             return cell
         })
     
-    // MARK: - Life Cycles
+    // MARK: - Life Cycle
     init(reactor: TableCollectionViewReactor) {
         super.init(nibName: nil, bundle: nil)
         self.reactor = reactor

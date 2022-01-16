@@ -64,10 +64,10 @@ final class CollectionViewCell: UICollectionViewCell, View {
         return label
     }()
     
-    // MARK: - Variables
+    // MARK: - Properties
     var disposeBag: DisposeBag = DisposeBag()
     
-    // MARK: - LifeCycles
+    // MARK: - Life Cycle
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupViews()

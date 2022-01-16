@@ -131,10 +131,10 @@ final class ReviewWriteViewController: UIViewController, View {
         return rightBarButton
     }()
     
-    // MARK: - Variables
+    // MARK: - Properties
     var disposeBag: DisposeBag = DisposeBag()
     
-    // MARK: - Life Cycles
+    // MARK: - Life Cycle
     init(reactor: ReviewWriteViewReactor) {
         super.init(nibName: nil, bundle: nil)
         self.reactor = reactor
