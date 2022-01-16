@@ -22,6 +22,7 @@ final class DetailViewReactor: Reactor {
     enum Mutation {
         case setMovie(Movie)
         case setComments([Comment])
+        case setIsActivated(Bool)
         case setError(NSError)
     }
     
@@ -29,6 +30,7 @@ final class DetailViewReactor: Reactor {
     struct State {
         var movie: Movie
         var sections: [MovieSection]
+        var isActivated: Bool = false
         var isErrorOccurred: Bool = false
         var error: NSError? = nil
     }
@@ -53,17 +55,29 @@ final class DetailViewReactor: Reactor {
     func mutate(action: Action) -> Observable<Mutation> {
         switch action {
         case .fetchMovie:
-            return movieService.getMovie(id: currentState.movie.id)
-                .map(Mutation.setMovie)
+            return Observable.concat(
+                Observable.just(Mutation.setIsActivated(true)),
+                movieService.getMovie(id: currentState.movie.id)
+                    .map(Mutation.setMovie),
+                Observable.just(Mutation.setIsActivated(false)))
                 .catch { error in
-                    Observable.just(Mutation.setError(error as NSError))
+                    Observable.concat(
+                        Observable.just(Mutation.setError(error as NSError)),
+                        Observable.just(Mutation.setIsActivated(false))
+                    )
                 }
         case .fetchComments:
-            return commentService.getCommentList(movieId: currentState.movie.id)
-                .map { $0.comments }
-                .map(Mutation.setComments)
+            return Observable.concat(
+                Observable.just(Mutation.setIsActivated(true)),
+                commentService.getCommentList(movieId: currentState.movie.id)
+                    .map { $0.comments }
+                    .map(Mutation.setComments),
+                Observable.just(Mutation.setIsActivated(false)))
                 .catch { error in
-                    Observable.just(Mutation.setError(error as NSError))
+                    Observable.concat(
+                        Observable.just(Mutation.setError(error as NSError)),
+                        Observable.just(Mutation.setIsActivated(false))
+                    )
                 }
         }
     }
@@ -85,6 +99,8 @@ final class DetailViewReactor: Reactor {
             newState.sections[newState.sections.count - 1].items = comments.map { comment in
                 MovieSectionItem(reactor: DetailTableViewCellReactor(comment: comment))
             }
+        case .setIsActivated(let isActivated):
+            newState.isActivated = isActivated
         case .setError(let error):
             newState.isErrorOccurred = true
             newState.error = error

@@ -31,6 +31,14 @@ final class DetailViewController: UIViewController, View {
         return tableView
     }()
     
+    private lazy var activityIndicator: UIActivityIndicatorView = {
+        let activityIndicator = UIActivityIndicatorView()
+        activityIndicator.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
+        activityIndicator.center = view.center
+        activityIndicator.style = .large
+        return activityIndicator
+    }()
+    
     // MARK: - Properties
     var disposeBag: DisposeBag = DisposeBag()
     
@@ -66,12 +74,14 @@ final class DetailViewController: UIViewController, View {
     // MARK: - Functions
     private func setupViews() {
         view.addSubview(movieDetailTableView)
+        view.addSubview(activityIndicator)
+        view.bringSubviewToFront(activityIndicator)
         
         NSLayoutConstraint.activate([
             movieDetailTableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             movieDetailTableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             movieDetailTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            movieDetailTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+            movieDetailTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
         ])
     }
     
@@ -105,6 +115,22 @@ final class DetailViewController: UIViewController, View {
             .distinctUntilChanged()
             .observe(on: MainScheduler.instance)
             .bind(to: navigationItem.rx.title)
+            .disposed(by: disposeBag)
+        
+        reactor.state.asObservable()
+            .map { $0.isActivated }
+            .distinctUntilChanged()
+            .delay(.milliseconds(200), scheduler: ConcurrentDispatchQueueScheduler.init(queue: .global()))
+            .observe(on: MainScheduler.instance)
+            .bind {[weak self] isActivated in
+                if isActivated {
+                    self?.activityIndicator.startAnimating()
+                } else {
+                    self?.activityIndicator.stopAnimating()
+                    self?.movieDetailTableView.reloadData()
+                    self?.movieDetailTableView.reloadSections(IndexSet(0...3), with: .none)
+                }
+            }
             .disposed(by: disposeBag)
         
         reactor.state.asObservable()
@@ -206,7 +232,7 @@ extension DetailViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
         guard let kind = MovieDetailTableViewSection(rawValue: section) else {
-            return 0
+            return 100
         }
         switch kind {
         case .header:
