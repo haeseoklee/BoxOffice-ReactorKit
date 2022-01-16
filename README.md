@@ -82,7 +82,7 @@ BoxOffice+ReactorKit
 
 ## License
 
-BoxOffice-ReactorKit is under MIT license. See the [LICENSE]() for more info.
+BoxOffice-ReactorKit is under MIT license. See the [LICENSE](https://github.com/haeseoklee/BoxOffice-ReactorKit/blob/main/LICENSE) for more info.
 
 ## Contribution
 
