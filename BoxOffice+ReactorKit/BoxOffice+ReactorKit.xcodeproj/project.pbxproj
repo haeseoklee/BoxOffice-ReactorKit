@@ -51,10 +51,24 @@
 		1CC918D02790087500178636 /* DetailSummaryHeaderViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC918CF2790087500178636 /* DetailSummaryHeaderViewReactor.swift */; };
 		1CC918D2279008AF00178636 /* DetailReviewHeaderViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC918D1279008AF00178636 /* DetailReviewHeaderViewReactor.swift */; };
 		1CC918D427900CF300178636 /* StarRatingBarViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC918D327900CF300178636 /* StarRatingBarViewReactor.swift */; };
+		1CD0086F2799C2FD00AF8CB1 /* TableCollectionViewReactorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CD0086E2799C2FD00AF8CB1 /* TableCollectionViewReactorTests.swift */; };
+		1CD0087D279A73DE00AF8CB1 /* MockMovieListService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CD0087C279A73DE00AF8CB1 /* MockMovieListService.swift */; };
 		70CC6204A5398874D6D2514C /* Pods_BoxOffice_ReactorKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DCBB3DF5E5A081713ADD90B /* Pods_BoxOffice_ReactorKit.framework */; };
+		76EDB84DC0A9E41697778F64 /* Pods_BoxOffice_ReactorKitTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F6EB54746954C647D31D28D /* Pods_BoxOffice_ReactorKitTests.framework */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		1CD008702799C2FD00AF8CB1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1CC91846278C36D500178636 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1CC9184D278C36D500178636;
+			remoteInfo = "BoxOffice+ReactorKit";
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
+		0F6EB54746954C647D31D28D /* Pods_BoxOffice_ReactorKitTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BoxOffice_ReactorKitTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1C139BF82792BF1600838461 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		1C139BFA2792BF5C00838461 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Localizable.strings; sourceTree = "<group>"; };
 		1C139BFB2792BFB700838461 /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
@@ -102,9 +116,14 @@
 		1CC918CF2790087500178636 /* DetailSummaryHeaderViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailSummaryHeaderViewReactor.swift; sourceTree = "<group>"; };
 		1CC918D1279008AF00178636 /* DetailReviewHeaderViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailReviewHeaderViewReactor.swift; sourceTree = "<group>"; };
 		1CC918D327900CF300178636 /* StarRatingBarViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarRatingBarViewReactor.swift; sourceTree = "<group>"; };
+		1CD0086C2799C2FD00AF8CB1 /* BoxOffice+ReactorKitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "BoxOffice+ReactorKitTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		1CD0086E2799C2FD00AF8CB1 /* TableCollectionViewReactorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableCollectionViewReactorTests.swift; sourceTree = "<group>"; };
+		1CD0087C279A73DE00AF8CB1 /* MockMovieListService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockMovieListService.swift; sourceTree = "<group>"; };
+		235FD67DDAC5112CF2857859 /* Pods-BoxOffice+ReactorKitTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BoxOffice+ReactorKitTests.release.xcconfig"; path = "Target Support Files/Pods-BoxOffice+ReactorKitTests/Pods-BoxOffice+ReactorKitTests.release.xcconfig"; sourceTree = "<group>"; };
 		2DCBB3DF5E5A081713ADD90B /* Pods_BoxOffice_ReactorKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BoxOffice_ReactorKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		88A0035540739B6DC1921B43 /* Pods-BoxOffice+ReactorKit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BoxOffice+ReactorKit.debug.xcconfig"; path = "Target Support Files/Pods-BoxOffice+ReactorKit/Pods-BoxOffice+ReactorKit.debug.xcconfig"; sourceTree = "<group>"; };
 		9A77814B6C7A74FCB626DB86 /* Pods-BoxOffice+ReactorKit.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BoxOffice+ReactorKit.release.xcconfig"; path = "Target Support Files/Pods-BoxOffice+ReactorKit/Pods-BoxOffice+ReactorKit.release.xcconfig"; sourceTree = "<group>"; };
+		C83FA5E4BB74799596D071C2 /* Pods-BoxOffice+ReactorKitTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BoxOffice+ReactorKitTests.debug.xcconfig"; path = "Target Support Files/Pods-BoxOffice+ReactorKitTests/Pods-BoxOffice+ReactorKitTests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -116,6 +135,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		1CD008692799C2FD00AF8CB1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				76EDB84DC0A9E41697778F64 /* Pods_BoxOffice_ReactorKitTests.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -123,6 +150,7 @@
 			isa = PBXGroup;
 			children = (
 				1CC91850278C36D500178636 /* BoxOffice+ReactorKit */,
+				1CD0086D2799C2FD00AF8CB1 /* BoxOffice+ReactorKitTests */,
 				1CC9184F278C36D500178636 /* Products */,
 				EA218CC3E09DE8AFEB085435 /* Pods */,
 				EDAB234049C005FFB34ABC5F /* Frameworks */,
@@ -133,6 +161,7 @@
 			isa = PBXGroup;
 			children = (
 				1CC9184E278C36D500178636 /* BoxOffice+ReactorKit.app */,
+				1CD0086C2799C2FD00AF8CB1 /* BoxOffice+ReactorKitTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -269,11 +298,46 @@
 			path = Sections;
 			sourceTree = "<group>";
 		};
+		1CD0086D2799C2FD00AF8CB1 /* BoxOffice+ReactorKitTests */ = {
+			isa = PBXGroup;
+			children = (
+				1CD00878279A738200AF8CB1 /* Mock */,
+				1CD008752799C32700AF8CB1 /* Tests */,
+			);
+			path = "BoxOffice+ReactorKitTests";
+			sourceTree = "<group>";
+		};
+		1CD008752799C32700AF8CB1 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				1CD0086E2799C2FD00AF8CB1 /* TableCollectionViewReactorTests.swift */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
+		1CD00878279A738200AF8CB1 /* Mock */ = {
+			isa = PBXGroup;
+			children = (
+				1CD00879279A738F00AF8CB1 /* Services */,
+			);
+			path = Mock;
+			sourceTree = "<group>";
+		};
+		1CD00879279A738F00AF8CB1 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				1CD0087C279A73DE00AF8CB1 /* MockMovieListService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
 		EA218CC3E09DE8AFEB085435 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
 				88A0035540739B6DC1921B43 /* Pods-BoxOffice+ReactorKit.debug.xcconfig */,
 				9A77814B6C7A74FCB626DB86 /* Pods-BoxOffice+ReactorKit.release.xcconfig */,
+				C83FA5E4BB74799596D071C2 /* Pods-BoxOffice+ReactorKitTests.debug.xcconfig */,
+				235FD67DDAC5112CF2857859 /* Pods-BoxOffice+ReactorKitTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -282,6 +346,7 @@
 			isa = PBXGroup;
 			children = (
 				2DCBB3DF5E5A081713ADD90B /* Pods_BoxOffice_ReactorKit.framework */,
+				0F6EB54746954C647D31D28D /* Pods_BoxOffice_ReactorKitTests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -308,6 +373,26 @@
 			productReference = 1CC9184E278C36D500178636 /* BoxOffice+ReactorKit.app */;
 			productType = "com.apple.product-type.application";
 		};
+		1CD0086B2799C2FD00AF8CB1 /* BoxOffice+ReactorKitTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1CD008742799C2FD00AF8CB1 /* Build configuration list for PBXNativeTarget "BoxOffice+ReactorKitTests" */;
+			buildPhases = (
+				A22B9F843AD036D1453FA75D /* [CP] Check Pods Manifest.lock */,
+				1CD008682799C2FD00AF8CB1 /* Sources */,
+				1CD008692799C2FD00AF8CB1 /* Frameworks */,
+				1CD0086A2799C2FD00AF8CB1 /* Resources */,
+				63864151EB0F9AC854CFE595 /* [CP] Embed Pods Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				1CD008712799C2FD00AF8CB1 /* PBXTargetDependency */,
+			);
+			name = "BoxOffice+ReactorKitTests";
+			productName = "BoxOffice+ReactorKitTests";
+			productReference = 1CD0086C2799C2FD00AF8CB1 /* BoxOffice+ReactorKitTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -321,6 +406,10 @@
 					1CC9184D278C36D500178636 = {
 						CreatedOnToolsVersion = 13.2.1;
 						LastSwiftMigration = 1320;
+					};
+					1CD0086B2799C2FD00AF8CB1 = {
+						CreatedOnToolsVersion = 13.2.1;
+						TestTargetID = 1CC9184D278C36D500178636;
 					};
 				};
 			};
@@ -339,6 +428,7 @@
 			projectRoot = "";
 			targets = (
 				1CC9184D278C36D500178636 /* BoxOffice+ReactorKit */,
+				1CD0086B2799C2FD00AF8CB1 /* BoxOffice+ReactorKitTests */,
 			);
 		};
 /* End PBXProject section */
@@ -354,9 +444,33 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		1CD0086A2799C2FD00AF8CB1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		63864151EB0F9AC854CFE595 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-BoxOffice+ReactorKitTests/Pods-BoxOffice+ReactorKitTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-BoxOffice+ReactorKitTests/Pods-BoxOffice+ReactorKitTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-BoxOffice+ReactorKitTests/Pods-BoxOffice+ReactorKitTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		A206FEE5CE03569F459BEB48 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -372,6 +486,28 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-BoxOffice+ReactorKit/Pods-BoxOffice+ReactorKit-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A22B9F843AD036D1453FA75D /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-BoxOffice+ReactorKitTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		DBFC07931B1346AF074E03BC /* [CP] Check Pods Manifest.lock */ = {
@@ -447,7 +583,24 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		1CD008682799C2FD00AF8CB1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1CD0087D279A73DE00AF8CB1 /* MockMovieListService.swift in Sources */,
+				1CD0086F2799C2FD00AF8CB1 /* TableCollectionViewReactorTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		1CD008712799C2FD00AF8CB1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 1CC9184D278C36D500178636 /* BoxOffice+ReactorKit */;
+			targetProxy = 1CD008702799C2FD00AF8CB1 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		1C139BF92792BF1600838461 /* Localizable.strings */ = {
@@ -647,6 +800,44 @@
 			};
 			name = Release;
 		};
+		1CD008722799C2FD00AF8CB1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = C83FA5E4BB74799596D071C2 /* Pods-BoxOffice+ReactorKitTests.debug.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 3885XCJRT2;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "haeseok.BoxOffice-ReactorKitTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BoxOffice+ReactorKit.app/BoxOffice+ReactorKit";
+			};
+			name = Debug;
+		};
+		1CD008732799C2FD00AF8CB1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 235FD67DDAC5112CF2857859 /* Pods-BoxOffice+ReactorKitTests.release.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 3885XCJRT2;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "haeseok.BoxOffice-ReactorKitTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BoxOffice+ReactorKit.app/BoxOffice+ReactorKit";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -664,6 +855,15 @@
 			buildConfigurations = (
 				1CC91863278C36D500178636 /* Debug */,
 				1CC91864278C36D500178636 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1CD008742799C2FD00AF8CB1 /* Build configuration list for PBXNativeTarget "BoxOffice+ReactorKitTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1CD008722799C2FD00AF8CB1 /* Debug */,
+				1CD008732799C2FD00AF8CB1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
