@@ -118,6 +118,7 @@ final class StarRatingBarView: UIView, View {
                 let percent = minimumValue + Float(location.x / width) * maximumValue
                 return percent
             }
+            .map { ceil($0) }
             .map { Double($0) }
             .map { Reactor.Action.changeRating($0) }
             .bind(to: reactor.action)
