@@ -58,11 +58,11 @@ final class ReviewWriteViewReactor: Reactor {
             return Observable.just(Comment(id: nil, rating: currentState.rating, timestamp: nil, writer: currentState.writer, movieId: currentState.movie.id, contents: currentState.contents))
                 .filter {comment in
                     if comment.rating == 0 {
-                        throw NSError(domain: "Error", code: 700, userInfo: [NSLocalizedDescriptionKey: "Invalid score".localized])
+                        throw ReviewWriteError.invalidScore
                     } else if comment.writer.isEmpty {
-                        throw NSError(domain: "Error", code: 701, userInfo: [NSLocalizedDescriptionKey: "Invalid nickname".localized])
+                        throw ReviewWriteError.invalidNickName
                     } else if comment.contents.isEmpty || comment.contents == "Please write a review".localized {
-                        throw NSError(domain: "Error", code: 702, userInfo: [NSLocalizedDescriptionKey: "Invalid Comment".localized])
+                        throw ReviewWriteError.invalidComment
                     }
                     return comment.rating != 0 && !comment.writer.isEmpty && !comment.contents.isEmpty && comment.contents != "Please write a review".localized
                 }
@@ -100,4 +100,3 @@ final class ReviewWriteViewReactor: Reactor {
         return newState
     }
 }
-

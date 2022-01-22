@@ -21,3 +21,22 @@ enum Constants {
         "DetailReviewHeaderView"
     }
 }
+
+enum ReviewWriteError: Error {
+    case invalidScore
+    case invalidNickName
+    case invalidComment
+}
+
+extension ReviewWriteError: LocalizedError {
+    var errorDescription: String? {
+        switch self {
+        case .invalidScore:
+            return "Invalid score".localized
+        case .invalidNickName:
+            return "Invalid nickname".localized
+        case .invalidComment:
+            return "Invalid Comment".localized
+        }
+    }
+}
