@@ -25,7 +25,7 @@ class TableCollectionViewReactorTests: XCTestCase {
     
     func testStateIsActivated() {
         // given
-        let movieService = MockMovieListService()
+        let movieService = MockMovieService()
         let reactor = TableCollectionViewReactor(movieService: movieService)
         let scheduler = TestScheduler(initialClock: 0)
         let disposeBag = DisposeBag()
@@ -53,7 +53,7 @@ class TableCollectionViewReactorTests: XCTestCase {
     
     func testStateOrderType() {
         // given
-        let movieService = MockMovieListService()
+        let movieService = MockMovieService()
         let reactor = TableCollectionViewReactor(movieService: movieService)
         
         
@@ -68,7 +68,7 @@ class TableCollectionViewReactorTests: XCTestCase {
 
     func testStateSections() {
         // given
-        let movieService = MockMovieListService()
+        let movieService = MockMovieService()
         let reactor = TableCollectionViewReactor(movieService: movieService)
         let scheduler = TestScheduler(initialClock: 0)
         let disposeBag = DisposeBag()
@@ -88,7 +88,7 @@ class TableCollectionViewReactorTests: XCTestCase {
     
     func testStateIsErrorOccured() {
         // given
-        let movieService = MockMovieListService()
+        let movieService = MockMovieService()
         let reactor = TableCollectionViewReactor(movieService: movieService)
         let scheduler = TestScheduler(initialClock: 0)
         let disposeBag = DisposeBag()
@@ -108,7 +108,7 @@ class TableCollectionViewReactorTests: XCTestCase {
     
     func testStateError() {
         // given
-        let movieService = MockMovieListService()
+        let movieService = MockMovieService()
         let reactor = TableCollectionViewReactor(movieService: movieService)
         let scheduler = TestScheduler(initialClock: 0)
         let disposeBag = DisposeBag()
