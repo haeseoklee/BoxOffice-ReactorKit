@@ -56,6 +56,7 @@
 		1CD00881279BC8AB00AF8CB1 /* DetailViewReactorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CD00880279BC8AB00AF8CB1 /* DetailViewReactorTests.swift */; };
 		1CD00883279BC9DF00AF8CB1 /* MockCommentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CD00882279BC9DF00AF8CB1 /* MockCommentService.swift */; };
 		1CD00885279BDC6000AF8CB1 /* ReviewWriteViewReactorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CD00884279BDC6000AF8CB1 /* ReviewWriteViewReactorTests.swift */; };
+		1CD00887279BED5300AF8CB1 /* StarRatingBarViewReactorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CD00886279BED5300AF8CB1 /* StarRatingBarViewReactorTests.swift */; };
 		70CC6204A5398874D6D2514C /* Pods_BoxOffice_ReactorKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DCBB3DF5E5A081713ADD90B /* Pods_BoxOffice_ReactorKit.framework */; };
 		76EDB84DC0A9E41697778F64 /* Pods_BoxOffice_ReactorKitTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F6EB54746954C647D31D28D /* Pods_BoxOffice_ReactorKitTests.framework */; };
 /* End PBXBuildFile section */
@@ -125,6 +126,7 @@
 		1CD00880279BC8AB00AF8CB1 /* DetailViewReactorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewReactorTests.swift; sourceTree = "<group>"; };
 		1CD00882279BC9DF00AF8CB1 /* MockCommentService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockCommentService.swift; sourceTree = "<group>"; };
 		1CD00884279BDC6000AF8CB1 /* ReviewWriteViewReactorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewWriteViewReactorTests.swift; sourceTree = "<group>"; };
+		1CD00886279BED5300AF8CB1 /* StarRatingBarViewReactorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarRatingBarViewReactorTests.swift; sourceTree = "<group>"; };
 		235FD67DDAC5112CF2857859 /* Pods-BoxOffice+ReactorKitTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BoxOffice+ReactorKitTests.release.xcconfig"; path = "Target Support Files/Pods-BoxOffice+ReactorKitTests/Pods-BoxOffice+ReactorKitTests.release.xcconfig"; sourceTree = "<group>"; };
 		2DCBB3DF5E5A081713ADD90B /* Pods_BoxOffice_ReactorKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BoxOffice_ReactorKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		88A0035540739B6DC1921B43 /* Pods-BoxOffice+ReactorKit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BoxOffice+ReactorKit.debug.xcconfig"; path = "Target Support Files/Pods-BoxOffice+ReactorKit/Pods-BoxOffice+ReactorKit.debug.xcconfig"; sourceTree = "<group>"; };
@@ -319,6 +321,7 @@
 				1CD0086E2799C2FD00AF8CB1 /* TableCollectionViewReactorTests.swift */,
 				1CD00880279BC8AB00AF8CB1 /* DetailViewReactorTests.swift */,
 				1CD00884279BDC6000AF8CB1 /* ReviewWriteViewReactorTests.swift */,
+				1CD00886279BED5300AF8CB1 /* StarRatingBarViewReactorTests.swift */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -598,6 +601,7 @@
 			files = (
 				1CD0087D279A73DE00AF8CB1 /* MockMovieService.swift in Sources */,
 				1CD00885279BDC6000AF8CB1 /* ReviewWriteViewReactorTests.swift in Sources */,
+				1CD00887279BED5300AF8CB1 /* StarRatingBarViewReactorTests.swift in Sources */,
 				1CD00883279BC9DF00AF8CB1 /* MockCommentService.swift in Sources */,
 				1CD0086F2799C2FD00AF8CB1 /* TableCollectionViewReactorTests.swift in Sources */,
 				1CD00881279BC8AB00AF8CB1 /* DetailViewReactorTests.swift in Sources */,
