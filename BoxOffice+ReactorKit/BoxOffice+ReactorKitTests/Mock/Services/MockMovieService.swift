@@ -10,7 +10,7 @@
 import UIKit
 import RxSwift
 
-final class MockMovieListService: MovieServiceType {
+final class MockMovieService: MovieServiceType {
     func getMovieList(orderType: Int) -> Observable<MovieList> {
         switch orderType {
         case 0:
