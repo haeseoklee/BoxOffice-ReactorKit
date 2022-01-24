@@ -31,10 +31,12 @@ final class TableCollectionViewCellReactor: Reactor {
     
     // Properties
     let initialState: State
+    private let imageLoaderService: ImageLoaderServiceType
     
     // Functions
-    init(movie: Movie) {
+    init(movie: Movie, imageLoaderService: ImageLoaderServiceType) {
         self.initialState = State(movie: movie)
+        self.imageLoaderService = imageLoaderService
     }
     
     func mutate(action: Action) -> Observable<Mutation> {
@@ -42,7 +44,7 @@ final class TableCollectionViewCellReactor: Reactor {
         case .fetchMovieImage:
             return Observable.just(currentState.movie.thumb ?? "")
                 .flatMap {
-                    ImageLoaderService.load(url: $0).map(Mutation.setMovieImage)
+                    self.imageLoaderService.load(url: $0).map(Mutation.setMovieImage)
                 }
                 .catchAndReturn(Mutation.setMovieImage(UIImage(named: "img_placeholder") ?? UIImage()))
         }
