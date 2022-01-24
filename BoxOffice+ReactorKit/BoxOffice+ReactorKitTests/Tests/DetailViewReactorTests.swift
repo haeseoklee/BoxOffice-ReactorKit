@@ -15,25 +15,18 @@ import RxTest
 class DetailViewReactorTests: XCTestCase {
     
     var sut: DetailViewReactor!
-    var movieService: MovieServiceType!
-    var commentService: CommentServiceType!
-    var movie: Movie!
 
     override func setUpWithError() throws {
         try super.setUpWithError()
         
-        movieService = MockMovieService()
-        commentService = MockCommentService()
-        movie = Movie(audience: nil, actor: nil, duration: nil, director: nil, thumb: Optional("http://movie.phinf.naver.net/20171201_181/1512109983114kcQVl_JPEG/movie_image.jpg?type=m99_141_2"), image: nil, synopsis: nil, genre: nil, grade: 12, reservationGrade: 1, title: "신과함께-죄와벌", reservationRate: 35.5, userRating: 7.98, date: "2017-12-20", id: "5a54c286e8a71d136fb5378e")
+        let movieService = MockMovieService()
+        let commentService = MockCommentService()
+        let movie = Movie(audience: nil, actor: nil, duration: nil, director: nil, thumb: Optional("http://movie.phinf.naver.net/20171201_181/1512109983114kcQVl_JPEG/movie_image.jpg?type=m99_141_2"), image: nil, synopsis: nil, genre: nil, grade: 12, reservationGrade: 1, title: "신과함께-죄와벌", reservationRate: 35.5, userRating: 7.98, date: "2017-12-20", id: "5a54c286e8a71d136fb5378e")
         sut = DetailViewReactor(movieService: movieService, commentService: commentService, movie: movie)
     }
 
     override func tearDownWithError() throws {
         try super.tearDownWithError()
-        
-        movieService = nil
-        commentService = nil
-        movie = nil
         sut = nil
     }
     

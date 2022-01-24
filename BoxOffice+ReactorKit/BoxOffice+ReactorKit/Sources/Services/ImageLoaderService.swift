@@ -9,7 +9,7 @@ import UIKit
 import RxSwift
 
 protocol ImageLoaderServiceType {
-    static func load(url: String) -> Observable<UIImage>
+    func load(url: String) -> Observable<UIImage>
 }
 
 class ImageCacheManager {
@@ -18,7 +18,7 @@ class ImageCacheManager {
 
 struct ImageLoaderService: ImageLoaderServiceType {
     
-    static func load(url: String) -> Observable<UIImage> {
+    func load(url: String) -> Observable<UIImage> {
         return Observable.create { observer in
             load(url: url) { result in
                 switch result {
@@ -33,7 +33,7 @@ struct ImageLoaderService: ImageLoaderServiceType {
         }
     }
     
-    private static func load(url: String, completion: @escaping (Result<UIImage, ImageLoaderError>) -> Void) {
+    private func load(url: String, completion: @escaping (Result<UIImage, ImageLoaderError>) -> Void) {
         
         let imageKey = url as NSString
         if let cachedImage = ImageCacheManager.shared.object(forKey: imageKey) {

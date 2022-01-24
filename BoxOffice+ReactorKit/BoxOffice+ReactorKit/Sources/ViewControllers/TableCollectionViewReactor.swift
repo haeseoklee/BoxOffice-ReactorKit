@@ -82,7 +82,7 @@ final class TableCollectionViewReactor: Reactor {
             newState.orderType = orderType
         case .setSections(let movies):
             newState.sections[0].items = movies.map { movie in
-                MovieListSectionItem(reactor: TableCollectionViewCellReactor(movie: movie))
+                MovieListSectionItem(reactor: TableCollectionViewCellReactor(movie: movie, imageLoaderService: ImageLoaderService()))
             }
         case .setError(let error):
             newState.isErrorOccurred = true
