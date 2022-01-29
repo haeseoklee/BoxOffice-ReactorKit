@@ -33,6 +33,7 @@ And also this project is a implementation of [Boost Course iOS app programming](
 * [RxViewController](https://github.com/devxoul/RxViewController)
 * [RxGesture](https://github.com/RxSwiftCommunity/RxGesture)
 * [RxDataSources](https://github.com/RxSwiftCommunity/RxDataSources)
+* [RxTest](https://github.com/ReactiveX/RxSwift)
 * iOS 15+
 * Swift 5
 * CocoaPods
@@ -77,7 +78,11 @@ BoxOffice+ReactorKit
     ├── LaunchScreen.storyboard
     ├── Info.plist
     └── Localizable.strings
-
+    
+BoxOffice+ReactorKitTests
+├── Mock
+│   └── Services
+└── Tests
 ```
 
 ## License
